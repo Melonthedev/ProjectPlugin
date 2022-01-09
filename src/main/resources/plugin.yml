@@ -1,0 +1,25 @@
+name: ProjectPlugin
+version: '${project.version}'
+main: wtf.melonthedev.projectplugin.Main
+api-version: 1.18
+authors: [ Melonthedev, Avocado ]
+description: A little plugin for our project :)
+website: melonthedev.wtf
+
+commands:
+  status:
+    description: Status Command
+  votekick:
+    description: Votekick Command
+  lockchest:
+    description: LockChest Command
+  position:
+    description: Position Command
+    aliases:
+      - pos
+  colorcodes:
+    description: ColorCodes List
+    aliases:
+      - colors
+  toggleendaccessibility:
+    description: ToggleEndAccessibility Command
