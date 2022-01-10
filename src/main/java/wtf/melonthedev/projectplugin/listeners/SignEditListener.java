@@ -18,16 +18,17 @@ public class SignEditListener implements Listener {
         if (!(event.getClickedBlock().getState() instanceof Sign)) return;
         Sign sign = (Sign) event.getClickedBlock().getState();
         Player player = event.getPlayer();
+        if (!player.isSneaking()) return;
         player.openSign(sign);
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onSignChange(SignChangeEvent event) {
         for (int i = 0; i < event.getLines().length; i++) {
             String line = event.getLine(i);
             if (line == null) continue;
             event.setLine(i, ChatColor.translateAlternateColorCodes('&', line));
         }
-    }
+    }*/
 
 }
