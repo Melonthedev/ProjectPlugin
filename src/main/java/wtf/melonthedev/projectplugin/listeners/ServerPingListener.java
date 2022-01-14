@@ -41,7 +41,7 @@ public class ServerPingListener implements Listener {
     @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
         Random random = new Random();
-        event.setMotd("§aS§eu§br§cv§6i§dv§5a§cl§6p§4r§bo§bj§ce§ak§5t§8 " + ChatColor.AQUA + "3.0" + " | 1.18 Updated" + ChatColor.GOLD + " SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
+        event.setMotd(ChatColor.AQUA + "Survivalprojekt 3.0" + " | 1.18 Updated SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
     }
 
 }

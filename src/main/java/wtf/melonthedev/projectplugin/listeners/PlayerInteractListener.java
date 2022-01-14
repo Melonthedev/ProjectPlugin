@@ -18,31 +18,19 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        if (event.hasBlock()) {
-            Chunk chunk = event.getPlayer().getWorld().getChunkAt(event.getClickedBlock());
-            int cX = chunk.getX() * 16; // make it a world coordinate...
-            int cZ = chunk.getZ() * 16;
-            World world = chunk.getWorld();
-            System.out.println("test");
-            for(int x = 0; x < 16; x++)
-            {
-                for(int z = 0; z < 16; z++)
-                {
-                    for(int y = 0; y < 256; y++)
-                    {
-                        world.setBiome(new Location(world, cX + x, y, cZ+ z), Biome.MUSHROOM_FIELDS);
-                    }
-                }
-            }
-        }
         if (!event.hasItem()) return;
         if (event.getAction() != Action.RIGHT_CLICK_AIR) return;
         if (event.getItem() == null) return;
         if (event.getItem().getType() != Material.FIREWORK_ROCKET) return;
-        if (event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST).getType() == Material.ELYTRA) return;
-        event.setCancelled(true);
+        if (event.getPlayer().getEquipment() == null
+                || event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST) == null
+                || event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST).getType() != Material.ELYTRA)
+            event.setCancelled(true);
+    }
 
-
+    @EventHandler
+    public void onContainerInteract(PlayerInteractEvent event) {
+        //if (event == null) {}
     }
 
     @EventHandler

@@ -25,6 +25,12 @@ public class StatusCommand implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
+        if (args[0].equalsIgnoreCase("reset")) {
+            player.sendMessage(ChatColor.GREEN + "[Status] Dein Status wurde zurück gesetzt!");
+            player.setDisplayName(player.getName());
+            player.setPlayerListName(player.getName());
+            return true;
+        }
         String status = ChatColor.translateAlternateColorCodes('&', args[0]);
         if (status.length() > 30) {
             sender.sendMessage(ChatColor.RED + "Dein Status darf nicht länger als 30 Zeichen sein.");
@@ -32,13 +38,6 @@ public class StatusCommand implements CommandExecutor {
         }
         player.setDisplayName("[" + status + ChatColor.RESET + "] " + player.getName());
         player.setPlayerListName("[" + status + ChatColor.RESET + "] " + player.getName());
-        ServerPlayer handle = ((CraftPlayer) player).getHandle();
-        handle.connection.connection.send(new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.REMOVE_PLAYER, handle));
-        handle.listName = Component.nullToEmpty("[" + status + ChatColor.RESET + "] " + player.getName());
-        Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
-            handle.connection.connection.send(new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, handle));
-            handle.connection.connection.send(new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.UPDATE_DISPLAY_NAME, handle));
-        }, 5);
         player.sendMessage(ChatColor.GREEN + "[Status] Dein Status ist nun '" + status + ChatColor.GREEN + "'.");
         return true;
     }
