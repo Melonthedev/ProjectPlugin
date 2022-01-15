@@ -58,6 +58,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SpawnElytraListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
         getServer().getPluginManager().registerEvents(new SignEditListener(), this);
         getServer().getPluginManager().registerEvents(new ServerPingListener(), this);
@@ -92,12 +93,6 @@ public final class Main extends JavaPlugin {
                     ChatColor.GREEN + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.GREEN + "TPS: " + (int) MinecraftServer.getServer().recentTps[0]
                 );
         }, 0, 80);
-    }
-
-    public void handleTabScoreboard() {
-        Scoreboard scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("deaths", "deathCount", "Deaths");
-        objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
     }
 
     public boolean isEndAccessible() {

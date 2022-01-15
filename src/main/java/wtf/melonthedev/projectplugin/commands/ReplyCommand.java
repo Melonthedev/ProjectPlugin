@@ -24,7 +24,7 @@ public class ReplyCommand implements TabExecutor {
             StringBuilder message = new StringBuilder();
             for (String arg : args) message.append(arg);
             target.sendMessage(ChatColor.GRAY + sender.getName() + " whispers to you: " + message);
-            sender.sendMessage(ChatColor.GRAY + "You are whispering to " + target.getName() + ": " + message);
+            sender.sendMessage(ChatColor.GRAY + "You whisper to " + target.getName() + ": " + message);
         } else {
             sender.sendMessage(ChatColor.RED + "There is no conversation to reply!");
             return true;

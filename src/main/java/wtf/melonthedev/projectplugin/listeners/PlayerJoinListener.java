@@ -16,6 +16,6 @@ public class PlayerJoinListener implements Listener {
                 ChatColor.GOLD.toString() + ChatColor.BOLD + "Survivalprojekt 3.0\n" + ChatColor.RESET + ChatColor.GRAY + "McSurvivalprojekt.de",
                 ChatColor.GREEN + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.GREEN + "TPS: " + ((int) MinecraftServer.getServer().recentTps[0] + 1)
         );
-        Main.getPlugin().handleTabScoreboard();
+        event.setJoinMessage(ChatColor.GREEN + ">>" + ChatColor.AQUA + " [Survivalprojekt] " + ChatColor.stripColor(event.getJoinMessage()) + " :)");
     }
 }
