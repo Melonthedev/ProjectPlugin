@@ -8,9 +8,11 @@ public class LocationUtils {
     private LocationUtils() {}
 
     public static boolean isLocationInSpawnArea(Location loc) {
-        //TODO: Check if in spawn, check correct world
-        return true;
-
+        if (loc.getWorld() == null) return false;
+        if (!loc.getWorld().getName().equals("world")) return false;
+        Location relativeSpawnLocation = loc.getWorld().getSpawnLocation();
+        relativeSpawnLocation.setY(loc.getY());
+        return relativeSpawnLocation.distance(loc) <= 20;
     }
 
 }

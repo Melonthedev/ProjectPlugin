@@ -8,11 +8,13 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
 public class PlayerInteractListener implements Listener {
 
@@ -26,11 +28,6 @@ public class PlayerInteractListener implements Listener {
                 || event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST) == null
                 || event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST).getType() != Material.ELYTRA)
             event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onContainerInteract(PlayerInteractEvent event) {
-        //if (event == null) {}
     }
 
     @EventHandler

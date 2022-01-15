@@ -34,7 +34,7 @@ public final class Main extends JavaPlugin {
                 new ComponentBuilder(ChatColor.GRAY + "Benutze" + ChatColor.WHITE + " /position " + ChatColor.GRAY + "um dir Positionen zu speichern").create(),
                 new ComponentBuilder(ChatColor.GRAY + "Chatte mit " + ChatColor.WHITE + "&" + ChatColor.GRAY + " um die Schriftfarbe zu ändern").create(),
                 new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/status" + ChatColor.GRAY + " um einen Status zu setzen").create(),
-                new ComponentBuilder(ChatColor.GRAY + "Rechtsklicke ein " + ChatColor.WHITE + "Schild" + ChatColor.GRAY + " um den Inhalt zu bearbeiten").create(),
+                new ComponentBuilder(ChatColor.GRAY + "Rechtsklicke sneakend ein " + ChatColor.WHITE + "Schild" + ChatColor.GRAY + " um den Inhalt zu bearbeiten").create(),
     };
 
 
@@ -49,10 +49,12 @@ public final class Main extends JavaPlugin {
         getCommand("position").setExecutor(new PositionCommand());
         getCommand("colorcodes").setExecutor(new ColorCodesCommand());
         getCommand("toggleendaccessibility").setExecutor(new ToggleEndAccessibilityCommand());
-        getCommand("votekick").setExecutor(votekickInstance);
-        getCommand("lockchest").setExecutor(lockchestInstance);
-        getServer().getPluginManager().registerEvents(votekickInstance, this);
-        getServer().getPluginManager().registerEvents(lockchestInstance, this);
+        getCommand("message").setExecutor(new MessageCommand());
+        getCommand("reply").setExecutor(new ReplyCommand());
+        //getCommand("votekick").setExecutor(votekickInstance);
+        //getCommand("lockchest").setExecutor(lockchestInstance);
+        //getServer().getPluginManager().registerEvents(votekickInstance, this);
+        //getServer().getPluginManager().registerEvents(lockchestInstance, this);
         getServer().getPluginManager().registerEvents(new SpawnElytraListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);

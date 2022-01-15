@@ -9,10 +9,10 @@ website: melonthedev.wtf
 commands:
   status:
     description: Status Command
-  votekick:
-    description: Votekick Command
-  lockchest:
-    description: LockChest Command
+  #votekick:
+  #  description: Votekick Command
+  #lockchest:
+  #  description: LockChest Command
   position:
     description: Position Command
     aliases:
@@ -23,3 +23,14 @@ commands:
       - colors
   toggleendaccessibility:
     description: ToggleEndAccessibility Command
+
+  reply:
+    description: Replies to a message
+    aliases:
+      - r
+  message:
+    description: Sends a message to a certaint player
+    aliases:
+      - msg
+      - whisper
+      - tell

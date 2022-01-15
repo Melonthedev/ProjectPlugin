@@ -20,7 +20,9 @@ public class ServerPingListener implements Listener {
       "McSurvivalprojekt.de",
       "Artificial Intelligence usually beats natural stupidity.",
       "Warum? Weil.",
-      "Sei nett und schreibe statt \"FUCK!\" lieber \"mist :(\""
+      "Sei nett und schreibe statt \"FUCK!\" lieber \"mist :(\"",
+      "Lag-free",
+
     };
     ChatColor[] colors = new ChatColor[] {
             ChatColor.GRAY,
@@ -41,7 +43,7 @@ public class ServerPingListener implements Listener {
     @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
         Random random = new Random();
-        event.setMotd(ChatColor.AQUA + "Survivalprojekt 3.0" + " | 1.18 Updated SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
+        event.setMotd(ChatColor.GOLD + "Survivalprojekt 3.0" + ChatColor.AQUA + " | 1.18 Updated SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
     }
 
 }
