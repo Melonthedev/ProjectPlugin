@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
 public class SignEditListener implements Listener {
 
@@ -17,6 +18,7 @@ public class SignEditListener implements Listener {
         Sign sign = (Sign) event.getClickedBlock().getState();
         Player player = event.getPlayer();
         if (!player.isSneaking()) return;
+        if (LocationUtils.isLocationInSpawnArea(event.getClickedBlock().getLocation())) return;
         player.openSign(sign);
     }
 

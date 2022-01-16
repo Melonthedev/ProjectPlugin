@@ -13,9 +13,9 @@ import wtf.melonthedev.projectplugin.utils.LocationUtils;
 public class SpawnElytraListener implements Listener {
 
     @EventHandler
-    public void onEntityToggleGlide(EntityToggleGlideEvent event) {
+    public void onEntityToggleGlide(EntityToggleGlideEvent event) {//LocationUtils.isLocationInSpawnArea(entity.getLocation()) &&
         Entity entity = event.getEntity();
-        if (LocationUtils.isLocationInSpawnArea(entity.getLocation()) && entity.getLocation().getY() > 20 && entity.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
+        if ( entity.getLocation().getY() > 20 && entity.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
             event.setCancelled(true);
         }
     }
@@ -23,7 +23,7 @@ public class SpawnElytraListener implements Listener {
     @EventHandler
     public void onPlayerSneak(PlayerToggleSneakEvent event) {
         Block block = event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
-        if (block.getType() != Material.AIR || block.getRelative(BlockFace.DOWN).getType() != Material.AIR || event.getPlayer().isFlying()) return;
+        if (block.getType() != Material.AIR || block.getRelative(BlockFace.DOWN).getType() != Material.AIR || event.getPlayer().isFlying() || !LocationUtils.isLocationInSpawnArea(event.getPlayer().getLocation())) return;
         event.getPlayer().setGliding(true);
     }
 }

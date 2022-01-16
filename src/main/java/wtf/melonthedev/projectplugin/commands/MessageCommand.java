@@ -29,7 +29,7 @@ public class MessageCommand implements TabExecutor {
         }
         StringBuilder message = new StringBuilder();
         String[] words = Arrays.copyOfRange(args, 1, args.length);
-        for (String word : words) message.append(word);
+        for (String word : words) message.append(word).append(" ");
         target.sendMessage(ChatColor.GRAY + sender.getName() + " whispers to you: " + message);
         sender.sendMessage(ChatColor.GRAY + "You are whispering to " + target.getName() + ": " + message);
         conversations.put(sender, target);

@@ -65,6 +65,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
         getServer().getPluginManager().registerEvents(new EntityExplodeListener(), this);
+        getServer().getPluginManager().registerEvents(new ActionLoggerListener(), this);
         sendSpawnMessage();
         updateTabList();
     }

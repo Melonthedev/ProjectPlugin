@@ -12,7 +12,7 @@ public class EntityDamageByEntityListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if (LocationUtils.isLocationInSpawnArea(event.getEntity().getLocation())) {
-            event.setCancelled(true);
+            event.setDamage(0.1);
         }
     }
     @EventHandler
