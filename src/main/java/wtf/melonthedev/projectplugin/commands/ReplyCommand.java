@@ -22,7 +22,7 @@ public class ReplyCommand implements TabExecutor {
             CommandSender target = MessageCommand.conversations.get(sender);
             if (target == null) return true;
             StringBuilder message = new StringBuilder();
-            for (String arg : args) message.append(arg);
+            for (String arg : args) message.append(arg).append(" ");
             target.sendMessage(ChatColor.GRAY + sender.getName() + " whispers to you: " + message);
             sender.sendMessage(ChatColor.GRAY + "You whisper to " + target.getName() + ": " + message);
         } else {
