@@ -31,7 +31,7 @@ public class MessageCommand implements TabExecutor {
         String[] words = Arrays.copyOfRange(args, 1, args.length);
         for (String word : words) message.append(word).append(" ");
         target.sendMessage(ChatColor.GRAY + sender.getName() + " whispers to you: " + message);
-        sender.sendMessage(ChatColor.GRAY + "You are whispering to " + target.getName() + ": " + message);
+        sender.sendMessage(ChatColor.GRAY + "You whisper to " + target.getName() + ": " + message);
         conversations.put(sender, target);
         conversations.put(target, sender);
         return false;
@@ -40,7 +40,7 @@ public class MessageCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> tab = new ArrayList<>();
-        if (args.length == 0) {
+        if (args.length <= 1) {
             for (Player player : Bukkit.getOnlinePlayers()) tab.add(player.getName());
         }
         return tab;
