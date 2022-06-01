@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import wtf.melonthedev.projectplugin.utils.AfkSystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class StatusCommand implements TabExecutor {
 
-    private static final HashMap<String, String> statusList = new HashMap<>();
+    public static final HashMap<String, String> statusList = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -25,20 +26,24 @@ public class StatusCommand implements TabExecutor {
             return true;
         }
         Player player = (Player) sender;
+        if (AfkSystem.isAfk(player)) {
+            AfkSystem.disableAfkMode(player);
+        }
         if (args[0].equalsIgnoreCase("reset")) {
             player.sendMessage(ChatColor.GREEN + "[Status] Dein Status wurde zurück gesetzt!");
             player.setDisplayName(player.getName());
             player.setPlayerListName(player.getName());
             return true;
         }
-        String status = ChatColor.translateAlternateColorCodes('&', args[0]);
+        String status = args[0];
+        String statusWithColor = ChatColor.translateAlternateColorCodes('&', status);
         if (status.length() > 30) {
             sender.sendMessage(ChatColor.RED + "Dein Status darf nicht länger als 30 Zeichen sein.");
             return true;
         }
-        player.setDisplayName("[" + status + ChatColor.RESET + "] " + player.getName());
-        player.setPlayerListName("[" + status + ChatColor.RESET + "] " + player.getName());
-        player.sendMessage(ChatColor.GREEN + "[Status] Dein Status ist nun '" + status + ChatColor.GREEN + "'.");
+        player.setDisplayName("[" + statusWithColor + ChatColor.RESET + "] " + player.getName());
+        player.setPlayerListName("[" + statusWithColor + ChatColor.RESET + "] " + player.getName());
+        player.sendMessage(ChatColor.GREEN + "[Status] Dein Status ist nun '" + statusWithColor + ChatColor.GREEN + "'.");
         statusList.put(player.getName(), status);
         return true;
     }
