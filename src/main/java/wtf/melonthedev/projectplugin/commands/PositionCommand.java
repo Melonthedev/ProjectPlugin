@@ -68,8 +68,9 @@ public class PositionCommand implements TabExecutor {
                     player.sendMessage(prefix + "Öffentliche Position " + args[0] + " wurde erstellt bei x: " + player.getLocation().getBlockX() + ", y:" + player.getLocation().getBlockY() + ", z: " + player.getLocation().getBlockZ() + ", world: " + Objects.requireNonNull(player.getLocation().getWorld()).getName() + ".");
                     return true;
                 }
+            default:
+                player.sendMessage(ChatColor.RED + "Syntaxerror: /position | /position <String: name> | /position <String: name> delete/public");
         }
-        player.sendMessage(ChatColor.RED + "Syntaxerror: /position | /position <String: name> | /position <String: name> delete/public");
         return false;
     }
 

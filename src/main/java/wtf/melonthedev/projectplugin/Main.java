@@ -18,6 +18,8 @@ import wtf.melonthedev.projectplugin.utils.LocationUtils;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Main extends JavaPlugin {
 
@@ -79,7 +81,10 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.setPlayerListName(player.getName());
+            player.setDisplayName(player.getName());
+        }
     }
 
     public void sendSpawnMessage() {
@@ -96,11 +101,15 @@ public final class Main extends JavaPlugin {
 
     public void updateTabList() {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
-            for (Player player : Bukkit.getOnlinePlayers()) player.setPlayerListHeaderFooter(
-                    ChatColor.GREEN.toString() + ChatColor.BOLD + "Survivalprojekt 4.0\n" + ChatColor.RESET + ChatColor.GRAY + "McSurvivalprojekt.de",
-                    ChatColor.AQUA + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.AQUA + "TPS: " + (int) MinecraftServer.getServer().recentTps[0]
-                );
+            for (Player player : Bukkit.getOnlinePlayers()) setCustomPlayerListHeader(player);
         }, 0, 80);
+    }
+
+    public void setCustomPlayerListHeader(Player player) {
+        player.setPlayerListHeaderFooter(
+                ChatColor.GREEN.toString() + ChatColor.BOLD + "Survivalprojekt 4.0\n" + ChatColor.RESET + ChatColor.GRAY + "McSurvivalprojekt.de",
+                ChatColor.AQUA + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.AQUA + "TPS: " + (int) MinecraftServer.getServer().recentTps[0]
+        );
     }
 
     public boolean isEndAccessible() {
@@ -114,6 +123,24 @@ public final class Main extends JavaPlugin {
     public void setEndAccessible(boolean accessible) {
         getConfig().set("config.isendaccessible", accessible);
         saveConfig();
+    }
+
+    public String translateHexAndCharColorCodes(String message)
+    {
+        final Pattern hexPattern = Pattern.compile("&#" + "([A-Fa-f0-9]{6})" + "#");
+        Matcher matcher = hexPattern.matcher(message);
+        char COLOR_CHAR = ChatColor.COLOR_CHAR;
+        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+        while (matcher.find())
+        {
+            String group = matcher.group(1);
+            matcher.appendReplacement(buffer, COLOR_CHAR + "x"
+                    + COLOR_CHAR + group.charAt(0) + COLOR_CHAR + group.charAt(1)
+                    + COLOR_CHAR + group.charAt(2) + COLOR_CHAR + group.charAt(3)
+                    + COLOR_CHAR + group.charAt(4) + COLOR_CHAR + group.charAt(5)
+            );
+        }
+        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
     }
 
     public static Main getPlugin() {

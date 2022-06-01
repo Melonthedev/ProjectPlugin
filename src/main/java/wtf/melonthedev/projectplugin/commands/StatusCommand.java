@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.AfkSystem;
 
 import java.util.ArrayList;
@@ -36,8 +37,10 @@ public class StatusCommand implements TabExecutor {
             return true;
         }
         String status = args[0];
-        String statusWithColor = ChatColor.translateAlternateColorCodes('&', status);
-        if (status.length() > 30) {
+        String statusWithColor = Main.getPlugin().translateHexAndCharColorCodes(status);
+        System.out.println("STATUSWITHCOLOR: " + statusWithColor);
+        System.out.println("STATUSWITHCOLOR: " + statusWithColor.replaceAll("\\§[^;]", ""));
+        if (statusWithColor.replaceAll("\\§[^;]", "").length() > 30) {
             sender.sendMessage(ChatColor.RED + "Dein Status darf nicht länger als 30 Zeichen sein.");
             return true;
         }

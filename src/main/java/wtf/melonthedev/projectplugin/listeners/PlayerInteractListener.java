@@ -2,19 +2,20 @@ package wtf.melonthedev.projectplugin.listeners;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.*;
-import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
 public class PlayerInteractListener implements Listener {
 
@@ -38,6 +39,35 @@ public class PlayerInteractListener implements Listener {
         if (Main.getPlugin().isEndAccessible()) return;
         event.setCancelled(true);
         event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.AQUA + "Das END ist blockiert. Es wird bald geöffnet."));
+    }
+
+    @EventHandler
+    public void onArmorStandInteractName(PlayerInteractEntityEvent event) {
+        if (event.getRightClicked().getType() != EntityType.ARMOR_STAND) return;
+        if (!(event.getPlayer().getInventory().getItemInMainHand().getType() == Material.NAME_TAG)) return;
+        ItemStack nametag = event.getPlayer().getInventory().getItemInMainHand();
+        if (nametag.getItemMeta() == null) return;
+        String name = nametag.getItemMeta().getDisplayName();
+        ArmorStand stand = (ArmorStand) event.getRightClicked();
+        if (stand.getCustomName() != null && name.equals(stand.getCustomName())) {
+            event.setCancelled(true);
+            return;
+        }
+        event.setCancelled(true);
+        stand.setCustomNameVisible(true);
+        stand.setCustomName(name);
+        nametag.setAmount(nametag.getAmount() - 1);
+        event.getPlayer().getInventory().setItemInMainHand(nametag);
+    }
+
+    @EventHandler
+    public void onArmorStandInteractArms(PlayerInteractEntityEvent event) {
+        if (event.getRightClicked().getType() != EntityType.ARMOR_STAND) return;
+        if (event.getPlayer().isSneaking()) {
+            ArmorStand stand = (ArmorStand) event.getRightClicked();
+            stand.setArms(!stand.hasArms());
+            event.setCancelled(true);
+        }
     }
 
 
