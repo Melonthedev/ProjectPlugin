@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
@@ -19,16 +20,19 @@ public class SignEditListener implements Listener {
         Player player = event.getPlayer();
         if (!player.isSneaking()) return;
         if (LocationUtils.isLocationInSpawnArea(event.getClickedBlock().getLocation())) return;
+        sign.setEditable(true);
         player.openSign(sign);
     }
 
-    /*@EventHandler
+    @EventHandler
     public void onSignChange(SignChangeEvent event) {
-        for (int i = 0; i < event.getLines().length; i++) {
+        Sign sign = (Sign) event.getBlock().getState();
+        sign.setEditable(true);
+        /*for (int i = 0; i < event.getLines().length; i++) {
             String line = event.getLine(i);
             if (line == null) continue;
-            event.setLine(i, ChatColor.translateAlternateColorCodes('&', line));
-        }
-    }*/
+            event.setLine(i, line);
+        }*/
+    }
 
 }

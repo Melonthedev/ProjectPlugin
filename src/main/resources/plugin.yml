@@ -34,3 +34,5 @@ commands:
       - msg
       - whisper
       - tell
+  spectatestebadon:
+    description: hm

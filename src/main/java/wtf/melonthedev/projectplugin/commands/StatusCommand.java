@@ -1,18 +1,18 @@
 package wtf.melonthedev.projectplugin.commands;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundPlayerInfoPacket;
-import net.minecraft.server.level.ServerPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import wtf.melonthedev.projectplugin.Main;
 
-public class StatusCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class StatusCommand implements TabExecutor {
+
+    private static final HashMap<String, String> statusList = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -39,6 +39,20 @@ public class StatusCommand implements CommandExecutor {
         player.setDisplayName("[" + status + ChatColor.RESET + "] " + player.getName());
         player.setPlayerListName("[" + status + ChatColor.RESET + "] " + player.getName());
         player.sendMessage(ChatColor.GREEN + "[Status] Dein Status ist nun '" + status + ChatColor.GREEN + "'.");
+        statusList.put(player.getName(), status);
         return true;
+    }
+
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        List<String> tab = new ArrayList<>();
+        if (args.length == 1) {
+            tab.add("reset");
+            if (statusList.containsKey(sender.getName())) {
+                tab.add(statusList.get(sender.getName()));
+            }
+        }
+        return tab;
     }
 }

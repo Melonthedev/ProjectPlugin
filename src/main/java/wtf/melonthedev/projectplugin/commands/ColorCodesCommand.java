@@ -15,12 +15,12 @@ public class ColorCodesCommand implements CommandExecutor {
         if (args.length == 1) {
             for (ChatColor color : ChatColor.values()) {
                 if (!args[0].equalsIgnoreCase(color.name())) continue;
-                sender.sendMessage(colorinfo + "The colorcode for " + args[0] + " is &" + color.toString().substring(1));
-                sender.sendMessage(color + "The color will look like this when used :)");
+                sender.sendMessage(colorinfo + "Der Farbcode für " + args[0] + " ist &" + color.toString().substring(1));
+                sender.sendMessage(color + "So wird es bei Benutzung aussehen :)");
                 sender.sendMessage(colorinfo + "-------------------------------");
                 return true;
             }
-            sender.sendMessage(ChatColor.RED + "There is no valid color named '" + args[0] + "'. Try to find your color in the list: /colorcodes");
+            sender.sendMessage(ChatColor.RED + "Diese Farbe wurde nicht gefunden: '" + args[0] + "'. Such deine Farbe in der Liste: /colorcodes");
         } else {
             sender.sendMessage(colorinfo + "-" + ChatColor.DARK_RED + "DARK_RED: &4");
             sender.sendMessage(colorinfo + "-" + ChatColor.RED + "RED (aka. coral): &c");

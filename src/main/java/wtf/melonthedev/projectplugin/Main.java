@@ -8,6 +8,7 @@ import net.md_5.bungee.api.chat.Keybinds;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -17,6 +18,7 @@ import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.listeners.*;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -24,17 +26,19 @@ import java.util.logging.Level;
 public final class Main extends JavaPlugin {
 
     private static Main plugin;
-    private final VotekickCommand votekickInstance = new VotekickCommand();
-    private final LockchestCommand lockchestInstance = new LockchestCommand();
-    private BaseComponent[][] infos = new BaseComponent[][] {
+    public static HashMap<Player, Location> locations = new HashMap<>();
+    private final BaseComponent[][] infos = new BaseComponent[][] {
         new ComponentBuilder(ChatColor.GRAY + "Drücke ")
                 .append(new KeybindComponent(Keybinds.SNEAK))
                 .append(ChatColor.GRAY + " um diese Insel herunter zu gleiten")
                 .create(),
-                new ComponentBuilder(ChatColor.GRAY + "Benutze" + ChatColor.WHITE + " /position " + ChatColor.GRAY + "um dir Positionen zu speichern").create(),
-                new ComponentBuilder(ChatColor.GRAY + "Chatte mit " + ChatColor.WHITE + "&" + ChatColor.GRAY + " um die Schriftfarbe zu ändern").create(),
-                new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/status" + ChatColor.GRAY + " um einen Status zu setzen").create(),
-                new ComponentBuilder(ChatColor.GRAY + "Rechtsklicke sneakend ein " + ChatColor.WHITE + "Schild" + ChatColor.GRAY + " um den Inhalt zu bearbeiten").create(),
+        new ComponentBuilder(ChatColor.GRAY + "Benutze" + ChatColor.WHITE + " /position " + ChatColor.GRAY + "um dir Positionen zu speichern").create(),
+        new ComponentBuilder(ChatColor.GRAY + "Chatte mit " + ChatColor.WHITE + "&" + ChatColor.GRAY + " um die Schriftfarbe zu ändern").create(),
+        new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/status" + ChatColor.GRAY + " um einen Status zu setzen").create(),
+        new ComponentBuilder(ChatColor.GRAY + "Rechtsklicke sneakend ein " + ChatColor.WHITE + "Schild" + ChatColor.GRAY + " um den Inhalt zu bearbeiten").create(),
+        new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/kopfgeld" + ChatColor.GRAY + " um das Kopfgeldmenü zu öffnen").create(),
+        new ComponentBuilder(ChatColor.GRAY + "Rechtsklicke sneakend einen " + ChatColor.WHITE + "Armorstand" + ChatColor.GRAY + " um ihn zu bearbeiten").create(),
+        new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/r" + ChatColor.GRAY + " um auf eine privatnachricht zu antworten").create(),
     };
 
 
@@ -45,14 +49,19 @@ public final class Main extends JavaPlugin {
         getLogger().log(Level.INFO, "*** Project Plugin ***");
         getLogger().log(Level.INFO, "*** by Melonthedev ***");
         getLogger().log(Level.INFO, "**********************");
+
+        //COMMAND REGISTRATION
         getCommand("status").setExecutor(new StatusCommand());
         getCommand("position").setExecutor(new PositionCommand());
         getCommand("colorcodes").setExecutor(new ColorCodesCommand());
         getCommand("toggleendaccessibility").setExecutor(new ToggleEndAccessibilityCommand());
         getCommand("message").setExecutor(new MessageCommand());
         getCommand("reply").setExecutor(new ReplyCommand());
+        getCommand("spectatestebadon").setExecutor(new SpectateStebadonCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
+
+        //LISTENER REGISTRATION
         //getServer().getPluginManager().registerEvents(votekickInstance, this);
         //getServer().getPluginManager().registerEvents(lockchestInstance, this);
         getServer().getPluginManager().registerEvents(new SpawnElytraListener(), this);
@@ -66,6 +75,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
         getServer().getPluginManager().registerEvents(new EntityExplodeListener(), this);
         getServer().getPluginManager().registerEvents(new ActionLoggerListener(), this);
+
         sendSpawnMessage();
         updateTabList();
     }
@@ -90,8 +100,8 @@ public final class Main extends JavaPlugin {
     public void updateTabList() {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) player.setPlayerListHeaderFooter(
-                    ChatColor.GOLD.toString() + ChatColor.BOLD + "Survivalprojekt 3.0\n" + ChatColor.RESET + ChatColor.GRAY + "McSurvivalprojekt.de",
-                    ChatColor.GREEN + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.GREEN + "TPS: " + (int) MinecraftServer.getServer().recentTps[0]
+                    ChatColor.GREEN.toString() + ChatColor.BOLD + "Survivalprojekt 4.0\n" + ChatColor.RESET + ChatColor.GRAY + "McSurvivalprojekt.de",
+                    ChatColor.AQUA + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.AQUA + "TPS: " + (int) MinecraftServer.getServer().recentTps[0]
                 );
         }, 0, 80);
     }

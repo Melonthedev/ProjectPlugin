@@ -10,19 +10,12 @@ import java.util.Random;
 public class ServerPingListener implements Listener {
 
     String[] motds = new String[] {
-      "Der weltweit beste Server",
-      "Never gonna give you up!",
-      "Bitte nicht Wursten auf dem Server",
-      "Spawnelytra update!",
-      "null",
-      "IllegalArgumentException: Invalid Server: \"hypixel.net\"",
-      "All rights reserved!",
-      "McSurvivalprojekt.de",
-      "Artificial Intelligence usually beats natural stupidity.",
-      "Warum? Weil.",
-      "Sei nett und schreibe statt \"FUCK!\" lieber \"mist :(\"",
-      "Lag-free",
-
+            "Hallo",
+            "Super :)",
+            "Haha",
+            "Wird genommen xD",
+            "OK brauchen neuen Tread. Dieser wird zu ernst genommen",
+            "Brauchen wir überhaupt MOTDs?"
     };
     ChatColor[] colors = new ChatColor[] {
             ChatColor.GRAY,
@@ -43,7 +36,7 @@ public class ServerPingListener implements Listener {
     @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
         Random random = new Random();
-        event.setMotd(ChatColor.GOLD + "Survivalprojekt 3.0" + ChatColor.AQUA + " | 1.18 Updated SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
+        event.setMotd(ChatColor.GOLD + "Survivalprojekt 4.0" + ChatColor.AQUA + " | Survival SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
     }
 
 }
