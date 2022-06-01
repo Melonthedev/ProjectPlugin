@@ -1,3 +1,3 @@
 # ProjectPlugin
-ProjectPlugin for Survivalprojekt 3.0
-Ey das wird geil
+ProjectPlugin for Survivalprojekt 4.0
+Voll geil
