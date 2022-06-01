@@ -8,31 +8,36 @@ website: melonthedev.wtf
 
 commands:
   status:
-    description: Status Command
+    description: Setzt deinen persönlichen Status
   #votekick:
   #  description: Votekick Command
   #lockchest:
   #  description: LockChest Command
   position:
-    description: Position Command
+    description: Positionen in der Welt privat und öffentlich speichern
     aliases:
       - pos
   colorcodes:
-    description: ColorCodes List
+    description: Farbcodes, die im Chat und in deinem Status genutzt werden können
     aliases:
       - colors
   toggleendaccessibility:
-    description: ToggleEndAccessibility Command
+    description: ToggleEndAccessibility Command [TEAM ONLY]
 
   reply:
-    description: Replies to a message
+    description: Antwortet auf eine Nachricht, die an dich per /msg gesendet wurde
     aliases:
       - r
   message:
-    description: Sends a message to a certaint player
+    description: Sendet eine Nachricht an einen Spieler
     aliases:
       - msg
       - whisper
       - tell
+  bounty:
+    description: Setzt ein Kopfgeld auf einen Spieler
+    aliases:
+      - kopfgeld
+
   spectatestebadon:
-    description: hm
+    description: hmmmmmmmmmm SuS

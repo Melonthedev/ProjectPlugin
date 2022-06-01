@@ -14,7 +14,6 @@ public class PlayerMoveListener implements Listener {
     public void onMove(PlayerMoveEvent event) {
         if (event.getTo() == null) return;
         if (event.getTo().getX() == event.getFrom().getX() && event.getTo().getZ() == event.getFrom().getZ()) return;
-        Main.getPlugin().getLogger().log(Level.INFO, "Player moved!");
         AfkSystem.handleAfkModus(event.getPlayer());
     }
 

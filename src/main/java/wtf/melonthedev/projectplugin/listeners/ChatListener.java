@@ -11,5 +11,4 @@ public class ChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
     }
-
 }
