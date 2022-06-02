@@ -99,6 +99,10 @@ public final class Main extends JavaPlugin {
         }, 0, 80);
     }
 
+    public String getServerName() {
+        return translateHexAndCharColorCodes("&#fed900#S&#fecd00#u&#fec100#r&#feb500#v&#fea900#i&#fe9d00#v&#fe9100#a&#fe8500#l&#fe7900#p&#fd6c00#r&#fd6000#o&#fd5400#j&#fd4800#e&#fd3c00#k&#fd3000#t &#fd1800#4&#fd0c00#.&#fd0100#0");
+    }
+
     public void updateTabList() {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) setCustomPlayerListHeader(player);
@@ -107,7 +111,7 @@ public final class Main extends JavaPlugin {
 
     public void setCustomPlayerListHeader(Player player) {
         player.setPlayerListHeaderFooter(
-                ChatColor.GREEN.toString() + ChatColor.BOLD + "Survivalprojekt 4.0\n" + ChatColor.RESET + ChatColor.GRAY + "McSurvivalprojekt.de",
+                ChatColor.GREEN.toString() + ChatColor.BOLD + getServerName() + "\n" + ChatColor.RESET + ChatColor.GREEN + "McSurvivalprojekt.de",
                 ChatColor.AQUA + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.AQUA + "TPS: " + (int) MinecraftServer.getServer().recentTps[0]
         );
     }

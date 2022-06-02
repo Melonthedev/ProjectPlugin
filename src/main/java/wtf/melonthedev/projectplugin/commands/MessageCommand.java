@@ -7,14 +7,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class MessageCommand implements TabExecutor {
 
     public static HashMap<CommandSender, CommandSender> conversations = new HashMap<>();
+    public static HashMap<String, List<Map.Entry<String, String>>> offlinePlayerMessages = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -22,14 +20,18 @@ public class MessageCommand implements TabExecutor {
             sender.sendMessage(ChatColor.RED + "Please use '/msg <player> <message>'!");
             return true;
         }
-        Player target = Bukkit.getPlayer(args[0]);
-        if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Please use an online player!");
-            return true;
-        }
         StringBuilder message = new StringBuilder();
         String[] words = Arrays.copyOfRange(args, 1, args.length);
         for (String word : words) message.append(word).append(" ");
+        Player target = Bukkit.getPlayer(args[0]);
+        if (target == null) {
+            sender.sendMessage(ChatColor.AQUA + "Your message will be delivered as soon as " + args[0] + " is online!");
+            if (!offlinePlayerMessages.containsKey(args[0])) {
+                offlinePlayerMessages.put(args[0], new ArrayList<>());
+            }
+            offlinePlayerMessages.get(args[0]).add(new AbstractMap.SimpleEntry<>(sender.getName(), message.toString()));
+            return true;
+        }
         target.sendMessage(ChatColor.GRAY + sender.getName() + " whispers to you: " + message);
         sender.sendMessage(ChatColor.GRAY + "You whisper to " + target.getName() + ": " + message);
         conversations.put(sender, target);
@@ -44,5 +46,14 @@ public class MessageCommand implements TabExecutor {
             for (Player player : Bukkit.getOnlinePlayers()) tab.add(player.getName());
         }
         return tab;
+    }
+
+    public static void handleNewMessages(Player player) {
+        if (offlinePlayerMessages.containsKey(player.getName())) {
+            for (Map.Entry<String, String> entry : offlinePlayerMessages.get(player.getName())) {
+                player.sendMessage(ChatColor.GRAY + entry.getKey() + " whispers to you: " + entry.getValue());
+            }
+            offlinePlayerMessages.remove(player.getName());
+        }
     }
 }
