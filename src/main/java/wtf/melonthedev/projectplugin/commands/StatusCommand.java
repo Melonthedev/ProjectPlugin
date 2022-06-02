@@ -44,11 +44,15 @@ public class StatusCommand implements TabExecutor {
             sender.sendMessage(ChatColor.RED + "Dein Status darf nicht länger als 30 Zeichen sein.");
             return true;
         }
-        player.setDisplayName("[" + statusWithColor + ChatColor.RESET + "] " + player.getName());
-        player.setPlayerListName("[" + statusWithColor + ChatColor.RESET + "] " + player.getName());
+        setStatus(player, "[" + statusWithColor + ChatColor.RESET + "] " + player.getName());
         player.sendMessage(ChatColor.GREEN + "[Status] Dein Status ist nun '" + statusWithColor + ChatColor.GREEN + "'.");
         statusList.put(player.getName(), status);
         return true;
+    }
+
+    public static void setStatus(Player player, String status) {
+        player.setDisplayName(status);
+        player.setPlayerListName(status);
     }
 
 
