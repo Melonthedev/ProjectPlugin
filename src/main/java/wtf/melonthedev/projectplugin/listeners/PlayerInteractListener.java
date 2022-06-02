@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -61,13 +62,12 @@ public class PlayerInteractListener implements Listener {
     }
 
     @EventHandler
-    public void onArmorStandInteractArms(PlayerInteractEntityEvent event) {
+    public void onArmorStandInteractArms(PlayerInteractAtEntityEvent event) {
         if (event.getRightClicked().getType() != EntityType.ARMOR_STAND) return;
-        if (event.getPlayer().isSneaking()) {
-            ArmorStand stand = (ArmorStand) event.getRightClicked();
-            stand.setArms(!stand.hasArms());
-            event.setCancelled(true);
-        }
+        if (!event.getPlayer().isSneaking()) return;
+        ArmorStand stand = (ArmorStand) event.getRightClicked();
+        stand.setArms(!stand.hasArms());
+        event.setCancelled(true);
     }
 
 
