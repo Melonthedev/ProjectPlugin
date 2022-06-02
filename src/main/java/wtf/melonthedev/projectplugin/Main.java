@@ -15,6 +15,7 @@ import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.listeners.*;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -56,6 +57,7 @@ public final class Main extends JavaPlugin {
         getCommand("message").setExecutor(new MessageCommand());
         getCommand("reply").setExecutor(new ReplyCommand());
         getCommand("spectatestebadon").setExecutor(new SpectateStebadonCommand());
+        getCommand("logoutput").setExecutor(new LogOutputCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 

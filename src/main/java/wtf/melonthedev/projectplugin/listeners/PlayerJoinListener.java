@@ -29,7 +29,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Main.getPlugin().setCustomPlayerListHeader(event.getPlayer());
         //event.setJoinMessage(ChatColor.GREEN + ">>" + ChatColor.AQUA + " [Survivalprojekt] " + ChatColor.stripColor(event.getJoinMessage()) + " :)");
-        event.setJoinMessage(ChatColor.GREEN + ">>" + ChatColor.AQUA + " [Survivalprojekt] " + event.getPlayer().getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)] + " :)");
+        event.setJoinMessage(ChatColor.GREEN + ">>" + ChatColor.AQUA + " [Survivalprojekt] " + event.getPlayer().getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)]);
         if (StatusCommand.statusList.containsKey(event.getPlayer().getName())) {
             StatusCommand.setStatus(event.getPlayer(), StatusCommand.statusList.get(event.getPlayer().getName()));
         }
