@@ -14,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.listeners.*;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
-
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -28,13 +27,13 @@ public final class Main extends JavaPlugin {
     private final BaseComponent[][] infos = new BaseComponent[][] {
         new ComponentBuilder(ChatColor.GRAY + "Drücke ")
                 .append(new KeybindComponent(Keybinds.SNEAK))
-                .append(ChatColor.GRAY + " um diese Insel herunter zu gleiten")
+                .append(ChatColor.GRAY + " um von dieser Insel zu gleiten")
                 .create(),
-        new ComponentBuilder(ChatColor.GRAY + "Benutze" + ChatColor.WHITE + " /position " + ChatColor.GRAY + "um dir Positionen zu speichern").create(),
+        //new ComponentBuilder(ChatColor.GRAY + "Benutze" + ChatColor.WHITE + " /position " + ChatColor.GRAY + "um dir Positionen zu speichern").create(),
         new ComponentBuilder(ChatColor.GRAY + "Chatte mit " + ChatColor.WHITE + "&" + ChatColor.GRAY + " um die Schriftfarbe zu ändern").create(),
         new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/status" + ChatColor.GRAY + " um einen Status zu setzen").create(),
         new ComponentBuilder(ChatColor.GRAY + "Rechtsklicke sneakend ein " + ChatColor.WHITE + "Schild" + ChatColor.GRAY + " um den Inhalt zu bearbeiten").create(),
-        new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/kopfgeld" + ChatColor.GRAY + " um das Kopfgeldmenü zu öffnen").create(),
+        //new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/kopfgeld" + ChatColor.GRAY + " um das Kopfgeldmenü zu öffnen").create(),
         new ComponentBuilder(ChatColor.GRAY + "Rechtsklicke sneakend einen " + ChatColor.WHITE + "Armorstand" + ChatColor.GRAY + " um ihn zu bearbeiten").create(),
         new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/r" + ChatColor.GRAY + " um auf eine Privatnachricht zu antworten").create(),
     };
