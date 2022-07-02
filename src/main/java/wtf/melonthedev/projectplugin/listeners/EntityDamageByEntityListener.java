@@ -16,6 +16,8 @@ public class EntityDamageByEntityListener implements Listener {
     }
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
+        if (event.getCause() == EntityDamageEvent.DamageCause.VOID || event.getCause() == EntityDamageEvent.DamageCause.CUSTOM || event.getCause() == EntityDamageEvent.DamageCause.SUICIDE || event.getCause() == EntityDamageEvent.DamageCause.CRAMMING)
+            return;
         if (LocationUtils.isLocationInSpawnArea(event.getEntity().getLocation())) {
             event.setCancelled(true);
         }

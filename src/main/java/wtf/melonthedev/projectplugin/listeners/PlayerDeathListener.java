@@ -14,7 +14,7 @@ public class PlayerDeathListener implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         ActionLoggerListener.logAction(event.getEntity(), "died", event.getEntity().getLocation(), "\"" + event.getDeathMessage() + "\"", "");
         if (event.getEntity().getBedSpawnLocation() != null
-                && event.getEntity().getBedSpawnLocation().distance(event.getEntity().getLocation()) < 4000
+                && event.getEntity().getBedSpawnLocation().distance(event.getEntity().getLocation()) > 4000
                 && (event.getEntity().getInventory().contains(Material.NETHERITE_AXE)
                 || event.getEntity().getInventory().contains(Material.NETHERITE_SWORD))) {
             event.setDeathMessage(event.getDeathMessage() + " und muss jetzt seeehhhr weit laufen :/");

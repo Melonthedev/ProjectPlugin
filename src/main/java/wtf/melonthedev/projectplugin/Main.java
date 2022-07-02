@@ -76,9 +76,10 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ServerPingListener(), this);
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
-        getServer().getPluginManager().registerEvents(new EntityExplodeListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityListener(), this);
         getServer().getPluginManager().registerEvents(new ActionLoggerListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
 
         sendSpawnMessage();
         updateTabList();
@@ -155,7 +156,7 @@ public final class Main extends JavaPlugin {
 
     public void stoneCutterDamage() {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
-            Player jonbadon = Bukkit.getPlayer("Melonthedev");
+            Player jonbadon = Bukkit.getPlayer("Jonbadon");
             if (jonbadon != null && jonbadon.getLocation().getBlock().getType() == Material.STONECUTTER)
                 jonbadon.damage(1);
         }, 0, 1);

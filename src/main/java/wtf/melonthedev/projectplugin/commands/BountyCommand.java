@@ -24,6 +24,9 @@ public class BountyCommand implements TabExecutor {
             sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
             return true;
         }
+        if (args.length == 1) {
+
+        }
         /*Player player = (Player) sender;
         switch (args.length) {
             case 0:

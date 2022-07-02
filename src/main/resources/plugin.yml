@@ -2,7 +2,7 @@ name: ProjectPlugin
 version: '${project.version}'
 main: wtf.melonthedev.projectplugin.Main
 api-version: 1.18
-authors: [ Melonthedev, Avocado ]
+authors: [ Melonthedev ]
 description: A little plugin for our project :)
 website: melonthedev.wtf
 

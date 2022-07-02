@@ -25,7 +25,12 @@ public class ServerPingListener implements Listener {
             "Ich hasse Melon Client - Jonbadon",
             "Progeto ist heute ganz krass",
             "Joinen! Joinen! Joinen! Joinen!",
-            "Ich sehe alles als eine MOTD"
+            "Ich sehe alles als eine MOTD",
+            "Der beste SMP-Server",
+            "Der mit riesigem Abstand beste SMP-Server!",
+            "Strenggenommen ist es \"the\" SMP - Jonbadon",
+            "Hilfe ich bin in einer MOTD's Fabrik gefangen!",
+            "https://youtu.be/dQw4w9WgXcQ"
     };
     ChatColor[] colors = new ChatColor[] {
             ChatColor.GRAY,
