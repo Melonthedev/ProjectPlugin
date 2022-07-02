@@ -50,9 +50,8 @@ public class MessageCommand implements TabExecutor {
 
     public static void handleNewMessages(Player player) {
         if (offlinePlayerMessages.containsKey(player.getName())) {
-            for (Map.Entry<String, String> entry : offlinePlayerMessages.get(player.getName())) {
+            for (Map.Entry<String, String> entry : offlinePlayerMessages.get(player.getName()))
                 player.sendMessage(ChatColor.GRAY + entry.getKey() + " whispers to you: " + entry.getValue());
-            }
             offlinePlayerMessages.remove(player.getName());
         }
     }

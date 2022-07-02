@@ -122,7 +122,7 @@ public class ActionLoggerListener implements Listener {
     }
 
 
-    public void logAction(Player player, String action, Location location, String owner, String type) {
+    public static void logAction(Player player, String action, Location location, String owner, String type) {
         String worldName = location.getWorld() == null ? "unknown" : location.getWorld().getName();
         String info = player.getName() + " " + action + " " + type + " at X: " + location.getX() + " Y: " + location.getY() + " Z: " + location.getZ() + " W: " + worldName +  " from " + owner;
         if (!Main.getPlugin().getConfig().contains("logging")) {

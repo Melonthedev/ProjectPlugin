@@ -30,9 +30,12 @@ public class PlayerJoinListener implements Listener {
         Main.getPlugin().setCustomPlayerListHeader(event.getPlayer());
         //event.setJoinMessage(ChatColor.GREEN + ">>" + ChatColor.AQUA + " [Survivalprojekt] " + ChatColor.stripColor(event.getJoinMessage()) + " :)");
         event.setJoinMessage(ChatColor.GREEN + ">>" + ChatColor.AQUA + " [Survivalprojekt] " + event.getPlayer().getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)]);
-        if (StatusCommand.statusList.containsKey(event.getPlayer().getName())) {
+
+        //STATUS
+        if (StatusCommand.statusList.containsKey(event.getPlayer().getName()))
             StatusCommand.setStatus(event.getPlayer(), StatusCommand.statusList.get(event.getPlayer().getName()));
-        }
+
+        //FIRST JOIN
         if (!event.getPlayer().hasPlayedBefore()) {
             Bukkit.broadcastMessage(ChatColor.BOLD.toString() + ChatColor.GREEN + event.getPlayer().getName() + ", herzlich willkommen auf Survivalprojekt!");
             event.getPlayer().playSound(event.getPlayer(), Sound.ENTITY_GOAT_SCREAMING_AMBIENT, 1.0F, 0.5F);

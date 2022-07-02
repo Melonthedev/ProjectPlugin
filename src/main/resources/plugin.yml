@@ -41,6 +41,8 @@ commands:
     description: Setzt ein Kopfgeld auf einen Spieler
     aliases:
       - kopfgeld
+  deathlocation:
+    description: uh
 
   spectatestebadon:
     description: hmmmmmmmmmm SuS

@@ -9,6 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import wtf.melonthedev.projectplugin.commands.*;
@@ -24,6 +25,7 @@ public final class Main extends JavaPlugin {
 
     private static Main plugin;
     public static HashMap<Player, Location> locations = new HashMap<>();
+    public static HashMap<Player, Location> deathlocations = new HashMap<>();
     private final BaseComponent[][] infos = new BaseComponent[][] {
         new ComponentBuilder(ChatColor.GRAY + "Drücke ")
                 .append(new KeybindComponent(Keybinds.SNEAK))
@@ -36,6 +38,7 @@ public final class Main extends JavaPlugin {
         //new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/kopfgeld" + ChatColor.GRAY + " um das Kopfgeldmenü zu öffnen").create(),
         new ComponentBuilder(ChatColor.GRAY + "Rechtsklicke sneakend einen " + ChatColor.WHITE + "Armorstand" + ChatColor.GRAY + " um ihn zu bearbeiten").create(),
         new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/r" + ChatColor.GRAY + " um auf eine Privatnachricht zu antworten").create(),
+        new ComponentBuilder(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/msg" + ChatColor.GRAY + " um Nachrichten sogar an offline Spieler zu senden").create(),
     };
 
 
@@ -57,6 +60,7 @@ public final class Main extends JavaPlugin {
         getCommand("spectatestebadon").setExecutor(new SpectateStebadonCommand());
         getCommand("logoutput").setExecutor(new LogOutputCommand());
         getCommand("bounty").setExecutor(new BountyCommand());
+        getCommand("deathlocation").setExecutor(new DeathLocationCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 
@@ -78,6 +82,7 @@ public final class Main extends JavaPlugin {
 
         sendSpawnMessage();
         updateTabList();
+        stoneCutterDamage();
     }
 
     @Override
@@ -146,6 +151,14 @@ public final class Main extends JavaPlugin {
             );
         }
         return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
+    }
+
+    public void stoneCutterDamage() {
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            Player jonbadon = Bukkit.getPlayer("Melonthedev");
+            if (jonbadon != null && jonbadon.getLocation().getBlock().getType() == Material.STONECUTTER)
+                jonbadon.damage(1);
+        }, 0, 1);
     }
 
     public static Main getPlugin() {

@@ -10,7 +10,6 @@ public class ColorCodesCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         ChatColor colorinfo = ChatColor.AQUA;
-        ChatColor colorsecondinfo = ChatColor.DARK_AQUA;
         sender.sendMessage(colorinfo + "----------Color Codes----------");
         if (args.length == 1) {
             for (ChatColor color : ChatColor.values()) {
@@ -40,6 +39,7 @@ public class ColorCodesCommand implements CommandExecutor {
             sender.sendMessage(colorinfo + "-" + ChatColor.BLACK + "BLACK: &0");
         }
         sender.sendMessage(colorinfo + "-------------------------------");
+        sender.sendMessage(ChatColor.GRAY + "Übrigens: Du kannst auch HEX Farben verwenden! Schreiben einfach '&#' dann den HEX Code und am Ende des HEX Code wieder '#'!");
         return false;
     }
 }

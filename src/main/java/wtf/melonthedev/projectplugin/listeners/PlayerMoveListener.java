@@ -3,10 +3,7 @@ package wtf.melonthedev.projectplugin.listeners;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.AfkSystem;
-
-import java.util.logging.Level;
 
 public class PlayerMoveListener implements Listener {
 

@@ -37,7 +37,7 @@ public class AfkSystem {
         BukkitTask oldtask = afkTimeoutTasks.get(player);
         if (oldtask != null) oldtask.cancel();
         BukkitTask task = Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
-            if (afkTimeoutTasks.containsKey(player)) {
+            if (afkTimeoutTasks.containsKey(player) && Bukkit.getOnlinePlayers().contains(player)) {
                 enableAfkModus(player);
             }
         }, 20 * 60 * 10);

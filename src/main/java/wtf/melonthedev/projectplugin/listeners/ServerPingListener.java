@@ -21,7 +21,11 @@ public class ServerPingListener implements Listener {
             "Achtung was du schreibst",
             "Das nimmt er alles als MODT.",
             "stebadon pinned a message to this channel.",
-            "Hat was..."
+            "Hat was...",
+            "Ich hasse Melon Client - Jonbadon",
+            "Progeto ist heute ganz krass",
+            "Joinen! Joinen! Joinen! Joinen!",
+            "Ich sehe alles als eine MOTD"
     };
     ChatColor[] colors = new ChatColor[] {
             ChatColor.GRAY,

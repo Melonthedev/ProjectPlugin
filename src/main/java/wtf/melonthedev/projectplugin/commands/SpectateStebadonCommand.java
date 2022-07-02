@@ -13,7 +13,7 @@ public class SpectateStebadonCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender.getName().equalsIgnoreCase("stebadon")) {
+        /*if (sender.getName().equalsIgnoreCase("stebadon")) {
             sender.sendMessage(ChatColor.RED + "Du bist leider nicht dazu berechtigt, diesen Command zu verwender!");
             return true;
         }
@@ -35,7 +35,8 @@ public class SpectateStebadonCommand implements CommandExecutor {
         Main.locations.put(player, player.getLocation());
         player.setGameMode(GameMode.SPECTATOR);
         player.setSpectatorTarget(target);
-        runTeleportloop(player);
+        runTeleportloop(player);*/
+        sender.sendMessage(ChatColor.RED + "Dieser Command wurde verklagt und ist deshalb momentan nicht verfügbar! Für weitere Informationen schreiben sie mir auf Discord!");
         return false;
     }
 
