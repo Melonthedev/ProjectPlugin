@@ -12,6 +12,7 @@ public class LocationUtils {
         if (!loc.getWorld().getName().equals("world")) return false;
         Location relativeSpawnLocation = loc.getWorld().getSpawnLocation();
         relativeSpawnLocation.setY(loc.getY());
+        if (loc.getWorld() != relativeSpawnLocation.getWorld()) return false;
         return relativeSpawnLocation.distance(loc) <= 20;
     }
 

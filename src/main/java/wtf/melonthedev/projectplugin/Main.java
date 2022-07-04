@@ -1,11 +1,15 @@
 package wtf.melonthedev.projectplugin;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.KeybindComponent;
 import net.md_5.bungee.api.chat.Keybinds;
-import net.minecraft.server.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -119,7 +123,7 @@ public final class Main extends JavaPlugin {
     public void setCustomPlayerListHeader(Player player) {
         player.setPlayerListHeaderFooter(
                 ChatColor.GREEN.toString() + ChatColor.BOLD + getServerName() + "\n" + ChatColor.RESET + ChatColor.GREEN + "McSurvivalprojekt.de",
-                ChatColor.AQUA + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.AQUA + "TPS: " + (int) MinecraftServer.getServer().recentTps[0]
+                ChatColor.AQUA + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.AQUA + "TPS: " + Math.round(getServer().getTPS()[0])
         );
     }
 
@@ -134,6 +138,25 @@ public final class Main extends JavaPlugin {
     public void setEndAccessible(boolean accessible) {
         getConfig().set("config.isendaccessible", accessible);
         saveConfig();
+    }
+
+
+    public Component getMiniMessageComponent(String message) {
+        MiniMessage mm = MiniMessage.builder()
+                .tags(TagResolver.builder()
+                        .resolver(StandardTags.color())
+                        .resolver(StandardTags.decorations())
+                        .resolver(StandardTags.gradient())
+                        .resolver(StandardTags.reset())
+                        .resolver(StandardTags.hoverEvent())
+                        .resolver(StandardTags.rainbow())
+                        .resolver(StandardTags.translatable())
+                        .resolver(StandardTags.transition())
+                        .resolver(StandardTags.keybind())
+                        .resolver(StandardTags.font())
+                        .build())
+                .build();
+        return mm.deserialize(message);
     }
 
     public String translateHexAndCharColorCodes(String message)

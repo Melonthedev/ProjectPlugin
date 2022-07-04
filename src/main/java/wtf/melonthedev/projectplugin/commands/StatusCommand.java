@@ -1,5 +1,9 @@
 package wtf.melonthedev.projectplugin.commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -22,7 +26,7 @@ public class StatusCommand implements TabExecutor {
             sender.sendMessage(ChatColor.RED + "Sorry, you cannot use this command in the console.");
             return true;
         }
-        if (args.length != 1) {
+        if (args.length == 0) {
             sender.sendMessage(ChatColor.RED + "Syntaxerror: /status <String: status>");
             return true;
         }
@@ -36,24 +40,38 @@ public class StatusCommand implements TabExecutor {
             player.setPlayerListName(player.getName());
             return true;
         }
-        String status = args[0];
-        String statusWithColor = Main.getPlugin().translateHexAndCharColorCodes(status);
-        System.out.println("STATUSWITHCOLOR: " + statusWithColor);
-        System.out.println("STATUSWITHCOLOR: " + statusWithColor.replaceAll("\\§[^;]", ""));
-        if (statusWithColor.replaceAll("\\§[^;]", "").length() > 30) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : args)
+            sb.append(s).append(" ");
+        String status = sb.substring(0, sb.length() - 1);
+        Component statusColor = Main.getPlugin().getMiniMessageComponent(status);
+        int lengh = PlainTextComponentSerializer.plainText().serialize(statusColor).length();
+        if (lengh > 30) {
             sender.sendMessage(ChatColor.RED + "Dein Status darf nicht länger als 30 Zeichen sein.");
             return true;
         }
-        setStatus(player, "[" + statusWithColor + ChatColor.RESET + "] " + player.getName());
-        player.sendMessage(ChatColor.GREEN + "[Status] Dein Status ist nun '" + statusWithColor + ChatColor.GREEN + "'.");
+        //String statusWithColor = Main.getPlugin().translateHexAndCharColorCodes(status);
+        //if (statusWithColor.replaceAll("\\§[^;]", "").length() > 30) {
+        //    sender.sendMessage(ChatColor.RED + "Dein Status darf nicht länger als 30 Zeichen sein.");
+        //    return true;
+        //}
+        setStatus(player, statusColor);
+        player.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(ChatColor.GREEN + "[Status] Dein Status ist nun '"), statusColor, Component.text(ChatColor.GREEN + "'.")));
         statusList.put(player.getName(), status);
         return true;
     }
 
-    public static void setStatus(Player player, String status) {
-        player.setDisplayName(status);
-        player.setPlayerListName(status);
+    //public static void setStatus(Player player, String status) {
+    //    player.setDisplayName("[" + status + ChatColor.RESET + "] " + player.getName());
+    //    player.setPlayerListName("[" + status + ChatColor.RESET + "] " + player.getName());
+    //}
+
+    public static void setStatus(Player player, Component status) {
+        Component statusFinal = Component.join(JoinConfiguration.noSeparators(), Component.text("["), status, Component.text(ChatColor.RESET + "] " + player.getName()));
+        player.displayName(statusFinal);
+        player.playerListName(statusFinal);
     }
+
 
 
     @Override

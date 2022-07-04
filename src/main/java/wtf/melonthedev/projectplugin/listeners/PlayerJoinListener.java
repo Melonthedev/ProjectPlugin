@@ -33,7 +33,8 @@ public class PlayerJoinListener implements Listener {
 
         //STATUS
         if (StatusCommand.statusList.containsKey(event.getPlayer().getName()))
-            StatusCommand.setStatus(event.getPlayer(), StatusCommand.statusList.get(event.getPlayer().getName()));
+            StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().getMiniMessageComponent(StatusCommand.statusList.get(event.getPlayer().getName())));
+            //StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().translateHexAndCharColorCodes(StatusCommand.statusList.get(event.getPlayer().getName())));
 
         //FIRST JOIN
         if (!event.getPlayer().hasPlayedBefore()) {
