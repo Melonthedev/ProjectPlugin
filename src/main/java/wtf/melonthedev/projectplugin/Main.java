@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -15,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.listeners.*;
@@ -30,6 +30,7 @@ public final class Main extends JavaPlugin {
     private static Main plugin;
     public static HashMap<Player, Location> locations = new HashMap<>();
     public static HashMap<Player, Location> deathlocations = new HashMap<>();
+    public static HashMap<Player, HashMap<Material, Integer>> collectedValuables = new HashMap<>();
     private final BaseComponent[][] infos = new BaseComponent[][] {
         new ComponentBuilder(ChatColor.GRAY + "Drücke ")
                 .append(new KeybindComponent(Keybinds.SNEAK))
@@ -79,7 +80,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SignEditListener(), this);
         getServer().getPluginManager().registerEvents(new ServerPingListener(), this);
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
-        getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockListener(), this);
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
         getServer().getPluginManager().registerEvents(new ActionLoggerListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);

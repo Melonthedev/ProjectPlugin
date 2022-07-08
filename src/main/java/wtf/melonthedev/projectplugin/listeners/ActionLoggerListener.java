@@ -100,7 +100,20 @@ public class ActionLoggerListener implements Listener {
             owner = blockLog.get(event.getBlock().getLocation());
         }
         Material type = event.getBlock().getType();
-        if (event.getBlock() instanceof Container || type == Material.DIAMOND_BLOCK || type == Material.EMERALD_BLOCK || type == Material.NETHERITE_BLOCK || type == Material.IRON_BLOCK || type == Material.GOLD_BLOCK) {
+        if (event.getBlock() instanceof Container || type == Material.DIAMOND_BLOCK
+                || type == Material.EMERALD_BLOCK
+                || type == Material.NETHERITE_BLOCK
+                || type == Material.IRON_BLOCK
+                || type == Material.GOLD_BLOCK
+                || type == Material.DIAMOND_ORE
+                || type == Material.EMERALD_ORE
+                || type == Material.IRON_ORE
+                || type == Material.COAL_ORE
+                || type == Material.DEEPSLATE_COAL_ORE
+                || type == Material.DEEPSLATE_DIAMOND_ORE
+                || type == Material.DEEPSLATE_IRON_ORE
+                || type == Material.DEEPSLATE_GOLD_ORE
+                || type == Material.GOLD_ORE) {
             logAction(event.getPlayer(), "broke", event.getBlock().getLocation(), owner, type.toString());
         }
         if (Arrays.stream(valuables).collect(Collectors.toList()).contains(event.getBlock().getType())) {

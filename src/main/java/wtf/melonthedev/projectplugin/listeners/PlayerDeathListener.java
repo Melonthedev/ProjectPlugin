@@ -1,5 +1,7 @@
 package wtf.melonthedev.projectplugin.listeners;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -7,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import wtf.melonthedev.projectplugin.Main;
 
 public class PlayerDeathListener implements Listener {
 
@@ -14,10 +17,12 @@ public class PlayerDeathListener implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         ActionLoggerListener.logAction(event.getEntity(), "died", event.getEntity().getLocation(), "\"" + event.getDeathMessage() + "\"", "");
         if (event.getEntity().getBedSpawnLocation() != null
+                && event.getEntity().getBedSpawnLocation().getWorld() == event.getEntity().getLocation().getWorld()
                 && event.getEntity().getBedSpawnLocation().distance(event.getEntity().getLocation()) > 4000
                 && (event.getEntity().getInventory().contains(Material.NETHERITE_AXE)
                 || event.getEntity().getInventory().contains(Material.NETHERITE_SWORD))) {
-            event.setDeathMessage(event.getDeathMessage() + " und muss jetzt seeehhhr weit laufen :/");
+            Main.deathlocations.put(event.getEntity(), event.getEntity().getLocation());
+            event.deathMessage(Component.join(JoinConfiguration.noSeparators(), event.deathMessage(), Component.text(" und muss jetzt seeehhhr weit laufen :/")));
             TextComponent component = new TextComponent(ChatColor.AQUA + "Nicht aufgeben! Aber wehe du klickst das hier an!");
             component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/deathlocation"));
             event.getEntity().spigot().sendMessage(component);
