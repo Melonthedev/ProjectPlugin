@@ -14,12 +14,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.listeners.*;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -30,7 +33,7 @@ public final class Main extends JavaPlugin {
     private static Main plugin;
     public static HashMap<Player, Location> locations = new HashMap<>();
     public static HashMap<Player, Location> deathlocations = new HashMap<>();
-    public static HashMap<Player, HashMap<Material, Integer>> collectedValuables = new HashMap<>();
+    public static List<HashMap<String, HashMap<Material, Integer>>> collectedValuables = new ArrayList<>();
     private final BaseComponent[][] infos = new BaseComponent[][] {
         new ComponentBuilder(ChatColor.GRAY + "Drücke ")
                 .append(new KeybindComponent(Keybinds.SNEAK))
@@ -66,6 +69,8 @@ public final class Main extends JavaPlugin {
         getCommand("logoutput").setExecutor(new LogOutputCommand());
         getCommand("bounty").setExecutor(new BountyCommand());
         getCommand("deathlocation").setExecutor(new DeathLocationCommand());
+        getCommand("checksusplayeractivity").setExecutor(new CheckSusPlayerActivityCommand());
+        getCommand("afk").setExecutor(new AfkCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 
@@ -89,6 +94,7 @@ public final class Main extends JavaPlugin {
         sendSpawnMessage();
         updateTabList();
         stoneCutterDamage();
+        handleSusPlayerActivityPerHour();
     }
 
     @Override
@@ -184,6 +190,21 @@ public final class Main extends JavaPlugin {
             if (jonbadon != null && jonbadon.getLocation().getBlock().getType() == Material.STONECUTTER)
                 jonbadon.damage(1);
         }, 0, 1);
+    }
+
+
+    public void handleSusPlayerActivityPerHour() {
+        //collectedValuables.add(new HashMap<>());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                collectedValuables.add(new HashMap<>());
+            }
+        }.runTaskTimer(this, 0, 72000);
+    }
+
+    public HashMap<String, HashMap<Material, Integer>> getLatestPlayerActivityEntry() {
+        return collectedValuables.get(collectedValuables.size() - 1);
     }
 
     public static Main getPlugin() {

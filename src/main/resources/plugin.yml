@@ -46,3 +46,7 @@ commands:
 
   spectatestebadon:
     description: hmmmmmmmmmm SuS
+  checksusplayeractivity:
+    description: hmmmmmmmmmm SuS
+  afk:
+    description: SET AFKKKK YEAH
