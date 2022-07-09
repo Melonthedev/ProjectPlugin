@@ -14,6 +14,7 @@ public class PlayerQuitListener implements Listener {
             AfkSystem.afkTimeoutTasks.remove(event.getPlayer());
             AfkSystem.afkPlayers.remove(event.getPlayer());
         }
+        AfkSystem.handlePlayersSleepingPercentage();
         event.setQuitMessage(ChatColor.RED + "<<" + ChatColor.AQUA + " [Survivalprojekt] " + ChatColor.stripColor(event.getQuitMessage()) + " :(");
     }
 }

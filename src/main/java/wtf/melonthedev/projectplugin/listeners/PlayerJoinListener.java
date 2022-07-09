@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.commands.MessageCommand;
 import wtf.melonthedev.projectplugin.commands.StatusCommand;
+import wtf.melonthedev.projectplugin.utils.AfkSystem;
 
 import java.util.Random;
 
@@ -41,6 +42,7 @@ public class PlayerJoinListener implements Listener {
             Bukkit.broadcastMessage(ChatColor.BOLD.toString() + ChatColor.GREEN + event.getPlayer().getName() + ", herzlich willkommen auf Survivalprojekt!");
             event.getPlayer().playSound(event.getPlayer(), Sound.ENTITY_GOAT_SCREAMING_AMBIENT, 1.0F, 0.5F);
         }
+        AfkSystem.handlePlayersSleepingPercentage();
         MessageCommand.handleNewMessages(event.getPlayer());
     }
 }

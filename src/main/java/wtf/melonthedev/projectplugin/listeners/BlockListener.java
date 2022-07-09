@@ -27,11 +27,13 @@ public class BlockListener implements Listener {
                 || material == Material.DEEPSLATE_DIAMOND_ORE
                 || material == Material.DEEPSLATE_IRON_ORE
                 || material == Material.DEEPSLATE_GOLD_ORE
-                || material == Material.GOLD_ORE) {
-            if (!Main.collectedValuables.containsKey(event.getPlayer())) {
-                Main.collectedValuables.put(event.getPlayer(), new HashMap<>());
+                || material == Material.GOLD_ORE
+                || material == Material.ANCIENT_DEBRIS
+                || material == Material.NETHER_QUARTZ_ORE) {
+            if (!Main.getPlugin().getLatestPlayerActivityEntry().containsKey(event.getPlayer().getName())) {
+                Main.getPlugin().getLatestPlayerActivityEntry().put(event.getPlayer().getName(), new HashMap<>());
             }
-            Main.collectedValuables.get(event.getPlayer()).put(material, Main.collectedValuables.get(event.getPlayer()).getOrDefault(material, 0) + 1);
+            Main.getPlugin().getLatestPlayerActivityEntry().get(event.getPlayer().getName()).put(material, Main.getPlugin().getLatestPlayerActivityEntry().get(event.getPlayer().getName()).getOrDefault(material, 0) + 1);
         }
     }
 }
