@@ -2,9 +2,9 @@ package wtf.melonthedev.projectplugin.listeners;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,23 +23,24 @@ public class PlayerDeathListener implements Listener {
                 || event.getEntity().getInventory().contains(Material.NETHERITE_SWORD))) {
             Main.deathlocations.put(event.getEntity(), event.getEntity().getLocation());
             event.deathMessage(Component.join(JoinConfiguration.noSeparators(), event.deathMessage(), Component.text(" und muss jetzt seeehhhr weit laufen :/")));
-            TextComponent component = new TextComponent(ChatColor.AQUA + "Nicht aufgeben! Aber wehe du klickst das hier an!");
-            component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/deathlocation"));
-            event.getEntity().spigot().sendMessage(component);
+            Component component = Component.text(ChatColor.AQUA + "Nicht aufgeben! Aber wehe du klickst das hier an!");
+            component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/deathlocation"));
+            event.getEntity().sendMessage(component);
         }
-        if (event.getDeathMessage() == null) return;
-        if (event.getDeathMessage().contains("tried to swim in lava"))
-            event.setDeathMessage(event.getDeathMessage().replace("tried to swim in lava", "ging in falschen Gewässern schwimmen (Lava)"));
-        if (event.getDeathMessage().contains("went up in flames"))
-            event.setDeathMessage(event.getDeathMessage().replace("went up in flames", "wurde gegrillt (Feuer)"));
-        if (event.getDeathMessage().contains("burned to death"))
-            event.setDeathMessage(event.getDeathMessage().replace("burned to death", "hat zu lange auf den Herd gefasst (Fire Tick)"));
-        if (event.getDeathMessage().contains("fell from a high place"))
-            event.setDeathMessage(event.getDeathMessage().replace("fell from a high place", "hat versucht zu fliegen (Falldamage)"));
-        if (event.getDeathMessage().contains("drowned"))
-            event.setDeathMessage(event.getDeathMessage().replace("drowned", "konnte die Luft nicht anhalten (drown)"));
+        Component deathMsg = event.deathMessage();
+        if (deathMsg == null) return;
+        if (PlainTextComponentSerializer.plainText().serialize(deathMsg).contains("tried to swim in lava"))
+            event.deathMessage(Component.text(PlainTextComponentSerializer.plainText().serialize(deathMsg).replace("tried to swim in lava", "ging in falschen Gewässern schwimmen (Lava)")));
+        if (PlainTextComponentSerializer.plainText().serialize(deathMsg).contains("went up in flames"))
+            event.deathMessage(Component.text(PlainTextComponentSerializer.plainText().serialize(deathMsg).replace("went up in flames", "wurde gegrillt (Feuer)")));
+        if (PlainTextComponentSerializer.plainText().serialize(deathMsg).contains("burned to death"))
+            event.deathMessage(Component.text(PlainTextComponentSerializer.plainText().serialize(deathMsg).replace("burned to death", "hat zu lange auf den Herd gefasst (Fire Tick)")));
+        if (PlainTextComponentSerializer.plainText().serialize(deathMsg).contains("fell from a high place"))
+            event.deathMessage(Component.text(PlainTextComponentSerializer.plainText().serialize(deathMsg).replace("fell from a high place", "hat versucht zu fliegen (Falldamage)")));
+        if (PlainTextComponentSerializer.plainText().serialize(deathMsg).contains("drowned"))
+            event.deathMessage(Component.text(PlainTextComponentSerializer.plainText().serialize(deathMsg).replace("drowned", "konnte die Luft nicht anhalten (drown)")));
         if (event.getEntity().getLocation().getBlock().getType() == Material.STONECUTTER)
-            event.setDeathMessage(event.getEntity().getName() + " ist in die Säge gelaufen (Stonecutter)");
+            event.deathMessage(Component.text(event.getEntity().getName() + " ist in die Säge gelaufen (Stonecutter)"));
     }
 
 

@@ -1,5 +1,6 @@
 package wtf.melonthedev.projectplugin.listeners;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -52,7 +53,7 @@ public class ServerPingListener implements Listener {
     public void onServerListPing(ServerListPingEvent event) {
         Random random = new Random();
         //event.setMotd(ChatColor.GOLD + "Survivalprojekt 4.0" + ChatColor.AQUA + " | Survival SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
-        event.setMotd(ChatColor.GOLD + Main.getPlugin().getServerName() + ChatColor.AQUA + " | Survival SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
+        event.motd(Component.text(ChatColor.GOLD + Main.getPlugin().getServerName() + ChatColor.AQUA + " | Survival SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]));
     }
 
 }

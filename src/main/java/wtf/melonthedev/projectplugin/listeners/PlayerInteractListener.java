@@ -1,5 +1,6 @@
 package wtf.melonthedev.projectplugin.listeners;
 
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -39,7 +40,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getClickedBlock().getType() != Material.END_PORTAL_FRAME) return;
         if (Main.getPlugin().isEndAccessible()) return;
         event.setCancelled(true);
-        event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.AQUA + "Das END ist blockiert. Es wird bald geöffnet."));
+        event.getPlayer().sendActionBar(Component.text(ChatColor.AQUA + "Das END ist blockiert. Es wird bald geöffnet."));
     }
 
     @EventHandler
@@ -48,15 +49,16 @@ public class PlayerInteractListener implements Listener {
         if (!(event.getPlayer().getInventory().getItemInMainHand().getType() == Material.NAME_TAG)) return;
         ItemStack nametag = event.getPlayer().getInventory().getItemInMainHand();
         if (nametag.getItemMeta() == null) return;
-        String name = nametag.getItemMeta().getDisplayName();
+        Component name = nametag.getItemMeta().displayName();
         ArmorStand stand = (ArmorStand) event.getRightClicked();
-        if (stand.getCustomName() != null && name.equals(stand.getCustomName())) {
+        if (name == null) return;
+        if (stand.customName() != null && name.equals(stand.customName())) {
             event.setCancelled(true);
             return;
         }
         event.setCancelled(true);
         stand.setCustomNameVisible(true);
-        stand.setCustomName(name);
+        stand.customName(name);
         nametag.setAmount(nametag.getAmount() - 1);
         event.getPlayer().getInventory().setItemInMainHand(nametag);
     }
@@ -69,7 +71,4 @@ public class PlayerInteractListener implements Listener {
         stand.setArms(!stand.hasArms());
         event.setCancelled(true);
     }
-
-
-
 }

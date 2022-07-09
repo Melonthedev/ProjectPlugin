@@ -1,5 +1,7 @@
 package wtf.melonthedev.projectplugin.listeners;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,6 +17,8 @@ public class PlayerQuitListener implements Listener {
             AfkSystem.afkPlayers.remove(event.getPlayer());
         }
         AfkSystem.handlePlayersSleepingPercentage();
-        event.setQuitMessage(ChatColor.RED + "<<" + ChatColor.AQUA + " [Survivalprojekt] " + ChatColor.stripColor(event.getQuitMessage()) + " :(");
+        Component quitMsg = event.quitMessage();
+        if (quitMsg == null) return;
+        event.quitMessage(Component.text(ChatColor.RED + "<<" + ChatColor.AQUA + " [Survivalprojekt] " + ChatColor.stripColor(PlainTextComponentSerializer.plainText().serialize(quitMsg)) + " :("));
     }
 }
