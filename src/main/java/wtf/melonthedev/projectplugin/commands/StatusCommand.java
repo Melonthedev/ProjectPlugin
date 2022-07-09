@@ -50,6 +50,10 @@ public class StatusCommand implements TabExecutor {
             sender.sendMessage(ChatColor.RED + "Dein Status darf nicht länger als 30 Zeichen sein.");
             return true;
         }
+        if (lengh < 1) {
+            sender.sendMessage(ChatColor.RED + "Dein Status muss mindestens 1 Zeichen lang sein.");
+            return true;
+        }
         //String statusWithColor = Main.getPlugin().translateHexAndCharColorCodes(status);
         //if (statusWithColor.replaceAll("\\§[^;]", "").length() > 30) {
         //    sender.sendMessage(ChatColor.RED + "Dein Status darf nicht länger als 30 Zeichen sein.");
