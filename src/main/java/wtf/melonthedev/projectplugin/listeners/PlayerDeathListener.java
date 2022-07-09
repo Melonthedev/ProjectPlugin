@@ -24,7 +24,7 @@ public class PlayerDeathListener implements Listener {
             Main.deathlocations.put(event.getEntity(), event.getEntity().getLocation());
             event.deathMessage(Component.join(JoinConfiguration.noSeparators(), event.deathMessage(), Component.text(" und muss jetzt seeehhhr weit laufen :/")));
             Component component = Component.text(ChatColor.AQUA + "Nicht aufgeben! Aber wehe du klickst das hier an!");
-            component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/deathlocation"));
+            component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/deathlocation"));
             event.getEntity().sendMessage(component);
         }
         Component deathMsg = event.deathMessage();
@@ -42,6 +42,4 @@ public class PlayerDeathListener implements Listener {
         if (event.getEntity().getLocation().getBlock().getType() == Material.STONECUTTER)
             event.deathMessage(Component.text(event.getEntity().getName() + " ist in die Säge gelaufen (Stonecutter)"));
     }
-
-
 }

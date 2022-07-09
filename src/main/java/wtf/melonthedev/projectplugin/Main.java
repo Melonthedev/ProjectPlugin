@@ -200,7 +200,7 @@ public final class Main extends JavaPlugin {
             public void run() {
                 collectedValuables.add(new HashMap<>());
             }
-        }.runTaskTimer(this, 0, 72000);
+        }.runTaskTimer(this, 0, 2400); // 72000
     }
 
     public HashMap<String, HashMap<Material, Integer>> getLatestPlayerActivityEntry() {
