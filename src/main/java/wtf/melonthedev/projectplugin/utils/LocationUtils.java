@@ -16,4 +16,13 @@ public class LocationUtils {
         return relativeSpawnLocation.distance(loc) <= 20;
     }
 
+    public static boolean isLocationNearSpawnArea(Location loc) {
+        if (loc.getWorld() == null) return false;
+        if (!loc.getWorld().getName().equals("world")) return false;
+        Location relativeSpawnLocation = loc.getWorld().getSpawnLocation();
+        relativeSpawnLocation.setY(loc.getY());
+        if (loc.getWorld() != relativeSpawnLocation.getWorld()) return false;
+        return relativeSpawnLocation.distance(loc) <= 3000;
+    }
+
 }

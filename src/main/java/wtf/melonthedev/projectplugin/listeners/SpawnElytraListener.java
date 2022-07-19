@@ -18,7 +18,7 @@ public class SpawnElytraListener implements Listener {
         if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         if (player.getEquipment() != null && player.getEquipment().getItem(EquipmentSlot.CHEST) != null && player.getEquipment().getItem(EquipmentSlot.CHEST).getType() == Material.ELYTRA) return;
-        if (player.getLocation().getY() > 20 && player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
+        if (player.getLocation().getY() > 20 && player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR && LocationUtils.isLocationNearSpawnArea(player.getLocation())) {
             event.setCancelled(true);
         }
     }
