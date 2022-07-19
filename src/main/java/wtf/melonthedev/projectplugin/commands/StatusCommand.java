@@ -38,6 +38,7 @@ public class StatusCommand implements TabExecutor {
             player.sendMessage(ChatColor.GREEN + "[Status] Dein Status wurde zurück gesetzt!");
             player.displayName(Component.text(player.getName()));
             player.playerListName(Component.text(player.getName()));
+            statusList.remove(player.getName());
             return true;
         }
         StringBuilder sb = new StringBuilder();
