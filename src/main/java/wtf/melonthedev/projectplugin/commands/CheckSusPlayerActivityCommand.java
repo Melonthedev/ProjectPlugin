@@ -40,13 +40,13 @@ public class CheckSusPlayerActivityCommand implements CommandExecutor {
             if (sender.isOp()) stringBuilder.append(ChatColor.AQUA).append(material.name()).append("/h: ");
             else stringBuilder.append(ChatColor.AQUA).append(material.name()).append(": ");
             for (int mined : minedList) {
-                ChatColor color = material == Material.DIAMOND_ORE || material == Material.DEEPSLATE_DIAMOND_ORE ? mined < 50 ? ChatColor.GREEN : mined < 100 ? ChatColor.YELLOW : ChatColor.RED
-                        : material == Material.EMERALD_ORE || material == Material.DEEPSLATE_EMERALD_ORE ? mined < 50 ? ChatColor.GREEN : mined < 100 ? ChatColor.YELLOW : ChatColor.RED
+                ChatColor color = material == Material.DIAMOND_ORE || material == Material.DEEPSLATE_DIAMOND_ORE ? mined < 35 ? ChatColor.GREEN : mined < 50 ? ChatColor.YELLOW : ChatColor.RED
+                        : material == Material.EMERALD_ORE || material == Material.DEEPSLATE_EMERALD_ORE ? mined < 30 ? ChatColor.GREEN : mined < 50 ? ChatColor.YELLOW : ChatColor.RED
                         : material == Material.IRON_ORE || material == Material.DEEPSLATE_IRON_ORE ? mined < 100 ? ChatColor.GREEN : mined < 150 ? ChatColor.YELLOW : ChatColor.RED
                         : material == Material.COAL_ORE || material == Material.DEEPSLATE_COAL_ORE ? mined < 150 ? ChatColor.GREEN : mined < 200 ? ChatColor.YELLOW : ChatColor.RED
                         : material == Material.GOLD_ORE || material == Material.DEEPSLATE_GOLD_ORE ? mined < 50 ? ChatColor.GREEN : mined < 100 ? ChatColor.YELLOW : ChatColor.RED
-                        : material == Material.ANCIENT_DEBRIS ? mined < 50 ? ChatColor.GREEN : mined < 70 ? ChatColor.YELLOW : ChatColor.RED
-                        : material == Material.NETHER_QUARTZ_ORE ? mined < 100 ? ChatColor.GREEN : mined < 200 ? ChatColor.YELLOW : ChatColor.RED
+                        : material == Material.ANCIENT_DEBRIS ? mined < 30 ? ChatColor.GREEN : mined < 45 ? ChatColor.YELLOW : ChatColor.RED
+                        : material == Material.NETHER_QUARTZ_ORE ? mined < 180 ? ChatColor.GREEN : mined < 300 ? ChatColor.YELLOW : ChatColor.RED
                         : ChatColor.AQUA;
                 if (sender.isOp()) stringBuilder.append(ChatColor.AQUA).append(color).append(mined).append(ChatColor.AQUA).append(" / ");
                 else stringBuilder.append(ChatColor.AQUA).append(color).append(color == ChatColor.GREEN ? "Nicht SuS!!!" : color == ChatColor.YELLOW ? "Schon bissl SuS!!!" : color == ChatColor.RED ? "SUSSY BAKA!!!" : "-").append(" / ");
