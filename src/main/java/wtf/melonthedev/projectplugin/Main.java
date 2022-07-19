@@ -67,6 +67,7 @@ public final class Main extends JavaPlugin {
         getCommand("deathlocation").setExecutor(new DeathLocationCommand());
         getCommand("checksusplayeractivity").setExecutor(new CheckSusPlayerActivityCommand());
         getCommand("afk").setExecutor(new AfkCommand());
+        getCommand("weristimnether").setExecutor(new WerIstImNetherCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 
