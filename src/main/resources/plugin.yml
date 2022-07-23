@@ -52,3 +52,5 @@ commands:
     description: SET AFKKKK YEAH
   weristimnether:
     description: Wer stoert mal wieder beim XP farmen...
+  tempban:
+    description: Bans a player temporarily

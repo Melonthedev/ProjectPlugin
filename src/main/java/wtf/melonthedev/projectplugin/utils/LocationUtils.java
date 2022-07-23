@@ -22,7 +22,7 @@ public class LocationUtils {
         Location relativeSpawnLocation = loc.getWorld().getSpawnLocation();
         relativeSpawnLocation.setY(loc.getY());
         if (loc.getWorld() != relativeSpawnLocation.getWorld()) return false;
-        return relativeSpawnLocation.distance(loc) <= 3000;
+        return relativeSpawnLocation.distance(loc) <= 5000;
     }
 
 }

@@ -35,6 +35,7 @@ public final class Main extends JavaPlugin {
     private static Main plugin;
     public static HashMap<Player, Location> locations = new HashMap<>();
     public static HashMap<Player, Location> deathlocations = new HashMap<>();
+    public static HashMap<Player, Boolean> spawnElytraPlayers = new HashMap<>();
     public static List<HashMap<String, HashMap<Material, Integer>>> collectedValuables = new ArrayList<>();
     private final Component[] infos = new Component[] {
             Component.text(ChatColor.GRAY + "Drücke ").append(Component.keybind("key.sneak")).append(Component.text(ChatColor.GRAY + " um von dieser Insel zu gleiten")),
@@ -68,6 +69,7 @@ public final class Main extends JavaPlugin {
         getCommand("checksusplayeractivity").setExecutor(new CheckSusPlayerActivityCommand());
         getCommand("afk").setExecutor(new AfkCommand());
         getCommand("weristimnether").setExecutor(new WerIstImNetherCommand());
+        getCommand("tempban").setExecutor(new TempBanCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 

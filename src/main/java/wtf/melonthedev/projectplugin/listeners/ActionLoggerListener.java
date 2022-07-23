@@ -19,10 +19,10 @@ import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
 import wtf.melonthedev.projectplugin.Main;
 
+import javax.annotation.Nullable;
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Objects;
+import java.text.DateFormat;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -74,7 +74,7 @@ public class ActionLoggerListener implements Listener {
             if (NamespacedKey.fromString("owner") != null && container.has(Objects.requireNonNull(NamespacedKey.fromString("owner")), PersistentDataType.STRING)) {
                 owner = container.get(Objects.requireNonNull(NamespacedKey.fromString("owner")), PersistentDataType.STRING);
             }
-            logAction(event.getPlayer(), "opened", event.getClickedBlock().getLocation(), owner, event.getClickedBlock().getType().toString());
+            logAction(event.getPlayer().getName(), "opened", event.getClickedBlock().getLocation(), owner, event.getClickedBlock().getType().toString());
         }
 
     }
@@ -86,7 +86,7 @@ public class ActionLoggerListener implements Listener {
             container.set(new NamespacedKey(Main.getPlugin(), "owner"), PersistentDataType.STRING, event.getPlayer().getName());
             event.getBlockPlaced().getState().update();
             blockLog.put(event.getBlockPlaced().getLocation(), event.getPlayer().getName());
-            logAction(event.getPlayer(), "placed", event.getBlockPlaced().getLocation(), event.getPlayer().getName(), event.getBlockPlaced().getType().toString());
+            logAction(event.getPlayer().getName(), "placed", event.getBlockPlaced().getLocation(), event.getPlayer().getName(), event.getBlockPlaced().getType().toString());
         }
         if (isValuable(event.getBlockPlaced().getType())) {
             blockLog.put(event.getBlockPlaced().getLocation(), event.getPlayer().getName());
@@ -114,10 +114,10 @@ public class ActionLoggerListener implements Listener {
                 || type == Material.DEEPSLATE_IRON_ORE
                 || type == Material.DEEPSLATE_GOLD_ORE
                 || type == Material.GOLD_ORE) {
-            logAction(event.getPlayer(), "broke", event.getBlock().getLocation(), owner, type.toString());
+            logAction(event.getPlayer().getName(), "broke", event.getBlock().getLocation(), owner, type.toString());
         }
         if (Arrays.stream(valuables).collect(Collectors.toList()).contains(event.getBlock().getType())) {
-            logAction(event.getPlayer(), "broke", event.getBlock().getLocation(), owner, type.toString());
+            logAction(event.getPlayer().getName(), "broke", event.getBlock().getLocation(), owner, type.toString());
         }
     }
 
@@ -130,14 +130,14 @@ public class ActionLoggerListener implements Listener {
             if (blockLog.containsKey(event.getClickedInventory().getLocation())) {
                 owner = blockLog.get(event.getClickedInventory().getLocation());
             }
-            logAction((Player) event.getWhoClicked(), "grabbed " + event.getCurrentItem().getAmount(), Objects.requireNonNull(event.getClickedInventory().getLocation()), owner, event.getCurrentItem().getType().toString());
+            logAction(event.getWhoClicked().getName(), "grabbed " + event.getCurrentItem().getAmount(), Objects.requireNonNull(event.getClickedInventory().getLocation()), owner, event.getCurrentItem().getType().toString());
         }
     }
 
 
-    public static void logAction(Player player, String action, Location location, String owner, String type) {
-        String worldName = location.getWorld() == null ? "unknown" : location.getWorld().getName();
-        String info = player.getName() + " " + action + " " + type + " at X: " + location.getX() + " Y: " + location.getY() + " Z: " + location.getZ() + " W: " + worldName +  " from " + owner;
+    public static void logAction(String player, String action, @Nullable Location location, String owner, String type) {
+        Date currentDate = new Date();
+        String info = "[" + DateFormat.getDateInstance().format(currentDate) + " " + currentDate.getHours() + ":" + currentDate.getMinutes() + "] " + player + " " + action + " " + type + (location == null ? "" : " at X: " + location.getX() + " Y: " + location.getY() + " Z: " + location.getZ() + " W: " + (location.getWorld() == null ? "unknown" : location.getWorld().getName())) +  " from " + owner;
         if (!Main.getPlugin().getConfig().contains("logging")) {
             Main.getPlugin().getConfig().set("logging", true);
             Main.getPlugin().saveConfig();

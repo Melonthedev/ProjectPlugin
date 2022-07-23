@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
 public class SpawnElytraListener implements Listener {
@@ -18,9 +19,11 @@ public class SpawnElytraListener implements Listener {
         if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         if (player.getEquipment() != null && player.getEquipment().getItem(EquipmentSlot.CHEST) != null && player.getEquipment().getItem(EquipmentSlot.CHEST).getType() == Material.ELYTRA) return;
-        if (player.getLocation().getY() > 20 && player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR && LocationUtils.isLocationNearSpawnArea(player.getLocation())) {
+        if (player.getLocation().getY() > 20 && player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR && LocationUtils.isLocationNearSpawnArea(player.getLocation()) && Main.spawnElytraPlayers.getOrDefault(player, false)) {
             event.setCancelled(true);
+            return;
         }
+        Main.spawnElytraPlayers.remove(player);
     }
 
     @EventHandler
@@ -28,5 +31,6 @@ public class SpawnElytraListener implements Listener {
         Block block = event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
         if (block.getType() != Material.AIR || block.getRelative(BlockFace.DOWN).getType() != Material.AIR || event.getPlayer().isFlying() || !LocationUtils.isLocationInSpawnArea(event.getPlayer().getLocation())) return;
         event.getPlayer().setGliding(true);
+        Main.spawnElytraPlayers.put(event.getPlayer(), true);
     }
 }
