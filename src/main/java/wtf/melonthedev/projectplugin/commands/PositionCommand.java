@@ -24,6 +24,7 @@ public class PositionCommand implements TabExecutor {
         Player player = (Player) sender;
         switch (args.length) {
             case 0:
+                player.sendMessage(ChatColor.GRAY + ChatColor.ITALIC.toString() + "Oh Gott, dieser Command ist sehr verbuggt, wird wahrscheinlich nicht funktionieren.");
                 player.sendMessage(prefix + "Deine Positions:" + getLocationsString(getLocations(player)));
                 player.sendMessage(prefix + "Öffentliche Positions:" + getLocationsString(getPublicLocations()));
                 return true;

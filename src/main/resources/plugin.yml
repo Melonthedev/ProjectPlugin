@@ -56,3 +56,5 @@ commands:
     description: Bans a player temporarily
   joinmessage:
     description: Sets a joinmessage for a specific player
+  isee:
+    description: ISEEEEE YOU

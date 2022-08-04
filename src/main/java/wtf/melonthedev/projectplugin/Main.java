@@ -68,6 +68,7 @@ public final class Main extends JavaPlugin {
         getCommand("weristimnether").setExecutor(new WerIstImNetherCommand());
         getCommand("tempban").setExecutor(new TempBanCommand());
         getCommand("joinmessage").setExecutor(new JoinMessageCommand());
+        getCommand("isee").setExecutor(new ISeeCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 
