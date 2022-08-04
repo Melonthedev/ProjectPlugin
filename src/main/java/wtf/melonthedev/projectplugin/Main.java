@@ -33,6 +33,16 @@ public final class Main extends JavaPlugin {
     public static HashMap<Player, Location> deathlocations = new HashMap<>();
     public static HashMap<Player, Boolean> spawnElytraPlayers = new HashMap<>();
     public static HashMap<UUID, ItemStack> joinMessages = new HashMap<>();
+    public static String[] donators = new String[] {
+            "Progeto",
+            "El_Crafter",
+            "Groß_Gandhini",
+            "Jonbadon",
+            "Soro",
+            "Sprengmeister444",
+            "stebadon",
+            "Melonthedev"
+    }; // TODO: Handle per API to not be hardcoded
     public static List<HashMap<String, HashMap<Material, Integer>>> collectedValuables = new ArrayList<>();
     private final Component[] infos = new Component[] {
             Component.text(ChatColor.GRAY + "Drücke ").append(Component.keybind("key.sneak")).append(Component.text(ChatColor.GRAY + " um von dieser Insel zu gleiten")),
