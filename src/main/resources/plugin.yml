@@ -54,3 +54,5 @@ commands:
     description: Wer stoert mal wieder beim XP farmen...
   tempban:
     description: Bans a player temporarily
+  joinmessage:
+    description: Sets a joinmessage for a specific player

@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import wtf.melonthedev.projectplugin.commands.*;
@@ -19,6 +20,7 @@ import wtf.melonthedev.projectplugin.utils.LocationUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -30,6 +32,7 @@ public final class Main extends JavaPlugin {
     public static HashMap<Player, Location> locations = new HashMap<>();
     public static HashMap<Player, Location> deathlocations = new HashMap<>();
     public static HashMap<Player, Boolean> spawnElytraPlayers = new HashMap<>();
+    public static HashMap<UUID, ItemStack> joinMessages = new HashMap<>();
     public static List<HashMap<String, HashMap<Material, Integer>>> collectedValuables = new ArrayList<>();
     private final Component[] infos = new Component[] {
             Component.text(ChatColor.GRAY + "Drücke ").append(Component.keybind("key.sneak")).append(Component.text(ChatColor.GRAY + " um von dieser Insel zu gleiten")),
@@ -64,6 +67,7 @@ public final class Main extends JavaPlugin {
         getCommand("afk").setExecutor(new AfkCommand());
         getCommand("weristimnether").setExecutor(new WerIstImNetherCommand());
         getCommand("tempban").setExecutor(new TempBanCommand());
+        getCommand("joinmessage").setExecutor(new JoinMessageCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 

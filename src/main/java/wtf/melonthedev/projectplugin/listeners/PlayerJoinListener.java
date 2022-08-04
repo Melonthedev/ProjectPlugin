@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.commands.JoinMessageCommand;
 import wtf.melonthedev.projectplugin.commands.MessageCommand;
 import wtf.melonthedev.projectplugin.commands.StatusCommand;
 import wtf.melonthedev.projectplugin.utils.AfkSystem;
@@ -44,5 +45,6 @@ public class PlayerJoinListener implements Listener {
         }
         AfkSystem.handlePlayersSleepingPercentage();
         MessageCommand.handleNewMessages(event.getPlayer());
+        JoinMessageCommand.handleJoinMessage();
     }
 }
