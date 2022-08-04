@@ -16,7 +16,8 @@ public class DeathLocationCommand implements CommandExecutor {
             if (Main.deathlocations.containsKey(player)) {
                 Location loc = Main.deathlocations.get(player);
                 player.sendMessage(loc.getX() + " " + loc.getY() + " " + loc.getZ());
-            }
+            } else
+                player.sendMessage("Sorry, nur für Notfälle ;)");
         }
         return false;
     }
