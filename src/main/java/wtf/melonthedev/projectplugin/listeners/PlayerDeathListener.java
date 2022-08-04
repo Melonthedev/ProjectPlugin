@@ -15,7 +15,7 @@ public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        ActionLoggerListener.logAction(event.getEntity().getName(), "died", event.getEntity().getLocation(), "\"" + event.getDeathMessage() + "\"", "");
+        ActionLogger.logAction(event.getEntity().getName(), "died", event.getEntity().getLocation(), "\"" + event.getDeathMessage() + "\"", "");
         if (event.getEntity().getBedSpawnLocation() != null
                 && event.getEntity().getBedSpawnLocation().getWorld() == event.getEntity().getLocation().getWorld()
                 && event.getEntity().getBedSpawnLocation().distance(event.getEntity().getLocation()) > 4000

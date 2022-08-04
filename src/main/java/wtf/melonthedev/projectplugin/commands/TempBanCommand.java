@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wtf.melonthedev.projectplugin.listeners.ActionLoggerListener;
+import wtf.melonthedev.projectplugin.listeners.ActionLogger;
 
 import java.util.*;
 
@@ -53,7 +53,7 @@ public class TempBanCommand implements TabExecutor {
             target.getPlayer().kick(Component.text("You are banned from Survivalprojekt.\n" + (reason.length() == 0 ? "" : "Reason: " + reason) + "\nExpires: " + expirationDate.toString()));
         Bukkit.getBanList(BanList.Type.NAME).addBan(target.getName(), reason.toString(), getDuration().getTime(), sender.getName());
         sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been banned for " + reason + ". Ban expires: " + getDuration() + ".");
-        ActionLoggerListener.logAction(target.getName(), "was banned", null, sender.getName(), reason.toString());
+        ActionLogger.logAction(target.getName(), "was banned", null, sender.getName(), reason.toString());
         expirationDate = null;
         return false;
     }
