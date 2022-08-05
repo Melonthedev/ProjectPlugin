@@ -45,6 +45,6 @@ public class PlayerJoinListener implements Listener {
         }
         AfkSystem.handlePlayersSleepingPercentage();
         MessageCommand.handleNewMessages(event.getPlayer());
-        JoinMessageCommand.handleJoinMessage();
+        JoinMessageCommand.handleJoinMessage(event.getPlayer());
     }
 }

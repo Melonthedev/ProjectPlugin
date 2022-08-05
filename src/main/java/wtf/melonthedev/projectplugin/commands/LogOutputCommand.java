@@ -22,7 +22,7 @@ public class LogOutputCommand implements TabExecutor {
         }
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("normal")) {
-                sender.sendMessage(ChatColor.GREEN + "Logging is now set to light!");
+                sender.sendMessage(ChatColor.GREEN + "Logging is now set to normal!");
                 Main.getPlugin().getConfig().set("logging", "normal");
                 Main.getPlugin().saveConfig();
             } else if (args[0].equalsIgnoreCase("detailed")) {

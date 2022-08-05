@@ -15,7 +15,7 @@ public class ISeeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.isOp()) {
-            sender.sendMessage(Main.getPlugin().getMiniMessageComponent("<rainbow><bold>ISEE YOU"));
+            sender.sendMessage(Main.getPlugin().getMiniMessageComponent("<rainbow><bold>ISEE " + (args.length > 0 ? args[0] : "YOU")));
             return true;
         }
         if (args.length < 1) {
@@ -27,7 +27,7 @@ public class ISeeCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Player is offline.");
             return true;
         }
-        if (sender instanceof Player && !args[1].equalsIgnoreCase("true")) {
+        if (sender instanceof Player && (args.length == 1 || !args[1].equalsIgnoreCase("true"))) {
             Player player = (Player) sender;
             player.openInventory(target.getInventory());
         } else {

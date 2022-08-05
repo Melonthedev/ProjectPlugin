@@ -5,13 +5,17 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -76,6 +80,48 @@ public class ActionLogger implements Listener {
           Material.GOLD_ORE,
     };
 
+    private static final EntityType[] valuableEntities = {
+            EntityType.MINECART_CHEST,
+            EntityType.MINECART,
+            EntityType.HORSE,
+            EntityType.SKELETON_HORSE,
+            EntityType.ZOMBIE_HORSE,
+            EntityType.DROPPED_ITEM,
+            EntityType.VILLAGER,
+            EntityType.ZOMBIE_VILLAGER,
+            EntityType.ELDER_GUARDIAN,
+            EntityType.SNOWMAN,
+            EntityType.MUSHROOM_COW,
+            EntityType.IRON_GOLEM,
+            EntityType.ARMOR_STAND,
+            EntityType.WOLF,
+            EntityType.OCELOT,
+            EntityType.PAINTING,
+            EntityType.WITHER,
+            EntityType.PLAYER,
+            EntityType.CAT,
+            EntityType.BEE,
+            EntityType.DOLPHIN,
+            EntityType.DONKEY,
+            EntityType.FOX,
+            EntityType.LLAMA,
+            EntityType.MULE,
+            EntityType.PANDA,
+            EntityType.PARROT,
+            EntityType.POLAR_BEAR,
+            EntityType.SHULKER,
+            EntityType.WANDERING_TRADER,
+            EntityType.TRADER_LLAMA,
+            EntityType.AXOLOTL,
+            EntityType.ALLAY,
+            EntityType.STRIDER,
+            EntityType.TADPOLE,
+            EntityType.FROG,
+            EntityType.GOAT,
+            EntityType.TURTLE,
+            EntityType.WARDEN
+    };
+
     @EventHandler
     public void onContainerInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.hasBlock() && event.getClickedBlock() instanceof Container && event.getClickedBlock() instanceof PersistentDataHolder) {
@@ -110,20 +156,52 @@ public class ActionLogger implements Listener {
             logAction(event.getWhoClicked().getName(), "grabbed " + event.getCurrentItem().getAmount(), Objects.requireNonNull(event.getClickedInventory().getLocation()), owner, event.getCurrentItem().getType().toString(), isValuable(event.getCurrentItem().getType()));
     }
 
+    @EventHandler
+    public void onEntityInteract(PlayerInteractEntityEvent event) {
+        if (isValuable(event.getRightClicked().getType())) logAction(event.getPlayer().getName(), "interacted with", event.getRightClicked().getLocation(), "unknown", event.getRightClicked().getType().toString(), false);
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (event.getEntity().getType() == EntityType.PLAYER || event.getEntity().getType() == EntityType.VILLAGER)
+            return;
+        logAction(event.getEntity().getName(), "died", event.getEntity().getLocation(), event.getEntity().getKiller() == null ? "unknown" : event.getEntity().getKiller().toString(), "", isValuable(event.getEntity().getType()), null, isValuable(event.getEntity().getType()));
+    }
 
     public static void logAction(String player, String action, @Nullable Location location, String owner, String type, boolean important) {
+        logAction(player, action, location, owner, type, important, null);
+    }
+
+    public static void logAction(String player, String action, @Nullable Location location, String owner, String type, boolean important, String details) {
+        logAction(player, action, location, owner, type, important, details, true);
+    }
+
+    public static void logAction(String player, String action, @Nullable Location location, String owner, String type, boolean important, String details, boolean logToFile) {
         Date currentDate = new Date();
-        String info = "[" + DateFormat.getDateInstance().format(currentDate) + " " + currentDate.getHours() + ":" + currentDate.getMinutes() + "] " + player + " " + action + " " + type + (location == null ? "" : " at X: " + location.getX() + " Y: " + location.getY() + " Z: " + location.getZ() + " W: " + (location.getWorld() == null ? "unknown" : location.getWorld().getName())) +  " from " + owner;
-        if (!Main.getPlugin().getConfig().contains("logging")) {
+        String info = "[" + DateFormat.getDateInstance().format(currentDate) + " " + (currentDate.getHours() < 10 ? "0" + currentDate.getHours() : currentDate.getHours()) + ":" + (currentDate.getMinutes() < 10 ? "0" + currentDate.getMinutes() : currentDate.getMinutes()) + "] "
+                + player + " "
+                + action + " "
+                + type
+                + (location == null ? "" : " at X: " + location.getX() + " Y: " + location.getY() + " Z: " + location.getZ() + " W: " + (location.getWorld() == null ? "unknown" : location.getWorld().getName()))
+                +  " from " + owner
+                + (details != null ? " - " + details : "");
+        if (!Main.getPlugin().getConfig().contains("logging")
+                || (!Objects.equals(Main.getPlugin().getConfig().getString("logging"), "normal")
+                && !Objects.equals(Main.getPlugin().getConfig().getString("logging"), "detailed")
+                && !Objects.equals(Main.getPlugin().getConfig().getString("logging"), "off"))) {
             Main.getPlugin().getConfig().set("logging", "normal");
             Main.getPlugin().saveConfig();
         }
         String logLevel = Main.getPlugin().getConfig().getString("logging");
         if (logLevel == null) logLevel = "normal";
-        if (important || logLevel.equals("detailed"))
+        if ((important && logLevel.equals("normal")) || logLevel.equals("detailed"))
             Main.getPlugin().getLogger().info(info);
+        if (!logToFile)
+            return;
         Writer output;
-        String fileName = "actionlog-" + Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + ".txt";
+        String fileName = "actionlog-" + Calendar.getInstance().get(Calendar.YEAR) +
+                "-" + (Calendar.getInstance().get(Calendar.MONTH) < 10 ? "0" + Calendar.getInstance().get(Calendar.MONTH) : Calendar.getInstance().get(Calendar.MONTH)) +
+                "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < 10 ? "0" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) : Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) + ".txt";
         File logFile = new File(Main.getPlugin().getDataFolder(), fileName);
         if (!logFile.exists()) {
             try {
@@ -143,6 +221,9 @@ public class ActionLogger implements Listener {
 
     private boolean isValuable(Material material) {
         return Arrays.stream(valuables).collect(Collectors.toList()).contains(material);
+    }
+    private boolean isValuable(EntityType entityType) {
+        return Arrays.stream(valuableEntities).collect(Collectors.toList()).contains(entityType);
     }
 
     private String getOwner(Block block) {
