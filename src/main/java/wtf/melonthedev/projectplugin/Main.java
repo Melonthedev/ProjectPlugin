@@ -5,12 +5,12 @@ import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import wtf.melonthedev.projectplugin.commands.*;
@@ -52,6 +52,8 @@ public final class Main extends JavaPlugin {
             Component.text(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/r" + ChatColor.GRAY + " um auf eine Privatnachricht zu antworten"),
             Component.text(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/msg" + ChatColor.GRAY + " um Nachrichten sogar an offline Spieler zu senden"),
     };
+
+    public static String PROJECT_NAME = "Survivalprojekt 4.0";
 
 
     @Override
@@ -103,6 +105,7 @@ public final class Main extends JavaPlugin {
         updateTabList();
         stoneCutterDamage();
         handleSusPlayerActivityPerHour();
+        handleCustomRecpies();
     }
 
     @Override
@@ -112,6 +115,23 @@ public final class Main extends JavaPlugin {
             player.playerListName(Component.text(player.getName()));
             player.displayName(Component.text(player.getName()));
         }
+    }
+
+    public void handleCustomRecpies() {
+
+        //Invisible ItemFrame
+        ItemStack item = new ItemStack(Material.ITEM_FRAME);
+        ItemMeta meta = item.getItemMeta();
+        NamespacedKey key = new NamespacedKey(this, "invisible_item_frame");
+        meta.displayName(Component.text(ChatColor.WHITE + "Invisible Item Frame"));
+        meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
+        item.setItemMeta(meta);
+        ShapedRecipe recipe = new ShapedRecipe(key, item);
+        recipe.shape("SSS", "SAS", "SSS");
+        recipe.setIngredient('S', Material.STICK);
+        recipe.setIngredient('A', Material.AMETHYST_SHARD);
+
+        Bukkit.addRecipe(recipe);
     }
 
     public void sendSpawnMessage() {
