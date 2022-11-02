@@ -78,6 +78,7 @@ public class ActionLogger implements Listener {
           Material.DEEPSLATE_IRON_ORE,
           Material.DEEPSLATE_GOLD_ORE,
           Material.GOLD_ORE,
+            Material.WITHER_ROSE
     };
 
     private static final EntityType[] valuableEntities = {
@@ -152,13 +153,16 @@ public class ActionLogger implements Listener {
     public void onInventoryMoveItem(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player) || event.getClickedInventory() == null || event.getClickedInventory() instanceof PlayerInventory || event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR)
             return;
-        String owner = event.getClickedInventory().getLocation() != null ? getOwner(event.getClickedInventory().getLocation().getBlock()) : "unknown";
-            logAction(event.getWhoClicked().getName(), "grabbed " + event.getCurrentItem().getAmount(), Objects.requireNonNull(event.getClickedInventory().getLocation()), owner, event.getCurrentItem().getType().toString(), isValuable(event.getCurrentItem().getType()));
+        String owner = "unknown";
+        if (event.getClickedInventory().getLocation() != null && event.getClickedInventory().getLocation().getBlock() != null  && event.getClickedInventory().getLocation().getBlock().getType() != null) {
+            owner = getOwner(event.getClickedInventory().getLocation().getBlock());
+        }
+        logAction(event.getWhoClicked().getName(), "grabbed " + event.getCurrentItem().getAmount(), Objects.requireNonNull(event.getClickedInventory().getLocation()), owner, event.getCurrentItem().getType().toString(), isValuable(event.getCurrentItem().getType()));
     }
 
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent event) {
-        if (isValuable(event.getRightClicked().getType())) logAction(event.getPlayer().getName(), "interacted with", event.getRightClicked().getLocation(), "unknown", event.getRightClicked().getType().toString(), false);
+        if (isValuable(event.getRightClicked().getType())) logAction(event.getPlayer().getName(), "interacted with", event.getRightClicked().getLocation(), "unknown", event.getRightClicked().getType().toString(), isValuable(event.getRightClicked().getType()));
     }
 
     @EventHandler
@@ -200,7 +204,7 @@ public class ActionLogger implements Listener {
             return;
         Writer output;
         String fileName = "actionlog-" + Calendar.getInstance().get(Calendar.YEAR) +
-                "-" + (Calendar.getInstance().get(Calendar.MONTH) < 10 ? "0" + Calendar.getInstance().get(Calendar.MONTH) : Calendar.getInstance().get(Calendar.MONTH)) +
+                "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1 < 10 ? "0" + Calendar.getInstance().get(Calendar.MONTH) + 1 : Calendar.getInstance().get(Calendar.MONTH) + 1) +
                 "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < 10 ? "0" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) : Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) + ".txt";
         File logFile = new File(Main.getPlugin().getDataFolder(), fileName);
         if (!logFile.exists()) {

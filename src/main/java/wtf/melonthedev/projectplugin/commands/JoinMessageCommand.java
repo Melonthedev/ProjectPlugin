@@ -53,13 +53,17 @@ public class JoinMessageCommand implements CommandExecutor {
 
         book.setItemMeta(bookMeta);
         Main.joinMessages.put(target.getUniqueId(), book);
+        player.sendMessage(ChatColor.GREEN + "You have sent a joinmessage to " + target.getName() + ".");
         return false;
     }
 
 
     public static void handleJoinMessage(Player player) {
-        if (!Main.joinMessages.containsKey(player))
-            return;
-        player.openBook(Main.joinMessages.get(player));
+        Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
+            if (!Main.joinMessages.containsKey(player.getUniqueId()))
+                return;
+            player.openBook(Main.joinMessages.get(player.getUniqueId()));
+            Main.joinMessages.remove(player.getUniqueId());
+        }, 10);
     }
 }
