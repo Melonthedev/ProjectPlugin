@@ -1,6 +1,5 @@
 package wtf.melonthedev.projectplugin.listeners;
 
-import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -35,29 +34,30 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Main.getPlugin().setCustomPlayerListHeader(event.getPlayer());
-        event.joinMessage(Component.text(ChatColor.GREEN + ">>" + ChatColor.AQUA + " [Survivalprojekt] " + event.getPlayer().getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)]));
-
-        //STATUS
-        if (StatusCommand.statusList.containsKey(event.getPlayer().getName()))
-            StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().getMiniMessageComponent(StatusCommand.statusList.get(event.getPlayer().getName())));
-            //StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().translateHexAndCharColorCodes(StatusCommand.statusList.get(event.getPlayer().getName())));
 
         //FIRST JOIN
         if (!event.getPlayer().hasPlayedBefore()) {
             Bukkit.getServer().broadcast(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + event.getPlayer().getName() + ", Herzlich Willkommen auf Survivalprojekt!"));
-            event.getPlayer().playSound(event.getPlayer(), Sound.ENTITY_GOAT_SCREAMING_AMBIENT, 1.0F, 0.5F);
+            Bukkit.getOnlinePlayers().forEach(player -> player.playSound(event.getPlayer(), Sound.ENTITY_GOAT_SCREAMING_AMBIENT, 1.0F, 0.5F));
         }
 
         //HARDCORE
-        if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) && (event.getPlayer().getGameMode() == GameMode.SPECTATOR || event.getPlayer().isDead())) {
-            event.getPlayer().playerListName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));
-            event.getPlayer().displayName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));
-        }
         if (Main.getPlugin().getConfig().getBoolean("hardcore.pvpCooldown", false)) {
             event.getPlayer().showBossBar(Main.getPlugin().bar);
             event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "PvP Cooldown ist aktiv!"));
         }
         Main.getPlugin().handlePlayerJoinSpectatorVisibility(event.getPlayer());
+        if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) && (event.getPlayer().getGameMode() == GameMode.SPECTATOR || event.getPlayer().isDead())) {
+            event.getPlayer().playerListName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));
+            event.getPlayer().displayName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));
+            event.joinMessage(Component.text(ChatColor.GREEN + ">>" + ChatColor.GRAY + " [Survivalprojekt] " + event.getPlayer().getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)]));
+        } else
+            event.joinMessage(Component.text(ChatColor.GREEN + ">>" + ChatColor.AQUA + " [Survivalprojekt] " + event.getPlayer().getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)]));
+        //STATUS
+        if (StatusCommand.statusList.containsKey(event.getPlayer().getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || event.getPlayer().getGameMode() != GameMode.SPECTATOR)) {
+            StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().getMiniMessageComponent(StatusCommand.statusList.get(event.getPlayer().getName())));
+            //StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().translateHexAndCharColorCodes(StatusCommand.statusList.get(event.getPlayer().getName())));
+        }
 
         AfkSystem.handlePlayersSleepingPercentage();
         MessageCommand.handleNewMessages(event.getPlayer());
