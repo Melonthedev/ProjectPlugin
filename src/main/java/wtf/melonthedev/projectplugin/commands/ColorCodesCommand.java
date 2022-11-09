@@ -20,26 +20,11 @@ public class ColorCodesCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         ChatColor colorinfo = ChatColor.AQUA;
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("colors")) {
+            if (args[0].equalsIgnoreCase("info")) {
                 sender.sendMessage(colorinfo + "---------- Color Codes ----------");
-                sender.sendMessage(colorinfo + "You can use the following colors in chat: ");
-                sender.sendMessage(colorinfo + "-" + ChatColor.DARK_RED + "DARK_RED: <dark_red>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.RED + "RED (aka. coral): <red>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.GOLD + "GOLD (aka. orange): <gold>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.YELLOW + "YELLOW: <yellow>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.DARK_GREEN + "DARK GREEN: <dark_green>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.GREEN + "GREEN (aka. lime): <green>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.AQUA + "AQUA: <aqua>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.DARK_AQUA + "DARK AQUA: <dark_aqua>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.DARK_BLUE + "DARK BLUE: <dark_blue>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.BLUE + "BLUE: <blue>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.LIGHT_PURPLE + "LIGHT PURPLE (aka. pink): <light_purple>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.DARK_PURPLE + "DARK PURPLE: <dark_purple>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.WHITE + "WHITE: <white>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.GRAY + "GRAY: <gray>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.DARK_GRAY + "DARK GRAY: <dark_gray>");
-                sender.sendMessage(colorinfo + "-" + ChatColor.BLACK + "BLACK: <black>");
-                sender.sendMessage(ChatColor.GRAY + "Du kannst auch HEX Farben verwenden! Schreiben einfach '<#' dann den HEX Code und am Ende des HEX Code wieder '>'!");
+                sender.sendMessage(colorinfo + "Type '/colorcodes colors' to see all normal colors.");
+                sender.sendMessage(colorinfo + "Type '/colorcodes extras' to see all extra formatting options.");
+                sender.sendMessage(colorinfo + "Type '/colorcodes legacy' to see all legacy colorcodes.");
                 sender.sendMessage(colorinfo + "---------------------------------");
                 return true;
             } else if (args[0].equalsIgnoreCase("legacy")) {
@@ -86,9 +71,25 @@ public class ColorCodesCommand implements TabExecutor {
             sender.sendMessage(ChatColor.RED + "Diese Farbe wurde nicht gefunden: '" + args[0] + "'. Such deine Farbe in der Liste: /colorcodes");*/
         } else {
             sender.sendMessage(colorinfo + "---------- Color Codes ----------");
-            sender.sendMessage(colorinfo + "Type '/colorcodes colors' to see all normal colors.");
-            sender.sendMessage(colorinfo + "Type '/colorcodes extras' to see all extra formatting options.");
-            sender.sendMessage(colorinfo + "Type '/colorcodes legacy' to see all legacy colorcodes.");
+            sender.sendMessage(colorinfo + "You can use the following colors in chat: ");
+            sender.sendMessage(colorinfo + "-" + ChatColor.DARK_RED + "DARK_RED: <dark_red>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.RED + "RED (aka. coral): <red>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.GOLD + "GOLD (aka. orange): <gold>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.YELLOW + "YELLOW: <yellow>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.DARK_GREEN + "DARK GREEN: <dark_green>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.GREEN + "GREEN (aka. lime): <green>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.AQUA + "AQUA: <aqua>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.DARK_AQUA + "DARK AQUA: <dark_aqua>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.DARK_BLUE + "DARK BLUE: <dark_blue>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.BLUE + "BLUE: <blue>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.LIGHT_PURPLE + "LIGHT PURPLE (aka. pink): <light_purple>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.DARK_PURPLE + "DARK PURPLE: <dark_purple>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.WHITE + "WHITE: <white>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.GRAY + "GRAY: <gray>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.DARK_GRAY + "DARK GRAY: <dark_gray>");
+            sender.sendMessage(colorinfo + "-" + ChatColor.BLACK + "BLACK: <black>");
+            sender.sendMessage(ChatColor.GRAY + "Du kannst auch HEX Farben verwenden! Schreiben einfach '<#' dann den HEX Code und am Ende des HEX Code wieder '>'!");
+            sender.sendMessage(ChatColor.GRAY + "Benutze /colorcodes info für mehr codes!");
             sender.sendMessage(colorinfo + "---------------------------------");
         }
         return false;
@@ -102,6 +103,7 @@ public class ColorCodesCommand implements TabExecutor {
             tab.add("colors");
             tab.add("extras");
             tab.add("legacy");
+            tab.add("info");
         }
         return tab;
     }
