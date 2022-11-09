@@ -5,6 +5,7 @@ import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -31,6 +32,12 @@ public class StatusCommand implements TabExecutor {
             return true;
         }
         Player player = (Player) sender;
+
+        if (player.getGameMode() == GameMode.SPECTATOR) {
+            sender.sendMessage(ChatColor.RED + "You cannot use this command in spectator mode.");
+            return true;
+        }
+
         if (AfkSystem.isAfk(player)) {
             AfkSystem.disableAfkMode(player);
         }
