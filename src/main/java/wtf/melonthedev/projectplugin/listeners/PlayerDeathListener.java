@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -16,7 +18,17 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         ActionLogger.logAction(event.getEntity().getName(), "died", event.getEntity().getLocation(), "\"" + event.getDeathMessage() + "\"", "", true);
-        if (event.getEntity().getBedSpawnLocation() != null
+
+        if (Main.getPlugin().getConfig().getBoolean("hardcore.giantDeathTitle", false))
+            Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Main.getPlugin().getMiniMessageComponent("<red>" + event.getPlayer().getName() + " died.</red>"), event.deathMessage() == null ? Component.text("") : Component.text(ChatColor.BLUE + PlainTextComponentSerializer.plainText().serialize(event.deathMessage())))));
+
+        if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)) {
+            event.getPlayer().sendMessage(ChatColor.RED + "You died!");
+            event.getPlayer().sendMessage(ChatColor.RED + "Your Death Location: X: " + ChatColor.GRAY + event.getPlayer().getLocation().getBlockX() + " Y: " + event.getPlayer().getLocation().getBlockY() + " Z: " + event.getPlayer().getLocation().getBlockZ());
+            return;
+        }
+
+        if (event.getEntity().getBedSpawnLocation() != null && !Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)
                 && event.getEntity().getBedSpawnLocation().getWorld() == event.getEntity().getLocation().getWorld()
                 && event.getEntity().getBedSpawnLocation().distance(event.getEntity().getLocation()) > 4000
                 && (event.getEntity().getInventory().contains(Material.NETHERITE_AXE)

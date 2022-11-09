@@ -1,8 +1,12 @@
 package wtf.melonthedev.projectplugin.listeners;
 
+import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,9 +44,21 @@ public class PlayerJoinListener implements Listener {
 
         //FIRST JOIN
         if (!event.getPlayer().hasPlayedBefore()) {
-            Bukkit.getServer().broadcast(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + event.getPlayer().getName() + ", herzlich willkommen auf Survivalprojekt!"));
+            Bukkit.getServer().broadcast(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + event.getPlayer().getName() + ", Herzlich Willkommen auf Survivalprojekt!"));
             event.getPlayer().playSound(event.getPlayer(), Sound.ENTITY_GOAT_SCREAMING_AMBIENT, 1.0F, 0.5F);
         }
+
+        //HARDCORE
+        if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) && (event.getPlayer().getGameMode() == GameMode.SPECTATOR || event.getPlayer().isDead())) {
+            event.getPlayer().playerListName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));
+            event.getPlayer().displayName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));
+        }
+        if (Main.getPlugin().getConfig().getBoolean("hardcore.pvpCooldown", false)) {
+            event.getPlayer().showBossBar(Main.getPlugin().bar);
+            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "PvP Cooldown ist aktiv!"));
+        }
+        Main.getPlugin().handlePlayerJoinSpectatorVisibility(event.getPlayer());
+
         AfkSystem.handlePlayersSleepingPercentage();
         MessageCommand.handleNewMessages(event.getPlayer());
         JoinMessageCommand.handleJoinMessage(event.getPlayer());
