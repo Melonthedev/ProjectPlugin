@@ -1,9 +1,11 @@
 package wtf.melonthedev.projectplugin.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,8 +13,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.AfkSystem;
+import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class PlayerMoveListener implements Listener {
@@ -27,7 +31,14 @@ public class PlayerMoveListener implements Listener {
 
     HashMap<UUID, Integer> inBlockIndex = new HashMap<>();
     public void validatePlayerMovement(Player player, Location to) {
-        if (to.getBlock().getType() != Material.AIR && to.getBlock().getType() != Material.VOID_AIR && to.getBlock().getType() != Material.CAVE_AIR && player.getGameMode() == GameMode.SPECTATOR && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false))  {
+        if (!(player.getGameMode() == GameMode.SPECTATOR && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false))) return;
+
+        List<Entity> el = player.getNearbyEntities(100, 100, 100);
+        if (!el.stream().anyMatch(e -> e instanceof Player) && !LocationUtils.isLocationInSpawnArea(to)) {
+                player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+        }
+
+        if (to.getBlock().getType() != Material.AIR && to.getBlock().getType() != Material.VOID_AIR && to.getBlock().getType() != Material.CAVE_AIR && to.getBlock().getType() != Material.WATER)  {
             boolean isFreeBlockInArea = false;
             int raduis = 1;
             Block middle = to.getBlock();
@@ -36,7 +47,8 @@ public class PlayerMoveListener implements Listener {
                     for (int z = raduis; z >= -raduis; z--) {
                         if (middle.getRelative(x, y, z).getType() != Material.AIR
                                 && middle.getRelative(x, y, z).getType() != Material.VOID_AIR
-                                && middle.getRelative(x, y, z).getType() != Material.CAVE_AIR) continue;
+                                && middle.getRelative(x, y, z).getType() != Material.CAVE_AIR
+                                && middle.getRelative(x, y, z).getType() != Material.WATER) continue;
                         isFreeBlockInArea = true;
                         break;
                     }

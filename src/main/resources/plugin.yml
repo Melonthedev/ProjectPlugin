@@ -66,3 +66,6 @@ commands:
     description: Hardcore Settings [TEAM ONLY]
   survivalprojekt:
     description: SurvivalProjekt Utils [TEAM ONLY]
+
+  skippvpcooldown:
+    description: Skips the PvP Cooldown

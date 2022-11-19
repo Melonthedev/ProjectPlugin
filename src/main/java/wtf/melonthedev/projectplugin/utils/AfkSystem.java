@@ -3,6 +3,7 @@ package wtf.melonthedev.projectplugin.utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -24,6 +25,8 @@ public class AfkSystem {
     private AfkSystem() {}
 
     public static void handleAfkModus(Player player) {
+        if (player.getGameMode() == GameMode.SPECTATOR && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false))
+            return;
         if (isAfk(player)) {
             disableAfkMode(player);
         } else {

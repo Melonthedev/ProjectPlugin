@@ -3,10 +3,13 @@ package wtf.melonthedev.projectplugin.listeners;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.AfkSystem;
+import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
 
 public class PlayerQuitListener implements Listener {
 
@@ -19,6 +22,11 @@ public class PlayerQuitListener implements Listener {
         AfkSystem.handlePlayersSleepingPercentage();
         Component quitMsg = event.quitMessage();
         if (quitMsg == null) return;
+        PvpCooldownSystem.stopForPlayer(event.getPlayer());
+        if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", true) && event.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+            event.quitMessage(Component.text(ChatColor.RED + "<<" + ChatColor.GRAY + " [Survivalprojekt] " + ChatColor.stripColor(PlainTextComponentSerializer.plainText().serialize(quitMsg)) + " :("));
+            return;
+        }
         event.quitMessage(Component.text(ChatColor.RED + "<<" + ChatColor.AQUA + " [Survivalprojekt] " + ChatColor.stripColor(PlainTextComponentSerializer.plainText().serialize(quitMsg)) + " :("));
     }
 }

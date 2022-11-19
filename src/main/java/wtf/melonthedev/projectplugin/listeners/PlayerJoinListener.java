@@ -3,10 +3,7 @@ package wtf.melonthedev.projectplugin.listeners;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -15,6 +12,7 @@ import wtf.melonthedev.projectplugin.commands.JoinMessageCommand;
 import wtf.melonthedev.projectplugin.commands.MessageCommand;
 import wtf.melonthedev.projectplugin.commands.StatusCommand;
 import wtf.melonthedev.projectplugin.utils.AfkSystem;
+import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
 
 import java.util.Random;
 
@@ -35,6 +33,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Main.getPlugin().setCustomPlayerListHeader(event.getPlayer());
 
+
         //FIRST JOIN
         if (!event.getPlayer().hasPlayedBefore()) {
             Bukkit.getServer().broadcast(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + event.getPlayer().getName() + ", Herzlich Willkommen auf Survivalprojekt!"));
@@ -42,10 +41,9 @@ public class PlayerJoinListener implements Listener {
         }
 
         //HARDCORE
-        if (Main.getPlugin().getConfig().getBoolean("hardcore.pvpCooldown", false)) {
-            event.getPlayer().showBossBar(Main.getPlugin().bar);
-            event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "PvP Cooldown ist aktiv!"));
-        }
+        //if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) && Main.getPlugin().getConfig().getBoolean("projectActive", false)) {
+            PvpCooldownSystem.handleForPlayer(event.getPlayer());
+        //}
         Main.getPlugin().handlePlayerJoinSpectatorVisibility(event.getPlayer());
         if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) && (event.getPlayer().getGameMode() == GameMode.SPECTATOR || event.getPlayer().isDead())) {
             event.getPlayer().playerListName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));

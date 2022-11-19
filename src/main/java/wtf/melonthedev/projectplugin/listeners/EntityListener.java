@@ -1,5 +1,6 @@
 package wtf.melonthedev.projectplugin.listeners;
 
+import io.papermc.paper.event.entity.EntityMoveEvent;
 import io.papermc.paper.event.player.PlayerItemFrameChangeEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -7,10 +8,12 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -36,6 +39,16 @@ public class EntityListener implements Listener {
         event.setCancelled(true);
     }
 
+    @EventHandler
+    public void onMove(EntityMoveEvent event) {
+        if (!(event.getEntity() instanceof Player) && LocationUtils.isLocationInSpawnArea(event.getTo())) event.getEntity().setVelocity(event.getEntity().getFacing().getDirection().multiply(-1));
+    }
+
+    @EventHandler
+    public void onTarget(EntityTargetEvent event) {
+        if (!LocationUtils.isLocationInSpawnArea(event.getEntity().getLocation())) return;
+        event.setCancelled(true);
+    }
 
     @EventHandler
     public void onHangingPlace(HangingPlaceEvent event) {

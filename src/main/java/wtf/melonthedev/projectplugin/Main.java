@@ -1,12 +1,10 @@
 package wtf.melonthedev.projectplugin;
 
-import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
-import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -22,13 +20,13 @@ import org.bukkit.scoreboard.Team;
 import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.listeners.*;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
+import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,6 +89,7 @@ public final class Main extends JavaPlugin {
         getCommand("isee").setExecutor(new ISeeCommand());
         getCommand("hardcore").setExecutor(new HardCoreCommand());
         getCommand("survivalprojekt").setExecutor(new SurvivalprojektCommand());
+        getCommand("skippvpcooldown").setExecutor(new SkipPvpCooldownCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 
@@ -114,11 +113,10 @@ public final class Main extends JavaPlugin {
 
         sendSpawnMessage();
         updateTabList();
-        stoneCutterDamage();
+        handleEastereggDamages();
         handleSusPlayerActivityPerHour();
         handleCustomRecpies();
-
-        if (getConfig().getBoolean("hardcore.pvpCooldown", false)) handlePvpCooldown(false);
+        PvpCooldownSystem.handleForAllPlayers();
     }
 
     @Override
@@ -127,7 +125,17 @@ public final class Main extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.playerListName(Component.text(player.getName()));
             player.displayName(Component.text(player.getName()));
+            if (PvpCooldownSystem.pvpCooldowns.containsKey(player.getUniqueId()))
+                player.hideBossBar(PvpCooldownSystem.pvpCooldowns.get(player.getUniqueId()).getBar());
         }
+    }
+
+    public void handleHardcoreModus() {
+        boolean flag = getConfig().getBoolean("hardcore.enabled", false);
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            player.getWorld().setHardcore(flag);
+            player.getWorld().setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
+        });
     }
 
     public void handleCustomRecpies() {
@@ -204,7 +212,6 @@ public final class Main extends JavaPlugin {
         saveConfig();
     }
 
-
     public Component getMiniMessageComponent(String message) {
         MiniMessage mm = MiniMessage.builder()
                 .tags(TagResolver.builder()
@@ -241,76 +248,16 @@ public final class Main extends JavaPlugin {
         return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
     }
 
-    public void stoneCutterDamage() {
+    public void handleEastereggDamages() {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             Player jonbadon = Bukkit.getPlayer("Jonbadon");
             if (jonbadon != null && jonbadon.getLocation().getBlock().getType() == Material.STONECUTTER)
                 jonbadon.damage(1);
+
+            Player tantalos = Bukkit.getPlayer("Tantal0s");
+            if (tantalos != null && (tantalos.getInventory().getItemInMainHand().getType() == Material.TNT || tantalos.getInventory().getItemInOffHand().getType() == Material.TNT))
+                tantalos.damage(1);
         }, 0, 1);
-    }
-
-
-    public BossBar bar = BossBar.bossBar(Component.text(ChatColor.WHITE + "PvP Cooldown: 3h"), 1, BossBar.Color.GREEN, BossBar.Overlay.NOTCHED_12);
-    int totalMinutes = 180;
-    AtomicReference<Float> minutes = new AtomicReference<>((float) 177);
-    public BukkitRunnable runnable = new BukkitRunnable() {
-        @Override
-        public void run() {
-            float percentage = minutes.get() / totalMinutes;
-            minutes.getAndSet(minutes.get() - 1);
-            bar.progress(percentage);
-
-            if (minutes.get() <= 180 && minutes.get() > 120) {
-                bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 2h " + (int)(minutes.get() - 120) + "min"));
-                bar.color(BossBar.Color.GREEN);
-            } else if (minutes.get() <= 120 && minutes.get() > 60) {
-                bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 1h " + (int)(minutes.get() - 60) + "min"));
-                bar.color(BossBar.Color.YELLOW);
-            } else if (minutes.get() <= 60 && minutes.get() > 0) {
-                bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: " + (int)(minutes.get() + 0) + "min"));
-                bar.color(BossBar.Color.RED);
-            }
-
-            if (percentage <= 0) {
-                getConfig().set("hardcore.pvpCooldown", false);
-                saveConfig();
-                Bukkit.getOnlinePlayers().forEach(p -> {
-                    p.hideBossBar(bar);
-                    p.showTitle(Title.title(Component.text(ChatColor.RED + "PvP is now enabled!"), Component.empty()));
-                });
-                cancel();
-            }
-        }
-    };
-
-    public void handlePvpCooldown(boolean start) {
-        if (getConfig().getBoolean("hardcore.pvpCooldown", false))
-            Bukkit.getOnlinePlayers().forEach(p -> {
-                p.showBossBar(bar);
-                p.getWorld().setPVP(false);
-            });
-        else Bukkit.getOnlinePlayers().forEach(p -> {
-            p.hideBossBar(bar);
-            p.getWorld().setPVP(true);
-        });
-        bar.progress(1);
-        bar.color(BossBar.Color.GREEN);
-        bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 3h"));
-
-        if (!start) return;
-        Bukkit.getOnlinePlayers().forEach(p -> p.showTitle(Title.title(Component.text(ChatColor.GREEN + "The PvP Cooldown has started!"), Component.text(ChatColor.AQUA + "PvP will be enabled in 3 hours!"))));
-        try {
-            runnable.cancel();
-        } catch (IllegalStateException ignored) {}
-        runnable.runTaskTimer(this, 0, 20); //1200 for 1 minute
-    }
-
-    public void handleHardcoreModus() {
-        boolean flag = getConfig().getBoolean("hardcore.enabled", false);
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            player.getWorld().setHardcore(flag);
-            player.getWorld().setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
-        });
     }
 
     public void handleSusPlayerActivityPerHour() {
