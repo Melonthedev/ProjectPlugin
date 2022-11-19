@@ -64,8 +64,9 @@ commands:
     description: ISEEEEE YOU [TEAM ONLY]
   hardcore:
     description: Hardcore Settings [TEAM ONLY]
+  lifesteal:
+      description: Lifesteal Settings [TEAM ONLY]
   survivalprojekt:
     description: SurvivalProjekt Utils [TEAM ONLY]
-
   skippvpcooldown:
     description: Skips the PvP Cooldown
