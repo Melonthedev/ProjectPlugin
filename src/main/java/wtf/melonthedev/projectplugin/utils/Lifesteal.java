@@ -3,6 +3,7 @@ package wtf.melonthedev.projectplugin.utils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import wtf.melonthedev.projectplugin.Main;
 
 public class Lifesteal {
@@ -31,26 +32,27 @@ public class Lifesteal {
     }
 
     public static void giveHeart(Player player) {
-
+        throw new NotImplementedException();
     }
 
     public static void removeHeart(Player player) {
-
+        throw new NotImplementedException();
     }
 
     public static void revivePlayer(Player player) {
-
+        throw new NotImplementedException();
 
     }
 
     public static void eliminatePlayer(Player player) {
-
+        throw new NotImplementedException();
 
     }
 
     public static void handleJoin(Player player) {
         // Hier schauen ob spieler noch leben etc
         // Called from JoinListener
+        throw new NotImplementedException();
     }
 
 
@@ -58,14 +60,14 @@ public class Lifesteal {
      * @return wheather heart was withdrawn successfully
      */
     public static boolean withdrawHeartToItem(Player player) {
-        return false;
+        throw new NotImplementedException();
     }
 
     /**
      * @return wheather heart item was added successfully
      */
     public static boolean addHeartItemToPlayer(Player player) {
-        return false;
+        throw new NotImplementedException();
     }
 
     //...
