@@ -7,6 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -64,8 +66,9 @@ public class Lifesteal {
     }
 
     public static void revivePlayer(Player player) {
-
-
+        Main.getPlugin().getConfig().set("lifesteal.hearts." + player.getUniqueId(), getRevivedPlayerHeartCount());
+        Main.getPlugin().saveConfig();
+        //TODO: Finish
     }
 
     public static void eliminatePlayer(Player player) {
@@ -74,14 +77,18 @@ public class Lifesteal {
 
     public static void validateHearts(Player player) {
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + player.getUniqueId(), getDefaultHeartCount());
+        if (hearts == 0) {
+            eliminatePlayer(player);
+            return;
+        }
         player.setHealthScale(hearts*2);
     }
 
-    public static void handleJoin(Player player) {
-        // Hier schauen ob spieler noch leben etc
-        // Called from JoinListener
-        validateHearts(player);
-        throw new NotImplementedException();
+    public static void handleLogin(AsyncPlayerPreLoginEvent event) {
+        if (Main.getPlugin().getConfig().getInt("lifesteal.hearts." + event.getUniqueId(), 20) == 0) {
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text(ChatColor.BOLD.toString() + ChatColor.RED + "Life" + ChatColor.GREEN + "Steal\n"+ ChatColor.RESET + "You lost all your hearts.\nAsk your friends to revive you."));
+            return;
+        }
     }
 
 
@@ -99,7 +106,9 @@ public class Lifesteal {
      * @return wheather heart item was added successfully
      */
     public static boolean addHeartItemToPlayer(Player player, ItemStack heart) {
-        throw new NotImplementedException();
+        heart.setAmount(heart.getAmount() - 1);
+        giveHeart(player);
+        return true;
     }
 
     //...
