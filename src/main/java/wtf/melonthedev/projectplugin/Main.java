@@ -19,6 +19,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.listeners.*;
+import wtf.melonthedev.projectplugin.utils.Lifesteal;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
 
@@ -68,6 +69,7 @@ public final class Main extends JavaPlugin {
         getLogger().log(Level.INFO, "**********************");
         getLogger().log(Level.INFO, "*** Project Plugin ***");
         getLogger().log(Level.INFO, "*** by Melonthedev ***");
+        getLogger().log(Level.INFO, "**+* and Stebadon  ****");
         getLogger().log(Level.INFO, "**********************");
 
         //COMMAND REGISTRATION
@@ -117,6 +119,7 @@ public final class Main extends JavaPlugin {
         handleSusPlayerActivityPerHour();
         handleCustomRecpies();
         PvpCooldownSystem.handleForAllPlayers();
+        Lifesteal.init();
     }
 
     @Override
