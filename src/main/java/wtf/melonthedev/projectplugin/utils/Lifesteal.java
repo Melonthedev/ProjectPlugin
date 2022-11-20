@@ -1,8 +1,15 @@
 package wtf.melonthedev.projectplugin.utils;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import wtf.melonthedev.projectplugin.Main;
 
@@ -28,7 +35,14 @@ public class Lifesteal {
     }
 
     public static ItemStack getHeartItem() {
-        return new ItemStack(Material.FERMENTED_SPIDER_EYE);
+        ItemStack heart = new ItemStack(Material.FERMENTED_SPIDER_EYE);
+        ItemMeta heartmeta = heart.getItemMeta();
+        heartmeta.displayName(Component.text(ChatColor.DARK_RED + "Herz"));
+        heartmeta.addEnchant(Enchantment.CHANNELING, 1, true);
+        heartmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        heartmeta.getPersistentDataContainer().set(new NamespacedKey(Main.getPlugin(), "heart"), PersistentDataType.BYTE, (byte) 1);
+        heart.setItemMeta(heartmeta);
+        return heart;
     }
 
     public static void giveHeart(Player player) {

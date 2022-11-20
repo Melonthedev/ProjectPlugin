@@ -71,7 +71,7 @@ public class EntityListener implements Listener {
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text(ChatColor.WHITE + "Invisible Item Frame"));
         meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
-        meta.addEnchant(Enchantment.VANISHING_CURSE, 1,true);
+        meta.addEnchant(Enchantment.CHANNELING, 1,true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(meta);
         ItemFrame frame = (ItemFrame) event.getEntity();
