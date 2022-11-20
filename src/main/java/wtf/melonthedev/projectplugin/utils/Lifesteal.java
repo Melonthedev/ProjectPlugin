@@ -58,9 +58,9 @@ public class Lifesteal {
         Main.getPlugin().saveConfig();
     }
 
-    public static void removeHeart(Player player) {
+    public static void removeHeart(Player player, Integer count) {
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + player.getUniqueId(), getDefaultHeartCount());
-        Main.getPlugin().getConfig().set("lifesteal.hearts." + player.getUniqueId(), hearts - 1);
+        Main.getPlugin().getConfig().set("lifesteal.hearts." + player.getUniqueId(), hearts - count);
         Main.getPlugin().saveConfig();
         if (hearts <= 0) eliminatePlayer(player);
     }
@@ -86,7 +86,7 @@ public class Lifesteal {
 
     public static void handleLogin(AsyncPlayerPreLoginEvent event) {
         if (Main.getPlugin().getConfig().getInt("lifesteal.hearts." + event.getUniqueId(), 20) == 0) {
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text(ChatColor.BOLD.toString() + ChatColor.RED + "Life" + ChatColor.GREEN + "Steal\n"+ ChatColor.RESET + "You lost all your hearts.\nAsk your friends to revive you."));
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.RESET + "You lost all your hearts.\nAsk your friends to revive you."));
             return;
         }
     }
@@ -95,9 +95,11 @@ public class Lifesteal {
     /**
      * @return wheather heart was withdrawn successfully
      */
-    public static boolean withdrawHeartToItem(Player player) {
-        removeHeart(player);
-        HashMap<Integer, ItemStack> items = player.getInventory().addItem(getHeartItem());
+    public static boolean withdrawHeartToItem(Player player, Integer count) {
+        removeHeart(player, count);
+        ItemStack temp = getHeartItem().clone();
+        temp.setAmount(count);
+        HashMap<Integer, ItemStack> items = player.getInventory().addItem(temp);
         items.forEach((amount, item) -> player.getWorld().dropItem(player.getLocation(), item));
         return true;
     }
