@@ -52,9 +52,9 @@ public class Lifesteal {
         return heart;
     }
 
-    public static void giveHeart(Player player) {
+    public static void giveHeart(Player player, Integer count) {
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + player.getUniqueId(), getDefaultHeartCount());
-        Main.getPlugin().getConfig().set("lifesteal.hearts." + player.getUniqueId(), hearts + 1);
+        Main.getPlugin().getConfig().set("lifesteal.hearts." + player.getUniqueId(), hearts + count);
         Main.getPlugin().saveConfig();
     }
 
@@ -109,7 +109,7 @@ public class Lifesteal {
      */
     public static boolean addHeartItemToPlayer(Player player, ItemStack heart) {
         heart.setAmount(heart.getAmount() - 1);
-        giveHeart(player);
+        giveHeart(player, 1);
         return true;
     }
 
