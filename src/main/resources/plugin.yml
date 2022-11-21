@@ -70,3 +70,5 @@ commands:
     description: SurvivalProjekt Utils [TEAM ONLY]
   skippvpcooldown:
     description: Skips the PvP Cooldown
+  withdraw:
+    description: gib mir herzen
