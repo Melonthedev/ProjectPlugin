@@ -65,6 +65,13 @@ public class Lifesteal {
         if (hearts <= 0) eliminatePlayer(player);
     }
 
+    public static void setHeartCount(Player player, Integer count){
+        int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + player.getUniqueId(), getDefaultHeartCount());
+        Main.getPlugin().getConfig().set("lifesteal.herarts." + player.getUniqueId(), count);
+        Main.getPlugin().saveConfig();
+        if (hearts <= 0) eliminatePlayer(player);
+    }
+
     public static void revivePlayer(Player player) {
         Main.getPlugin().getConfig().set("lifesteal.hearts." + player.getUniqueId(), getRevivedPlayerHeartCount());
         Main.getPlugin().saveConfig();
