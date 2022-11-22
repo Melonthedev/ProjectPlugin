@@ -93,6 +93,7 @@ public final class Main extends JavaPlugin {
         getCommand("survivalprojekt").setExecutor(new SurvivalprojektCommand());
         getCommand("skippvpcooldown").setExecutor(new SkipPvpCooldownCommand());
         getCommand("withdraw").setExecutor(new WithdrawHeartCommand());
+        getCommand("lifesteal").setExecutor(new LifestealCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 
