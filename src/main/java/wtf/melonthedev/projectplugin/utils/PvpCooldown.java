@@ -27,7 +27,8 @@ public class PvpCooldown {
     }
 
     public void start() {
-        if (Main.getPlugin().getConfig().getInt("pvpCooldown." + uuid, totalMinutes) == 0 || remainingMinutes == 0) return;
+        //if (Main.getPlugin().getConfig().getInt("pvpCooldown." + uuid, totalMinutes) == 0 || remainingMinutes == 0) return;
+        Main.getPlugin().getConfig().set("pvpCooldown." + uuid, remainingMinutes);
         bar.progress(1);
         bar.color(BossBar.Color.GREEN);
         bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 3h"));
@@ -45,14 +46,19 @@ public class PvpCooldown {
         try {
             runnable.cancel();
         } catch (Exception ignored) {}
-    }
-
-    public void disable() {
-        runnable.cancel();
         Player player = Bukkit.getPlayer(uuid);
         if (player != null)
             player.hideBossBar(bar);
-        Main.getPlugin().getConfig().set("pvpCooldown." + uuid, 0);
+    }
+
+    public void disable() {
+        try {
+            runnable.cancel();
+        } catch (Exception ignored) {}
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null)
+            player.hideBossBar(bar);
+        Main.getPlugin().getConfig().set("pvpCooldown." + uuid, null);
         Main.getPlugin().saveConfig();
         PvpCooldownSystem.pvpCooldowns.remove(uuid);
     }
@@ -65,22 +71,25 @@ public class PvpCooldown {
                 bar.progress(percentage);
                 if (remainingMinutes == 180) {
                     bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 3h"));
-                    bar.color(BossBar.Color.GREEN);
                 } else if (remainingMinutes <= 180 && remainingMinutes > 120) {
                     bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 2h " + (remainingMinutes - 120) + "min"));
-                    bar.color(BossBar.Color.GREEN);
                 } else if (remainingMinutes <= 120 && remainingMinutes > 60) {
                     bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 1h " + (remainingMinutes - 60) + "min"));
-                    bar.color(BossBar.Color.YELLOW);
                 } else if (remainingMinutes <= 60 && remainingMinutes > 0) {
                     bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: " + (remainingMinutes) + "min"));
+                }
+                if (percentage >= 0.66) {
+                    bar.color(BossBar.Color.GREEN);
+                } else if (percentage >= 0.33) {
+                    bar.color(BossBar.Color.YELLOW);
+                } else {
                     bar.color(BossBar.Color.RED);
                 }
-                remainingMinutes--;
                 Main.getPlugin().getConfig().set("pvpCooldown." + uuid, remainingMinutes);
                 Main.getPlugin().saveConfig();
                 if (percentage <= 0)
                     disable();
+                remainingMinutes--;
             }
         };
     }

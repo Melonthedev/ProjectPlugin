@@ -60,7 +60,7 @@ public class PvpCooldownCommand implements TabExecutor {
                     sender.sendMessage(prefix + ChatColor.RED + "This player was not found.");
                     return true;
                 }
-                PvpCooldownSystem.disableForPlayer(target);
+                PvpCooldownSystem.disableForPlayer(target.getUniqueId());
                 sender.sendMessage(prefix + ChatColor.GREEN + "Success! Stopped PvP Cooldown for " + target.getName());
             } else {
                 sender.sendMessage(prefix + ChatColor.RED + "Syntax: /pvpCooldown <start | startForAll | stop | stopForAll>");

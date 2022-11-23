@@ -1,6 +1,7 @@
 package wtf.melonthedev.projectplugin.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import wtf.melonthedev.projectplugin.Main;
 
@@ -26,17 +27,19 @@ public class PvpCooldownSystem {
     }
 
     public static void startForPlayer(UUID uuid, int minutes) {
+        if (pvpCooldowns.containsKey(uuid))
+            pvpCooldowns.get(uuid).disable();
         pvpCooldowns.put(uuid, new PvpCooldown(uuid, minutes));
         pvpCooldowns.get(uuid).start();
     }
 
-    public static void disableForPlayer(Player player) {
-        if (pvpCooldowns.containsKey(player.getUniqueId()))
-            pvpCooldowns.get(player.getUniqueId()).disable();
+    public static void disableForPlayer(UUID uuid) {
+        if (pvpCooldowns.containsKey(uuid))
+            pvpCooldowns.get(uuid).disable();
     }
 
     public static void disableForAllPlayers() {
-        Bukkit.getOnlinePlayers().forEach(PvpCooldownSystem::disableForPlayer);
+        Bukkit.getOnlinePlayers().stream().map(Entity::getUniqueId).forEach(PvpCooldownSystem::disableForPlayer);
     }
 
     public static void pauseForPlayer(Player player) {
