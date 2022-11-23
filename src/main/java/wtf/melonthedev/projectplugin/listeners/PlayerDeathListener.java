@@ -19,12 +19,13 @@ import wtf.melonthedev.projectplugin.utils.ItemStacks;
 import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        ActionLogger.logAction(event.getEntity().getName(), "died", event.getEntity().getLocation(), "\"" + event.getDeathMessage() + "\"", "", true);
+        ActionLogger.logAction(event.getEntity().getName(), "died", event.getEntity().getLocation(), "\"" + PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(event.deathMessage())) + "\"", "", true);
 
         if (Main.getPlugin().getConfig().getBoolean("hardcore.giantDeathTitle", false))
             Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Main.getPlugin().getMiniMessageComponent("<red>" + event.getPlayer().getName() + " died.</red>"), event.deathMessage() == null ? Component.text("") : Component.text(ChatColor.BLUE + PlainTextComponentSerializer.plainText().serialize(event.deathMessage())))));
@@ -77,10 +78,6 @@ public class PlayerDeathListener implements Listener {
                 System.out.println(Arrays.toString(items2));
             }
             event.getDrops().clear();
-            //event.getEntity().getLocation().getBlock().getRelative(BlockFace.UP).setType(Material.PLAYER_HEAD);
-            //UUID uuid = event.getEntity().getUniqueId();
-            //((Skull) event.getEntity().getLocation().getBlock().getRelative(BlockFace.UP).getState()).setOwningPlayer(Bukkit.getServer().getOfflinePlayer(uuid));
-            //event.getEntity().getLocation().getBlock().getRelative(BlockFace.UP).getState().update();
             return;
         }
 

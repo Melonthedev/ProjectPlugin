@@ -8,7 +8,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,6 +16,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import wtf.melonthedev.projectplugin.Main;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Lifesteal {
 
@@ -52,40 +52,40 @@ public class Lifesteal {
         return heart;
     }
 
-    public static void giveHeart(Player player, Integer count) {
-        int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + player.getUniqueId(), getDefaultHeartCount());
-        Main.getPlugin().getConfig().set("lifesteal.hearts." + player.getUniqueId(), hearts + count);
+    public static void giveHeart(UUID uuid, Integer count) {
+        int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
+        Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, hearts + count);
         Main.getPlugin().saveConfig();
     }
 
-    public static void removeHeart(Player player, Integer count) {
-        int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + player.getUniqueId(), getDefaultHeartCount());
-        Main.getPlugin().getConfig().set("lifesteal.hearts." + player.getUniqueId(), hearts - count);
+    public static void removeHeart(UUID uuid, Integer count) {
+        int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
+        Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, hearts - count);
         Main.getPlugin().saveConfig();
-        if (hearts <= 0) eliminatePlayer(player);
+        if (hearts <= 0) eliminatePlayer(uuid);
     }
 
-    public static void setHeartCount(Player player, Integer count){
-        int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + player.getUniqueId(), getDefaultHeartCount());
-        Main.getPlugin().getConfig().set("lifesteal.herarts." + player.getUniqueId(), count);
+    public static void setHeartCount(UUID uuid, Integer count){
+        int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
+        Main.getPlugin().getConfig().set("lifesteal.herarts." + uuid, count);
         Main.getPlugin().saveConfig();
-        if (hearts <= 0) eliminatePlayer(player);
+        if (hearts <= 0) eliminatePlayer(uuid);
     }
 
-    public static void revivePlayer(Player player) {
-        Main.getPlugin().getConfig().set("lifesteal.hearts." + player.getUniqueId(), getRevivedPlayerHeartCount());
+    public static void revivePlayer(UUID uuid) {
+        Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, getRevivedPlayerHeartCount());
         Main.getPlugin().saveConfig();
         //TODO: Finish
     }
 
-    public static void eliminatePlayer(Player player) {
+    public static void eliminatePlayer(UUID uuid) {
         throw new NotImplementedException();
     }
 
     public static void validateHearts(Player player) {
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + player.getUniqueId(), getDefaultHeartCount());
         if (hearts == 0) {
-            eliminatePlayer(player);
+            eliminatePlayer(player.getUniqueId());
             return;
         }
         player.setHealthScale(hearts*2);
@@ -99,11 +99,12 @@ public class Lifesteal {
     }
 
 
+
     /**
      * @return wheather heart was withdrawn successfully
      */
     public static boolean withdrawHeartToItem(Player player, Integer count) {
-        removeHeart(player, count);
+        removeHeart(player.getUniqueId(), count);
         ItemStack temp = getHeartItem().clone();
         temp.setAmount(count);
         HashMap<Integer, ItemStack> items = player.getInventory().addItem(temp);
@@ -116,8 +117,12 @@ public class Lifesteal {
      */
     public static boolean addHeartItemToPlayer(Player player, ItemStack heart) {
         heart.setAmount(heart.getAmount() - 1);
-        giveHeart(player, 1);
+        giveHeart(player.getUniqueId(), 1);
         return true;
+    }
+
+    public static int getHeartCount(UUID uuid) {
+        return Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
     }
 
     //...
