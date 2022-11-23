@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import wtf.melonthedev.projectplugin.Main;
 
 import java.util.HashMap;
@@ -21,6 +20,8 @@ import java.util.UUID;
 public class Lifesteal {
 
     private Lifesteal() {} // Utility Class, cannot be instantiated
+
+    public static final String prefix = ChatColor.GREEN + ChatColor.BOLD.toString() + "[Life" + ChatColor.DARK_RED + ChatColor.BOLD + "Steal] " + ChatColor.RESET;
 
     public static void init() {
         //TODO: Load infos from config for players, show messages, ...
@@ -56,12 +57,22 @@ public class Lifesteal {
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
         Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, hearts + count);
         Main.getPlugin().saveConfig();
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null) {
+            validateHearts(player);
+            player.sendMessage(ChatColor.GREEN.toString() + ChatColor.BOLD + "+" + count + " Heart");
+        }
     }
 
     public static void removeHeart(UUID uuid, Integer count) {
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
         Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, hearts - count);
         Main.getPlugin().saveConfig();
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null) {
+            validateHearts(player);
+            player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "-" + count + " Heart");
+        }
         if (hearts <= 0) eliminatePlayer(uuid);
     }
 
@@ -72,6 +83,10 @@ public class Lifesteal {
         if (hearts <= 0) eliminatePlayer(uuid);
     }
 
+    public static int getHeartCount(UUID uuid) {
+        return Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
+    }
+
     public static void revivePlayer(UUID uuid) {
         Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, getRevivedPlayerHeartCount());
         Main.getPlugin().saveConfig();
@@ -79,7 +94,7 @@ public class Lifesteal {
     }
 
     public static void eliminatePlayer(UUID uuid) {
-        throw new NotImplementedException();
+        //TODO
     }
 
     public static void validateHearts(Player player) {
@@ -92,38 +107,25 @@ public class Lifesteal {
     }
 
     public static void handleLogin(AsyncPlayerPreLoginEvent event) {
-        if (Main.getPlugin().getConfig().getInt("lifesteal.hearts." + event.getUniqueId(), 20) == 0) {
+        if (Main.getPlugin().getConfig().getInt("lifesteal.hearts." + event.getUniqueId(), 20) == 0 && isLifestealActive()) {
             event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.RESET + "You lost all your hearts.\nAsk your friends to revive you."));
-            return;
         }
     }
 
-
-
-    /**
-     * @return wheather heart was withdrawn successfully
-     */
-    public static boolean withdrawHeartToItem(Player player, Integer count) {
+    public static void withdrawHeartToItem(Player player, Integer count) {
         removeHeart(player.getUniqueId(), count);
         ItemStack temp = getHeartItem().clone();
         temp.setAmount(count);
         HashMap<Integer, ItemStack> items = player.getInventory().addItem(temp);
         items.forEach((amount, item) -> player.getWorld().dropItem(player.getLocation(), item));
-        return true;
     }
 
-    /**
-     * @return wheather heart item was added successfully
-     */
-    public static boolean addHeartItemToPlayer(Player player, ItemStack heart) {
+    public static void addHeartItemToPlayer(Player player, ItemStack heart) {
         heart.setAmount(heart.getAmount() - 1);
         giveHeart(player.getUniqueId(), 1);
-        return true;
     }
 
-    public static int getHeartCount(UUID uuid) {
-        return Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
-    }
+
 
     //...
 

@@ -6,12 +6,14 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.commands.JoinMessageCommand;
 import wtf.melonthedev.projectplugin.commands.MessageCommand;
 import wtf.melonthedev.projectplugin.commands.StatusCommand;
 import wtf.melonthedev.projectplugin.utils.AfkSystem;
+import wtf.melonthedev.projectplugin.utils.Lifesteal;
 import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
 
 import java.util.Random;
@@ -60,5 +62,10 @@ public class PlayerJoinListener implements Listener {
         AfkSystem.handlePlayersSleepingPercentage();
         MessageCommand.handleNewMessages(event.getPlayer());
         JoinMessageCommand.handleJoinMessage(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPreLogin(AsyncPlayerPreLoginEvent event) {
+        Lifesteal.handleLogin(event);
     }
 }

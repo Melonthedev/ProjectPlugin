@@ -15,30 +15,29 @@ public class WithdrawHeartCommand implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
 
-        if(!(sender instanceof Player)) return true;
-        Player p = (Player) sender;
-        int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + p.getUniqueId(), Lifesteal.getDefaultHeartCount());
-        Integer count;
+        if(!(sender instanceof Player player)) return true;
+        int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + player.getUniqueId(), Lifesteal.getDefaultHeartCount());
+        int count;
 
         if (args.length == 0){
             count = 1;
         } else if (args.length == 1)  {
             try {
-                count = Integer.valueOf(args[0]);
+                count = Integer.parseInt(args[0]);
             }catch(NumberFormatException exception){
-                p.sendMessage(ChatColor.BOLD.toString() + ChatColor.GREEN + "[Life" + ChatColor.DARK_RED + "Steal]" + ChatColor.RESET.toString() + ChatColor.RED + "Syntaxerror: /withdraw " + ChatColor.ITALIC + "Anzahl");
+                player.sendMessage(Lifesteal.prefix+ "Syntaxerror: /withdraw " + ChatColor.ITALIC + "Anzahl");
                 return true;
             }
         }else {
-            p.sendMessage(ChatColor.BOLD.toString() + ChatColor.GREEN + "[Life" + ChatColor.DARK_RED + "Steal]" + ChatColor.RESET.toString() + ChatColor.RED + "Syntaxerror: /withdraw " + ChatColor.ITALIC + "Anzahl");
+            player.sendMessage(Lifesteal.prefix + ChatColor.RED + "Syntaxerror: /withdraw " + ChatColor.ITALIC + "Anzahl");
             return true;
         }
 
         if (count >= hearts){
-            p.sendMessage(ChatColor.BOLD.toString() + ChatColor.GREEN + "[Life" + ChatColor.DARK_RED + "Steal]" + ChatColor.RESET.toString() + ChatColor.RED + "Error: Du würdest dich selber töten");
+            player.sendMessage(Lifesteal.prefix + ChatColor.RED + "Error: Du würdest dich selber töten");
             return true;
         }else {
-            Lifesteal.withdrawHeartToItem(p, count);
+            Lifesteal.withdrawHeartToItem(player, count);
         }
         return false;
     }

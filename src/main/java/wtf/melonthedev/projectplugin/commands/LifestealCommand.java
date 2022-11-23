@@ -16,10 +16,9 @@ import java.util.List;
 
 public class LifestealCommand implements TabExecutor {
 
-    public final String prefix = ChatColor.GREEN + ChatColor.BOLD.toString() + "[Life" + ChatColor.DARK_RED + ChatColor.BOLD + "Steal] " + ChatColor.RESET;
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        String prefix = Lifesteal.prefix;
         if (!sender.isOp()) {
             sender.sendMessage(prefix + ChatColor.RED + "You are not allowed to use this command.");
             return true;
@@ -35,8 +34,14 @@ public class LifestealCommand implements TabExecutor {
         }
         if (args.length == 2) {
             switch (args[0].toLowerCase()) {
-                case "addheart" -> Lifesteal.giveHeart(target.getUniqueId(), 1);
-                case "removeheart" -> Lifesteal.removeHeart(target.getUniqueId(), 1);
+                case "addheart" -> {
+                    Lifesteal.giveHeart(target.getUniqueId(), 1);
+                    sender.sendMessage(prefix + "Success! Added 1 heart to " + target.getName());
+                }
+                case "removeheart" -> {
+                    Lifesteal.removeHeart(target.getUniqueId(), 1);
+                    sender.sendMessage(prefix + "Success! Removed 1 heart from " + target.getName());
+                }
                 case "getheartcount" -> sender.sendMessage(prefix + target.getName() + " has " + Lifesteal.getHeartCount(target.getUniqueId()) + " Hearts!");
             }
         } else if (args.length == 3) {
@@ -46,6 +51,7 @@ public class LifestealCommand implements TabExecutor {
                     try {
                         count = Integer.parseInt(args[0]);
                         Lifesteal.setHeartCount(target.getUniqueId(), count);
+                        sender.sendMessage(prefix + "Success! Set heartcount of " + target.getName() + " to " + count);
                     } catch(NumberFormatException exception) {
                         sender.sendMessage(prefix + ChatColor.RED + "Syntaxerror: do /lifesteal setHeartCount " + ChatColor.ITALIC + "<Player> <Anzahl>");
                     }
@@ -63,6 +69,7 @@ public class LifestealCommand implements TabExecutor {
                         return true;
                     }
                     Lifesteal.giveHeart(target.getUniqueId(), addcount);
+                    sender.sendMessage(prefix + "Success! Added " + addcount + " heart(s) to " + target.getName());
                 case "removeheart":
                     int removecount;
                     try {
@@ -76,12 +83,16 @@ public class LifestealCommand implements TabExecutor {
                         return true;
                     }
                     Lifesteal.removeHeart(target.getUniqueId(), removecount);
+                    sender.sendMessage(prefix + "Success! Removed " + removecount + " heart(s) from " + target.getName());
                     break;
                 case "revive":
                     Lifesteal.revivePlayer(target.getUniqueId());
+                    sender.sendMessage(prefix + "Success! Revived " + target.getName());
+
                     break;
                 case "eliminate":
                     Lifesteal.eliminatePlayer(target.getUniqueId());
+                    sender.sendMessage(prefix + "Success! Eliminated " + target.getName());
                     break;
                 }
             }
