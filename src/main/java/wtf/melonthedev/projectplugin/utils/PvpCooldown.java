@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin;
+package wtf.melonthedev.projectplugin.utils;
 
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
+import wtf.melonthedev.projectplugin.Main;
 
 import java.util.UUID;
 
@@ -35,21 +35,16 @@ public class PvpCooldown {
         if (player != null) {
             player.showBossBar(bar);
             if (remainingMinutes >= totalMinutes - 1)
-                player.showTitle(Title.title(Component.text(ChatColor.GREEN + "The PvP Cooldown has started!"), Component.text(ChatColor.AQUA + "PvP will be enabled in 3 hours!")));
+                player.showTitle(Title.title(Component.text(ChatColor.GREEN + "The PvP Cooldown has started!"), Component.text(ChatColor.AQUA + "PvP will be enabled when the timer runs out!")));
             initRunnable();
             runnable.runTaskTimer(Main.getPlugin(), 0, 1200);
         }
     }
 
-    public void stop() {
+    public void pause() {
         try {
             runnable.cancel();
         } catch (Exception ignored) {}
-        Player player = Bukkit.getPlayer(uuid);
-        if (player != null) {
-            player.hideBossBar(bar);
-            player.showTitle(Title.title(Component.text(ChatColor.RED + "PvP is now enabled!"), Component.empty()));
-        }
     }
 
     public void disable() {
@@ -84,10 +79,8 @@ public class PvpCooldown {
                 remainingMinutes--;
                 Main.getPlugin().getConfig().set("pvpCooldown." + uuid, remainingMinutes);
                 Main.getPlugin().saveConfig();
-                if (percentage <= 0) {
-                    stop();
+                if (percentage <= 0)
                     disable();
-                }
             }
         };
     }

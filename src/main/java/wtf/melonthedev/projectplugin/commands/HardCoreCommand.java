@@ -1,7 +1,5 @@
 package wtf.melonthedev.projectplugin.commands;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HardCoreCommand implements TabExecutor {
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         final String prefix = ChatColor.DARK_RED + ChatColor.BOLD.toString() + "[Hard" + ChatColor.WHITE + ChatColor.BOLD + "Core] " + ChatColor.RESET;
@@ -30,7 +29,7 @@ public class HardCoreCommand implements TabExecutor {
         }
         if (args.length == 1) {
             switch (args[0]) {
-                case "toggleHardcoreMode":
+                case "toggleHardcoreMode" -> {
                     Main.getPlugin().getConfig().set("hardcore.giantDeathTitle", !Main.getPlugin().getConfig().getBoolean("hardcore.giantDeathTitle", false));
                     Main.getPlugin().saveConfig();
                     sender.sendMessage(prefix + ChatColor.RED + "Giant Title is now set to " + Main.getPlugin().getConfig().getBoolean("hardcore.giantDeathTitle", false));
@@ -39,34 +38,13 @@ public class HardCoreCommand implements TabExecutor {
                     Main.getPlugin().handleHardcoreModus();
                     sender.sendMessage(prefix + ChatColor.RED + "You have " + (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) ? "enabled" : "disabled") + " the hardcore mode!");
                     return true;
-                case "toggleGiantDeathTitle":
+                }
+                case "toggleGiantDeathTitle" -> {
                     Main.getPlugin().getConfig().set("hardcore.giantDeathTitle", !Main.getPlugin().getConfig().getBoolean("hardcore.giantDeathTitle", false));
                     Main.getPlugin().saveConfig();
                     sender.sendMessage(prefix + ChatColor.RED + "Giant Title is now set to " + Main.getPlugin().getConfig().getBoolean("hardcore.giantDeathTitle", false));
                     return true;
-                case "resetPvpCooldown":
-                    Main.getPlugin().getConfig().set("hardcore.pvpCooldown", !Main.getPlugin().getConfig().getBoolean("hardcore.pvpCooldown", false));
-                    Main.getPlugin().saveConfig();
-                   // Main.getPlugin().handlePvpCooldown(false);
-                    sender.sendMessage(prefix + ChatColor.RED + "PvP Cooldown is now set to " + Main.getPlugin().getConfig().getBoolean("hardcore.pvpCooldown", false));
-                    return true;
-                case "startPvpCooldown":
-                    Main.getPlugin().getConfig().set("hardcore.pvpCooldown", true);
-                    Main.getPlugin().saveConfig();
-                    //Main.getPlugin().handlePvpCooldown(true);
-                    sender.sendMessage(prefix + ChatColor.RED + "You started the PvP Cooldown!");
-                    return true;
-                case "stopPvpCooldown":
-                    Main.getPlugin().getConfig().set("hardcore.pvpCooldown", false);
-                    Main.getPlugin().saveConfig();
-                    Bukkit.getOnlinePlayers().forEach(p -> {
-                        //p.hideBossBar(Main.getPlugin().bar);
-                        //p.getWorld().setPVP(true);
-                        //p.showTitle(Title.title(Component.text(ChatColor.RED + "PvP is now enabled!"), Component.empty()));
-                    });
-                    //Main.getPlugin().runnable.cancel();
-                    sender.sendMessage(prefix + ChatColor.RED + "You stopped the PvP Cooldown!");
-                    return true;
+                }
             }
         } else if (args.length == 2) {
             Player target = Bukkit.getPlayer(args[1]);
@@ -74,39 +52,23 @@ public class HardCoreCommand implements TabExecutor {
                 sender.sendMessage(prefix + ChatColor.RED + "This player was not found!");
                 return true;
             }
-            switch (args[0]) {
-                case "revivePlayer":
-                    target.setGameMode(GameMode.SURVIVAL);
-                    target.setHealth(20);
-                    target.setFoodLevel(20);
-                    target.setHealthScale(20);
-                    target.setSilent(false);
-                    target.setAffectsSpawning(true);
-                    target.setInvulnerable(false);
-                    target.setCollidable(true);
-                    target.setSleepingIgnored(false);
-                    target.playerListName(target.name());
-                    target.displayName(target.name());
-                    target.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-                    target.sendMessage(prefix + ChatColor.GREEN + "You have been revived!");
-                    sender.sendMessage(prefix + ChatColor.RED + "You revived " + target.getName() + "!");
-                    break;
-                case "resetPvpCooldown":
-                    Main.getPlugin().getConfig().set("pvpCooldown." + target.getUniqueId(), 180);
-                    Main.getPlugin().saveConfig();
-                    target.sendMessage(prefix + ChatColor.GREEN + "Your PvP Cooldown has been reset!");
-                    sender.sendMessage(prefix + ChatColor.RED + "You reset the PvP Cooldown for " + target.getName() + "!");
-                    break;
-                case "startPvpCooldown":
-                    //if (Main.pvpCooldowns.containsKey(target)) {
-                    //    sender.sendMessage(prefix + ChatColor.RED + "This player is already in the PvP Cooldown!");
-                    //   return true;
-                    //}
-                    break;
-                case "stopPvpCooldown":
-                    break;
+            if (args[0].equalsIgnoreCase("revivePlayer")) {
+                target.setGameMode(GameMode.SURVIVAL);
+                target.setHealth(20);
+                target.setFoodLevel(20);
+                target.setHealthScale(20);
+                target.setSilent(false);
+                target.setAffectsSpawning(true);
+                target.setInvulnerable(false);
+                target.setCollidable(true);
+                target.setSleepingIgnored(false);
+                target.playerListName(target.name());
+                target.displayName(target.name());
+                target.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+                target.sendMessage(prefix + ChatColor.GREEN + "You have been revived!");
+                sender.sendMessage(prefix + ChatColor.RED + "You revived " + target.getName() + "!");
             }
-        } else sender.sendMessage(prefix + ChatColor.RED + "Syntax: /hardcore <toggleHardcoreMode|toggleGiantDeathTitle|togglePvpCooldown|startPvpCooldown>");
+        } else sender.sendMessage(prefix + ChatColor.RED + "Syntax: /hardcore <toggleHardcoreMode | toggleGiantDeathTitle | revivePlayer>");
         return false;
     }
 
@@ -115,15 +77,10 @@ public class HardCoreCommand implements TabExecutor {
         List<String> tab = new ArrayList<>();
         if (args.length == 1) {
             tab.add("toggleGiantDeathTitle");
-            tab.add("togglePvpCooldown");
-            tab.add("startPvpCooldown");
-            tab.add("stopPvpCooldown");
             tab.add("toggleHardcoreMode");
             tab.add("revivePlayer");
-            tab.add("resetPvpCooldown");
         } else if (args.length == 2) {
-            //if (args[0].equalsIgnoreCase("revivePlayer"))
-                Bukkit.getOnlinePlayers().forEach(p -> tab.add(p.getName()));
+            Bukkit.getOnlinePlayers().forEach(p -> tab.add(p.getName()));
         }
         return tab;
     }

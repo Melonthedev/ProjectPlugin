@@ -42,10 +42,10 @@ public class PlayerJoinListener implements Listener {
             Bukkit.getOnlinePlayers().forEach(player -> player.playSound(event.getPlayer(), Sound.ENTITY_GOAT_SCREAMING_AMBIENT, 1.0F, 0.5F));
         }
 
+        //PVP COOLDOWN
+        PvpCooldownSystem.handleForPlayer(event.getPlayer());
+
         //HARDCORE
-        //if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) && Main.getPlugin().getConfig().getBoolean("projectActive", false)) {
-            PvpCooldownSystem.handleForPlayer(event.getPlayer());
-        //}
         Main.getPlugin().handlePlayerJoinSpectatorVisibility(event.getPlayer());
         if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) && (event.getPlayer().getGameMode() == GameMode.SPECTATOR || event.getPlayer().isDead())) {
             event.getPlayer().playerListName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));

@@ -1,13 +1,8 @@
 package wtf.melonthedev.projectplugin.utils;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.PvpCooldown;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -20,24 +15,37 @@ public class PvpCooldownSystem {
     }
 
     public static void handleForPlayer(Player player) {
-        if (Main.getPlugin().getConfig().getInt("pvpCooldown." + player.getUniqueId(), 180) == 0) return;
+        if (Main.getPlugin().getConfig().getInt("pvpCooldown." + player.getUniqueId(), (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || Lifesteal.isLifestealActive()) ? 180 : 0) == 0) return;
         if (!pvpCooldowns.containsKey(player.getUniqueId()))
             pvpCooldowns.put(player.getUniqueId(), new PvpCooldown(player.getUniqueId(), 180));
-        int ticksPlayedSinceStart = player.getStatistic(Statistic.TOTAL_WORLD_TIME);
-        int minutesPlayedSinceStart = (ticksPlayedSinceStart / 20) / 60;
-
-        if (!Main.getPlugin().getConfig().getBoolean("projectActive", false) || minutesPlayedSinceStart >= pvpCooldowns.get(player.getUniqueId()).getTotalMinutes()) return;
-        pvpCooldowns.get(player.getUniqueId()).start();
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "PvP Cooldown ist aktiv! Überspringe mit /skipPvpCooldown"));
+        //int ticksPlayedSinceStart = player.getStatistic(Statistic.TOTAL_WORLD_TIME);
+        //int minutesPlayedSinceStart = (ticksPlayedSinceStart / 20) / 60;
+        //if (!Main.getPlugin().getConfig().getBoolean("projectActive", false) || minutesPlayedSinceStart >= pvpCooldowns.get(player.getUniqueId()).getTotalMinutes()) return;
+        if (pvpCooldowns.get(player.getUniqueId()).getRemainingMinutes() > 0)
+            pvpCooldowns.get(player.getUniqueId()).start();
     }
 
-    public static void stopForPlayer(Player player) {
+    public static void startForPlayer(UUID uuid, int minutes) {
+        pvpCooldowns.put(uuid, new PvpCooldown(uuid, minutes));
+        pvpCooldowns.get(uuid).start();
+    }
+
+    public static void disableForPlayer(Player player) {
         if (pvpCooldowns.containsKey(player.getUniqueId()))
-            pvpCooldowns.get(player.getUniqueId()).stop();
+            pvpCooldowns.get(player.getUniqueId()).disable();
+    }
+
+    public static void disableForAllPlayers() {
+        Bukkit.getOnlinePlayers().forEach(PvpCooldownSystem::disableForPlayer);
+    }
+
+    public static void pauseForPlayer(Player player) {
+        if (pvpCooldowns.containsKey(player.getUniqueId()))
+            pvpCooldowns.get(player.getUniqueId()).pause();
     }
 
     public static void resetAllPvpCooldowns() {
-        pvpCooldowns.forEach((uuid, pvpCooldown) -> pvpCooldown.stop());
+        pvpCooldowns.forEach((uuid, pvpCooldown) -> pvpCooldown.pause());
         pvpCooldowns.clear();
     }
 }

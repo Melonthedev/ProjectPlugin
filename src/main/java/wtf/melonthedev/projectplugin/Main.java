@@ -69,7 +69,7 @@ public final class Main extends JavaPlugin {
         getLogger().log(Level.INFO, "**********************");
         getLogger().log(Level.INFO, "*** Project Plugin ***");
         getLogger().log(Level.INFO, "*** by Melonthedev ***");
-        getLogger().log(Level.INFO, "**+* and Stebadon  ****");
+        getLogger().log(Level.INFO, "**** and Stebadon  ****");
         getLogger().log(Level.INFO, "**********************");
 
         //COMMAND REGISTRATION
@@ -94,6 +94,7 @@ public final class Main extends JavaPlugin {
         getCommand("skippvpcooldown").setExecutor(new SkipPvpCooldownCommand());
         getCommand("withdraw").setExecutor(new WithdrawHeartCommand());
         getCommand("lifesteal").setExecutor(new LifestealCommand());
+        getCommand("pvpcooldown").setExecutor(new PvpCooldownCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 

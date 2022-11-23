@@ -21,8 +21,7 @@ public class PlayerQuitListener implements Listener {
         }
         AfkSystem.handlePlayersSleepingPercentage();
         Component quitMsg = event.quitMessage();
-        if (quitMsg == null) return;
-        PvpCooldownSystem.stopForPlayer(event.getPlayer());
+        PvpCooldownSystem.pauseForPlayer(event.getPlayer());
         if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", true) && event.getPlayer().getGameMode() == GameMode.SPECTATOR) {
             event.quitMessage(Component.text(ChatColor.RED + "<<" + ChatColor.GRAY + " [Survivalprojekt] " + ChatColor.stripColor(PlainTextComponentSerializer.plainText().serialize(quitMsg)) + " :("));
             return;

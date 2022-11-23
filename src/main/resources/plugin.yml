@@ -72,3 +72,5 @@ commands:
     description: Skips the PvP Cooldown
   withdraw:
     description: gib mir herzen
+  pvpcooldown:
+    description: PvP Cooldown Settings [TEAM ONLY]
