@@ -8,9 +8,7 @@ import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,10 +21,7 @@ import wtf.melonthedev.projectplugin.utils.Lifesteal;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -160,6 +155,38 @@ public final class Main extends JavaPlugin {
         framerecipe.setIngredient('A', Material.AMETHYST_SHARD);
 
         Bukkit.addRecipe(framerecipe);
+
+        //Construction Heart
+        ItemStack csheart = new ItemStack(Material.FERMENTED_SPIDER_EYE);
+        ItemMeta csheartmeta = csheart.getItemMeta();
+        NamespacedKey csheartkey = new NamespacedKey(this, "construction_heart");
+        csheartmeta.displayName(Component.text(ChatColor.WHITE + "Construction Heart"));
+        csheartmeta.getPersistentDataContainer().set(csheartkey, PersistentDataType.BYTE, (byte) 1);
+        ArrayList<Component> lorelist = new ArrayList<>();
+        lorelist.add(Component.text("Add Netherstar"));
+        lorelist.add(Component.text("in Smithing Table"));
+        csheartmeta.lore(lorelist);
+        csheart.setItemMeta(csheartmeta);
+
+        ShapedRecipe csheartrecipe = new ShapedRecipe(csheartkey, csheart);
+        csheartrecipe.shape("RNR", "DHD", "RTR");
+        csheartrecipe.setIngredient('R', Material.REDSTONE_WIRE);
+        csheartrecipe.setIngredient('N', Material.NETHERITE_INGOT);
+        csheartrecipe.setIngredient('D', Material.DIAMOND_BLOCK);
+        csheartrecipe.setIngredient('H', Material.HEART_OF_THE_SEA);
+        csheartrecipe.setIngredient('T', Material.TOTEM_OF_UNDYING);
+
+        Bukkit.addRecipe(csheartrecipe);
+
+        //Heart
+        NamespacedKey heartkey = new NamespacedKey(this, "heart");
+        ItemStack heart = Lifesteal.getHeartItem();
+        SmithingRecipe heartrecipe = new SmithingRecipe(heartkey, heart,
+                new RecipeChoice.ExactChoice(csheart),
+                new RecipeChoice.MaterialChoice(Material.NETHER_STAR));
+
+        Bukkit.addRecipe(heartrecipe);
+
     }
 
     public void handleSeeSpectators() {
