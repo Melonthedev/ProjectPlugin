@@ -45,7 +45,7 @@ public class Lifesteal {
     public static ItemStack getHeartItem() {
         ItemStack heart = new ItemStack(Material.FERMENTED_SPIDER_EYE);
         ItemMeta heartmeta = heart.getItemMeta();
-        heartmeta.displayName(Component.text(ChatColor.DARK_RED + "Herz"));
+        heartmeta.displayName(Component.text(ChatColor.DARK_RED + "Heart"));
         heartmeta.addEnchant(Enchantment.CHANNELING, 1, true);
         heartmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         heartmeta.getPersistentDataContainer().set(new NamespacedKey(Main.getPlugin(), "heart"), PersistentDataType.BYTE, (byte) 1);

@@ -146,20 +146,20 @@ public final class Main extends JavaPlugin {
 
     public void handleCustomRecpies() {
         //Invisible ItemFrame
-        ItemStack item = new ItemStack(Material.ITEM_FRAME);
-        ItemMeta meta = item.getItemMeta();
-        NamespacedKey key = new NamespacedKey(this, "invisible_item_frame");
-        meta.displayName(Component.text(ChatColor.WHITE + "Invisible Item Frame"));
-        meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
-        meta.addEnchant(Enchantment.CHANNELING, 1,true);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        item.setItemMeta(meta);
-        ShapedRecipe recipe = new ShapedRecipe(key, item);
-        recipe.shape("SSS", "SAS", "SSS");
-        recipe.setIngredient('S', Material.STICK);
-        recipe.setIngredient('A', Material.AMETHYST_SHARD);
+        ItemStack itemframe = new ItemStack(Material.ITEM_FRAME);
+        ItemMeta framemeta = itemframe.getItemMeta();
+        NamespacedKey framekey = new NamespacedKey(this, "invisible_item_frame");
+        framemeta.displayName(Component.text(ChatColor.WHITE + "Invisible Item Frame"));
+        framemeta.getPersistentDataContainer().set(framekey, PersistentDataType.BYTE, (byte) 1);
+        framemeta.addEnchant(Enchantment.CHANNELING, 1,true);
+        framemeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        itemframe.setItemMeta(framemeta);
+        ShapedRecipe framerecipe = new ShapedRecipe(framekey, itemframe);
+        framerecipe.shape("SSS", "SAS", "SSS");
+        framerecipe.setIngredient('S', Material.STICK);
+        framerecipe.setIngredient('A', Material.AMETHYST_SHARD);
 
-        Bukkit.addRecipe(recipe);
+        Bukkit.addRecipe(framerecipe);
     }
 
     public void handleSeeSpectators() {
