@@ -49,7 +49,7 @@ public class LifestealCommand implements TabExecutor {
                 case "setheartcount":
                     int count;
                     try {
-                        count = Integer.parseInt(args[0]);
+                        count = Integer.parseInt(args[2]);
                         Lifesteal.setHeartCount(target.getUniqueId(), count);
                         sender.sendMessage(prefix + "Success! Set heartcount of " + target.getName() + " to " + count);
                     } catch(NumberFormatException exception) {
@@ -59,7 +59,7 @@ public class LifestealCommand implements TabExecutor {
                 case "addheart":
                     int addcount;
                     try {
-                        addcount = Integer.parseInt(args[0]);
+                        addcount = Integer.parseInt(args[2]);
                     } catch(NumberFormatException exception) {
                         sender.sendMessage(prefix + ChatColor.RED + "Syntaxerror: do /lifesteal addHeart " + ChatColor.ITALIC + "<Player> <Anzahl>");
                         return true;
@@ -73,7 +73,7 @@ public class LifestealCommand implements TabExecutor {
                 case "removeheart":
                     int removecount;
                     try {
-                        removecount = Integer.parseInt(args[0]);
+                        removecount = Integer.parseInt(args[2]);
                     } catch(NumberFormatException exception) {
                         sender.sendMessage(prefix + ChatColor.RED + "Syntaxerror: do /lifesteal addHeart " + ChatColor.ITALIC + "<Player> <Anzahl>");
                         return true;

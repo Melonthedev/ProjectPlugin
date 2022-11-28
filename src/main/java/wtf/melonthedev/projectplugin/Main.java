@@ -170,7 +170,7 @@ public final class Main extends JavaPlugin {
 
         ShapedRecipe csheartrecipe = new ShapedRecipe(csheartkey, csheart);
         csheartrecipe.shape("RNR", "DHD", "RTR");
-        csheartrecipe.setIngredient('R', Material.REDSTONE_WIRE);
+        csheartrecipe.setIngredient('R', Material.REDSTONE);
         csheartrecipe.setIngredient('N', Material.NETHERITE_INGOT);
         csheartrecipe.setIngredient('D', Material.DIAMOND_BLOCK);
         csheartrecipe.setIngredient('H', Material.HEART_OF_THE_SEA);
