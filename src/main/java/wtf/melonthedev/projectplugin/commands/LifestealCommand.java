@@ -63,7 +63,7 @@ public class LifestealCommand implements TabExecutor {
         }
 
         if (args.length < 2) {
-            sender.sendMessage(prefix + ChatColor.RED + "Syntax: /lifesteal <" + Arrays.toString(subCommands).replace(", ", " | ").replace("[", "").replace("]", "") + ">");
+            sender.sendMessage(prefix + ChatColor.RED + "Syntax: /lifesteal " + Arrays.toString(subCommands).replace(", ", " | ").replace("[", "<").replace("]", ">"));
             return true;
         }
 
