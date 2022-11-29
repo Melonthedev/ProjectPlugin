@@ -37,6 +37,10 @@ public class LifestealCommand implements TabExecutor {
             sender.sendMessage(prefix + ChatColor.RED + "You are not allowed to use this command.");
             return true;
         }
+        if (!Lifesteal.isLifestealActive()){
+            sender.sendMessage(Lifesteal.prefix + ChatColor.RED + "Lifesteal is not active.");
+            return true;
+        }
 
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("enable")) {
