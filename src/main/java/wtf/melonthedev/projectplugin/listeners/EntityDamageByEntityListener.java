@@ -16,7 +16,7 @@ public class EntityDamageByEntityListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (LocationUtils.isLocationInSpawnArea(event.getEntity().getLocation()) && event.getEntity() instanceof Player) {
+        if (LocationUtils.isLocationInSpawnArea(event.getEntity().getLocation())) {
             event.setCancelled(true);
         }
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player && PvpCooldownSystem.pvpCooldowns.containsKey(event.getDamager().getUniqueId()) && Main.getPlugin().getConfig().getBoolean("projectActive", false)) {
