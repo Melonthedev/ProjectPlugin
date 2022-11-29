@@ -16,6 +16,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.ItemStacks;
+import wtf.melonthedev.projectplugin.utils.Lifesteal;
 import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
 
 import java.util.Arrays;
@@ -26,6 +27,11 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         ActionLogger.logAction(event.getEntity().getName(), "died", event.getEntity().getLocation(), "\"" + PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(event.deathMessage())) + "\"", "", true);
+
+        if (Lifesteal.isLifestealActive()) {
+            Lifesteal.removeHeart(event.getPlayer().getUniqueId(), 1);
+            if (event.getPlayer().getKiller() != null) Lifesteal.giveHeart(event.getPlayer().getKiller().getUniqueId(), 1);
+        }
 
         if (Main.getPlugin().getConfig().getBoolean("hardcore.giantDeathTitle", false))
             Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Main.getPlugin().getMiniMessageComponent("<red>" + event.getPlayer().getName() + " died.</red>"), event.deathMessage() == null ? Component.text("") : Component.text(ChatColor.BLUE + PlainTextComponentSerializer.plainText().serialize(event.deathMessage())))));

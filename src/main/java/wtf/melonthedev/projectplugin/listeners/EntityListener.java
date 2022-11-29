@@ -10,7 +10,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -39,9 +41,15 @@ public class EntityListener implements Listener {
         event.setCancelled(true);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onItemDrop(EntityDropItemEvent event) {
+        if (!LocationUtils.isLocationInSpawnArea(event.getEntity().getLocation())) return;
+        event.setCancelled(true);
+    }
+
     @EventHandler
     public void onMove(EntityMoveEvent event) {
-        if (!(event.getEntity() instanceof Player) && LocationUtils.isLocationInSpawnArea(event.getTo())) event.getEntity().setVelocity(event.getEntity().getFacing().getDirection().multiply(-1));
+        if (!(event.getEntity() instanceof Player) && LocationUtils.isLocationInSpawnArea(event.getTo())) event.getEntity().setVelocity(event.getEntity().getFacing().getDirection().multiply(-2));
     }
 
     @EventHandler

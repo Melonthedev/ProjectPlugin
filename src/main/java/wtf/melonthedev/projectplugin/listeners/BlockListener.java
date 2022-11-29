@@ -5,7 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.PrepareSmithingEvent;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.utils.Lifesteal;
 
 import java.util.HashMap;
 
@@ -14,6 +16,15 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
 
+    }
+
+    @EventHandler
+    public void onCraft(PrepareSmithingEvent event) {
+        if (event.getInventory().getInputEquipment().getItemMeta().getDisplayName().equals(Lifesteal.getConstructionHeartItem().getItemMeta().getDisplayName())
+                && event.getInventory().getInputMineral().getType() == Material.NETHER_STAR
+                && Lifesteal.isLifestealActive()) {
+            event.setResult(Lifesteal.getHeartItem());
+        }
     }
 
     @EventHandler

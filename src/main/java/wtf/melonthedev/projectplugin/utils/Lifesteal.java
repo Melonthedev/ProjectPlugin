@@ -9,6 +9,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -118,7 +119,11 @@ public class Lifesteal {
     }
 
     public static void eliminatePlayer(UUID uuid) {
-        //TODO
+        Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, 0);
+        Main.getPlugin().saveConfig();
+        Player target = Bukkit.getPlayer(uuid);
+        if (target == null) return;
+        target.kick(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.RESET + "You lost all your hearts.\n" + ChatColor.GREEN + "Ask your friends to revive you.\n" + ChatColor.GOLD + "Don't give up!"), PlayerKickEvent.Cause.BANNED);
     }
 
     public static void validateHearts(Player player) {
@@ -135,7 +140,7 @@ public class Lifesteal {
 
     public static void handleLogin(AsyncPlayerPreLoginEvent event) {
         if (Main.getPlugin().getConfig().getInt("lifesteal.hearts." + event.getUniqueId(), 20) == 0 && isLifestealActive()) {
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.RESET + "You lost all your hearts.\nAsk your friends to revive you."));
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.RESET + "You lost all your hearts.\n" + ChatColor.GREEN + "Ask your friends to revive you."));
         }
     }
 

@@ -35,7 +35,6 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Main.getPlugin().setCustomPlayerListHeader(event.getPlayer());
 
-
         //FIRST JOIN
         if (!event.getPlayer().hasPlayedBefore()) {
             Bukkit.getServer().broadcast(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + event.getPlayer().getName() + ", Herzlich Willkommen auf Survivalprojekt!"));
@@ -44,6 +43,9 @@ public class PlayerJoinListener implements Listener {
 
         //PVP COOLDOWN
         PvpCooldownSystem.handleForPlayer(event.getPlayer());
+
+        //LIFESTEAL
+        Lifesteal.validateHearts(event.getPlayer());
 
         //HARDCORE
         Main.getPlugin().handlePlayerJoinSpectatorVisibility(event.getPlayer());

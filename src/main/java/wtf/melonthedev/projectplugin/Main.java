@@ -157,18 +157,10 @@ public final class Main extends JavaPlugin {
         Bukkit.addRecipe(framerecipe);
 
         //Construction Heart
-        ItemStack csheart = new ItemStack(Material.FERMENTED_SPIDER_EYE);
-        ItemMeta csheartmeta = csheart.getItemMeta();
-        NamespacedKey csheartkey = new NamespacedKey(this, "construction_heart");
-        csheartmeta.displayName(Component.text(ChatColor.WHITE + "Construction Heart"));
-        csheartmeta.getPersistentDataContainer().set(csheartkey, PersistentDataType.BYTE, (byte) 1);
-        ArrayList<Component> lorelist = new ArrayList<>();
-        lorelist.add(Component.text("Add Netherstar"));
-        lorelist.add(Component.text("in Smithing Table"));
-        csheartmeta.lore(lorelist);
-        csheart.setItemMeta(csheartmeta);
+        ItemStack csheart = Lifesteal.getConstructionHeartItem();
+        NamespacedKey csheartrecipekey = new NamespacedKey(this, "construction_heart_recipe");
 
-        ShapedRecipe csheartrecipe = new ShapedRecipe(csheartkey, csheart);
+        ShapedRecipe csheartrecipe = new ShapedRecipe(csheartrecipekey, csheart);
         csheartrecipe.shape("RNR", "DHD", "RTR");
         csheartrecipe.setIngredient('R', Material.REDSTONE);
         csheartrecipe.setIngredient('N', Material.NETHERITE_INGOT);
@@ -179,14 +171,20 @@ public final class Main extends JavaPlugin {
         Bukkit.addRecipe(csheartrecipe);
 
         //Heart
-        NamespacedKey heartkey = new NamespacedKey(this, "heart");
+        NamespacedKey heartrecipekey = new NamespacedKey(this, "heart_recipe");
         ItemStack heart = Lifesteal.getHeartItem();
-        SmithingRecipe heartrecipe = new SmithingRecipe(heartkey, heart,
-                new RecipeChoice.ExactChoice(csheart),
-                new RecipeChoice.MaterialChoice(Material.NETHER_STAR));
+        //SmithingRecipe heartrecipe = new SmithingRecipe(heartrecipekey, Lifesteal.getHeartItem(),
+        //        new RecipeChoice.ExactChoice(Lifesteal.getConstructionHeartItem()),
+        //        new RecipeChoice.MaterialChoice(Material.NETHER_STAR));
 
-        Bukkit.addRecipe(heartrecipe);
+        //Bukkit.addRecipe(heartrecipe);
 
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            player.discoverRecipe(framekey);
+            player.discoverRecipe(csheartrecipekey);
+            //player.discoverRecipe(heartrecipekey);
+        });
     }
 
     public void handleSeeSpectators() {
