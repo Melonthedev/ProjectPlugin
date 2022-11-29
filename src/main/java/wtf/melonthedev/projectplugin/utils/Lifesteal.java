@@ -123,7 +123,7 @@ public class Lifesteal {
         Main.getPlugin().saveConfig();
         Player target = Bukkit.getPlayer(uuid);
         if (target == null) return;
-        target.kick(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.RESET + "You lost all your hearts.\n" + ChatColor.GREEN + "Ask your friends to revive you.\n" + ChatColor.GOLD + "Don't give up!"), PlayerKickEvent.Cause.BANNED);
+        target.kick(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.WHITE + "You lost all your hearts.\n" + ChatColor.AQUA + "Ask your friends to revive you.\n" + ChatColor.GOLD + "Don't give up!"), PlayerKickEvent.Cause.BANNED);
     }
 
     public static void validateHearts(Player player) {
@@ -140,7 +140,7 @@ public class Lifesteal {
 
     public static void handleLogin(AsyncPlayerPreLoginEvent event) {
         if (Main.getPlugin().getConfig().getInt("lifesteal.hearts." + event.getUniqueId(), 20) == 0 && isLifestealActive()) {
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.RESET + "You lost all your hearts.\n" + ChatColor.GREEN + "Ask your friends to revive you."));
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.WHITE + "You lost all your hearts.\n" + ChatColor.AQUA + "Ask your friends to revive you."));
         }
     }
 

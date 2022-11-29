@@ -29,76 +29,65 @@ public class LifestealCommand implements TabExecutor {
         }
         OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[1]);
         if (target == null) {
-            sender.sendMessage(prefix + ChatColor.RED + "Error: This player was not found!");
+            sender.sendMessage(prefix + ChatColor.RED + "Player was not found!");
             return true;
         }
         if (args.length == 2) {
             switch (args[0].toLowerCase()) {
                 case "addheart" -> {
                     Lifesteal.giveHeart(target.getUniqueId(), 1);
-                    sender.sendMessage(prefix + "Success! Added 1 heart to " + target.getName());
+                    sender.sendMessage(prefix + "Added 1 heart to " + target.getName());
                 }
                 case "removeheart" -> {
                     Lifesteal.removeHeart(target.getUniqueId(), 1);
-                    sender.sendMessage(prefix + "Success! Removed 1 heart from " + target.getName());
+                    sender.sendMessage(prefix + "Removed 1 heart from " + target.getName());
                 }
-                case "getheartcount" -> sender.sendMessage(prefix + target.getName() + " has " + Lifesteal.getHeartCount(target.getUniqueId()) + " Hearts!");
+                case "revive" -> {
+                    Lifesteal.revivePlayer(target.getUniqueId());
+                    sender.sendMessage(prefix + "Revived " + target.getName());
+                }
+                case "eliminate" -> {
+                    Lifesteal.eliminatePlayer(target.getUniqueId());
+                    sender.sendMessage(prefix + "Eliminated " + target.getName());
+                }
+                case "getheartcount" -> sender.sendMessage(prefix + target.getName() + " has " + Lifesteal.getHeartCount(target.getUniqueId()) + " Heart" + (Lifesteal.getHeartCount(target.getUniqueId()) != 1 ? "s!" : "!"));
             }
         } else if (args.length == 3) {
             switch (args[0].toLowerCase()) {
-                case "setheartcount":
-                    int count;
-                    try {
-                        count = Integer.parseInt(args[2]);
-                        Lifesteal.setHeartCount(target.getUniqueId(), count);
-                        sender.sendMessage(prefix + "Success! Set heartcount of " + target.getName() + " to " + count);
-                    } catch(NumberFormatException exception) {
-                        sender.sendMessage(prefix + ChatColor.RED + "Syntaxerror: do /lifesteal setHeartCount " + ChatColor.ITALIC + "<Player> <Anzahl>");
-                    }
-                    break;
-                case "addheart":
-                    int addcount;
-                    try {
-                        addcount = Integer.parseInt(args[2]);
-                    } catch(NumberFormatException exception) {
-                        sender.sendMessage(prefix + ChatColor.RED + "Syntaxerror: do /lifesteal addHeart " + ChatColor.ITALIC + "<Player> <Anzahl>");
-                        return true;
-                    }
-                    if (addcount < 0) {
-                        sender.sendMessage(prefix + ChatColor.RED + "Error: number must be positive");
-                        return true;
-                    }
-                    Lifesteal.giveHeart(target.getUniqueId(), addcount);
-                    sender.sendMessage(prefix + "Success! Added " + addcount + " heart(s) to " + target.getName());
-                case "removeheart":
-                    int removecount;
-                    try {
-                        removecount = Integer.parseInt(args[2]);
-                    } catch(NumberFormatException exception) {
-                        sender.sendMessage(prefix + ChatColor.RED + "Syntaxerror: do /lifesteal addHeart " + ChatColor.ITALIC + "<Player> <Anzahl>");
-                        return true;
-                    }
-                    if (removecount < 0) {
-                        sender.sendMessage(prefix + ChatColor.RED + "Error: number must be positive");
-                        return true;
-                    }
-                    Lifesteal.removeHeart(target.getUniqueId(), removecount);
-                    sender.sendMessage(prefix + "Success! Removed " + removecount + " heart(s) from " + target.getName());
-                    break;
-                case "revive":
-                    Lifesteal.revivePlayer(target.getUniqueId());
-                    sender.sendMessage(prefix + "Success! Revived " + target.getName());
-
-                    break;
-                case "eliminate":
-                    Lifesteal.eliminatePlayer(target.getUniqueId());
-                    sender.sendMessage(prefix + "Success! Eliminated " + target.getName());
-                    break;
+                case "setheartcount" -> {
+                    int count = getHeartCountFromString(args[2], sender);
+                    Lifesteal.setHeartCount(target.getUniqueId(), count);
+                    sender.sendMessage(prefix + "Set heartcount of " + target.getName() + " to " + count);
+                }
+                case "addheart" -> {
+                    int count = getHeartCountFromString(args[2], sender);
+                    Lifesteal.giveHeart(target.getUniqueId(), count);
+                    sender.sendMessage(prefix + "Added " + count + " heart" + (count != 1 ? "s" : "") + " from " + target.getName());
+                }
+                case "removeheart" -> {
+                    int count = getHeartCountFromString(args[2], sender);
+                    Lifesteal.removeHeart(target.getUniqueId(), count);
+                    sender.sendMessage(prefix + "Removed " + count + " heart" + (count != 1 ? "s" : "") + " from " + target.getName());
                 }
             }
+        }
         return false;
     }
 
+    public int getHeartCountFromString(String s, CommandSender sender) {
+        int count;
+        try {
+            count = Integer.parseInt(s);
+        } catch (NumberFormatException exception) {
+            sender.sendMessage(Lifesteal.prefix + ChatColor.RED + "Syntaxerror: /lifesteal setHeartCount " + ChatColor.ITALIC + "<Player> <Anzahl>");
+            return 0;
+        }
+        if (count < 0) {
+            sender.sendMessage(Lifesteal.prefix + ChatColor.RED + "Error: Number must be positive");
+            return 0;
+        }
+        return count;
+    }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
