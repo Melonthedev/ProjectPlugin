@@ -25,12 +25,18 @@ public class PlayerInteractListener implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         NamespacedKey key = new NamespacedKey(Main.getPlugin(), "heart");
         if (!event.hasItem()) return;
-        if (event.getAction() != Action.RIGHT_CLICK_AIR) return;
+
         if (event.getItem() == null) return;
         if (event.getItem().getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.BYTE) && event.getItem().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.BYTE) == 1){
             ItemStack heart = event.getItem();
+            if (Lifesteal.getHeartCount(event.getPlayer().getUniqueId()) >= 20){
+                event.getPlayer().sendMessage(Lifesteal.prefix + ChatColor.RED + "Error: You reached the maximum count of hearts.");
+                event.setCancelled(true);
+                return;
+            }
             Lifesteal.addHeartItemToPlayer(event.getPlayer(), heart);
         }
+        if (event.getAction() == Action.RIGHT_CLICK_AIR) return;
         if (event.getItem().getType() != Material.FIREWORK_ROCKET) return;
         if (event.getPlayer().getEquipment() == null
                 || event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST) == null
