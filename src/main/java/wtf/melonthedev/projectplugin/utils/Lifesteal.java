@@ -101,7 +101,7 @@ public class Lifesteal {
 
     public static void setHeartCount(UUID uuid, Integer count){
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
-        Main.getPlugin().getConfig().set("lifesteal.herarts." + uuid, count);
+        Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, count);
         Main.getPlugin().saveConfig();
         Player player = Bukkit.getPlayer(uuid);
         if (player != null) validateHearts(player);
