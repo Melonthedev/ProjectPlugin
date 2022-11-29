@@ -123,6 +123,7 @@ public class Lifesteal {
         Main.getPlugin().saveConfig();
         Player target = Bukkit.getPlayer(uuid);
         if (target == null) return;
+        target.getInventory().clear();
         target.kick(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.WHITE + "You lost all your hearts.\n" + ChatColor.AQUA + "Ask your friends to revive you.\n" + ChatColor.GOLD + "Don't give up!"), PlayerKickEvent.Cause.BANNED);
     }
 
@@ -145,6 +146,7 @@ public class Lifesteal {
     }
 
     public static void withdrawHeartToItem(Player player, Integer count) {
+        if (!isLifestealActive()) return;
         removeHeart(player.getUniqueId(), count);
         ItemStack temp = getHeartItem().clone();
         temp.setAmount(count);
@@ -153,6 +155,10 @@ public class Lifesteal {
     }
 
     public static void addHeartItemToPlayer(Player player, ItemStack heart) {
+        if (!isLifestealActive()) return;
+        if (getHeartCount(player.getUniqueId()) >= 20) {
+            player.sendMessage(prefix + "You have reached the maximum amount of hearts possible.");
+        }
         heart.setAmount(heart.getAmount() - 1);
         giveHeart(player.getUniqueId(), 1);
     }

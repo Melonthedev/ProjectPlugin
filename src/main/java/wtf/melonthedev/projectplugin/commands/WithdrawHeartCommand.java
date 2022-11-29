@@ -16,6 +16,10 @@ public class WithdrawHeartCommand implements CommandExecutor, Listener {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
 
         if(!(sender instanceof Player player)) return true;
+        if (!Lifesteal.isLifestealActive()) {
+            player.sendMessage(Lifesteal.prefix+ "Lifesteal is not active!");
+            return true;
+        }
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + player.getUniqueId(), Lifesteal.getDefaultHeartCount());
         int count;
 
