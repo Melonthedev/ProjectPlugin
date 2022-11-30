@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.commands;
+package wtf.melonthedev.projectplugin.commands.moderation;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.utils.PlayerActivitySystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class CheckSusPlayerActivityCommand implements CommandExecutor {
         }
         sender.sendMessage(ChatColor.AQUA + "----- PlayerActivity of Player " + args[0] + ": ----- ");
         HashMap<Material, List<Integer>> minedValues = new HashMap<>();
-        for (HashMap<String, HashMap<Material, Integer>> entry : Main.collectedValuables) {
+        for (HashMap<String, HashMap<Material, Integer>> entry : PlayerActivitySystem.collectedValuables) {
            if (!entry.containsKey(args[0])) {
                sender.sendMessage(ChatColor.AQUA.toString() + ChatColor.ITALIC + "No Data for this hour!");
                continue;

@@ -16,7 +16,7 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        event.message(Main.getPlugin().getMiniMessageComponent(PlainTextComponentSerializer.plainText().serialize(event.message())));
+        event.message(Main.getPlugin().getMMComponent(PlainTextComponentSerializer.plainText().serialize(event.message())));
     }
 
 

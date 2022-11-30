@@ -6,8 +6,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.PrepareSmithingEvent;
-import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.Lifesteal;
+import wtf.melonthedev.projectplugin.utils.PlayerActivitySystem;
 
 import java.util.HashMap;
 
@@ -42,9 +42,9 @@ public class BlockListener implements Listener {
                 || material == Material.GOLD_ORE
                 || material == Material.ANCIENT_DEBRIS
                 || material == Material.NETHER_QUARTZ_ORE) {
-            if (!Main.getPlugin().getLatestPlayerActivityEntry().containsKey(event.getPlayer().getName()))
-                Main.getPlugin().getLatestPlayerActivityEntry().put(event.getPlayer().getName(), new HashMap<>());
-            Main.getPlugin().getLatestPlayerActivityEntry().get(event.getPlayer().getName()).put(material, Main.getPlugin().getLatestPlayerActivityEntry().get(event.getPlayer().getName()).getOrDefault(material, 0) + 1);
+            if (!PlayerActivitySystem.getLatestPlayerActivityEntry().containsKey(event.getPlayer().getName()))
+                PlayerActivitySystem.getLatestPlayerActivityEntry().put(event.getPlayer().getName(), new HashMap<>());
+            PlayerActivitySystem.getLatestPlayerActivityEntry().get(event.getPlayer().getName()).put(material, PlayerActivitySystem.getLatestPlayerActivityEntry().get(event.getPlayer().getName()).getOrDefault(material, 0) + 1);
         }
     }
 }

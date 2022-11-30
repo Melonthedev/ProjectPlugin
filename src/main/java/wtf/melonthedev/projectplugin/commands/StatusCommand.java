@@ -1,7 +1,6 @@
 package wtf.melonthedev.projectplugin.commands;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
@@ -52,7 +51,7 @@ public class StatusCommand implements TabExecutor {
         for (String s : args)
             sb.append(s).append(" ");
         String status = sb.substring(0, sb.length() - 1);
-        Component statusColor = Main.getPlugin().getMiniMessageComponent(status);
+        Component statusColor = Main.getPlugin().getMMComponent(status);
         int lengh = PlainTextComponentSerializer.plainText().serialize(statusColor).length();
         if (lengh > 30) {
             sender.sendMessage(ChatColor.RED + "Dein Status darf nicht länger als 30 Zeichen sein.");

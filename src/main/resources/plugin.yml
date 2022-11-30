@@ -4,29 +4,21 @@ main: wtf.melonthedev.projectplugin.Main
 api-version: 1.18
 authors: [ Melonthedev, Stebadon ]
 description: A little plugin for our project :)
-website: melonthedev.wtf
+website: mcsurvivalprojekt.de
 
 commands:
   status:
-    description: Setzt deinen persönlichen Status
-  #votekick:
-  #  description: Votekick Command
-  #lockchest:
-  #  description: LockChest Command
+    description: Sets a status in chat and tablist
+
   position:
-    description: Positionen in der Welt privat und öffentlich speichern
+    description: Create and list saved positions in the world
     aliases:
       - pos
+
   colorcodes:
     description: Farbcodes, die im Chat und in deinem Status genutzt werden können
     aliases:
       - colors
-
-  toggleendaccessibility:
-    description: ToggleEndAccessibility Command [TEAM ONLY]
-
-  logoutput:
-    description: LogOutput Command [TEAM ONLY]
 
   reply:
     description: Antwortet auf eine Nachricht, die an dich per /msg gesendet wurde
@@ -48,29 +40,54 @@ commands:
   deathlocation:
     description: Zeigt deine Todesposition an
 
-  spectatestebadon:
-    description: hmmmmmmmmmm SuS
   checksusplayeractivity:
-    description: hmmmmmmmmmm SuS PLAYER ACTIVITY
+    description: Check if a player mined suspiciously many ores
+
   afk:
     description: Just be AFK whenever you want if you dont want to wait
-  weristimnether:
-    description: Wer nervt mal wieder beim XP farmen...
-  tempban:
-    description: Bans a player temporarily [TEAM ONLY]
-  joinmessage:
-    description: Sets a joinmessage for a specific player [TEAM ONLY]
-  isee:
-    description: ISEEEEE YOU [TEAM ONLY]
-  hardcore:
-    description: Hardcore Settings [TEAM ONLY]
-  lifesteal:
-      description: Lifesteal Settings [TEAM ONLY]
-  survivalprojekt:
-    description: SurvivalProjekt Utils [TEAM ONLY]
+
   skippvpcooldown:
     description: Skips the PvP Cooldown
+
   withdraw:
     description: gib mir herzen
+
+  #DEPRECATED
+  spectatestebadon:
+    description: hmmmmmmmmmm SuS [Deprecated]
+  #votekick:
+  #  description: Votekick Command
+  #lockchest:
+  #  description: LockChest Command
+
+  #DONATORS ONLY COMMANDS
+  weristimnether:
+    description: Wer nervt mal wieder beim XP farmen... [Donators]
+
+  #TEAM ONLY COMMANDS
+  tempban:
+    description: Bans a player temporarily [TEAM ONLY]
+
+  joinmessage:
+    description: Sets a joinmessage for a specific player [TEAM ONLY]
+
+  isee:
+    description: ISEEEEE YOU [TEAM ONLY]
+
+  hardcore:
+    description: Hardcore Settings [TEAM ONLY]
+
+  lifesteal:
+    description: Lifesteal Settings [TEAM ONLY]
+
+  survivalprojekt:
+    description: SurvivalProjekt Utils [TEAM ONLY]
+
   pvpcooldown:
     description: PvP Cooldown Settings [TEAM ONLY]
+
+  toggleendaccessibility:
+      description: ToggleEndAccessibility Command [TEAM ONLY]
+
+  logoutput:
+    description: LogOutput Command [TEAM ONLY]

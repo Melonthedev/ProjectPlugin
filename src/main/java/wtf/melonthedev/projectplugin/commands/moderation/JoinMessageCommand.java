@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.commands;
+package wtf.melonthedev.projectplugin.commands.moderation;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

@@ -67,7 +67,7 @@ public class AfkSystem {
         afkTimeoutTasks.remove(player);
         player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "[AFK] " + ChatColor.RESET + ChatColor.RED + "Du bist nun nicht mehr im AFK Modus!");
         if (StatusCommand.statusList.containsKey(player.getName())) {
-            StatusCommand.setStatus(player, Main.getPlugin().getMiniMessageComponent(StatusCommand.statusList.get(player.getName())));
+            StatusCommand.setStatus(player, Main.getPlugin().getMMComponent(StatusCommand.statusList.get(player.getName())));
         } else {
             player.displayName(Component.text(player.getName()));
             player.playerListName(Component.text(player.getName()));

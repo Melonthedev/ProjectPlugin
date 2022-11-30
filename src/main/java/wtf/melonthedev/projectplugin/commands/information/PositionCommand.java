@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.commands;
+package wtf.melonthedev.projectplugin.commands.information;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

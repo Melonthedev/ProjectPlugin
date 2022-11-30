@@ -1,15 +1,13 @@
 package wtf.melonthedev.projectplugin.listeners;
 
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.commands.JoinMessageCommand;
+import wtf.melonthedev.projectplugin.commands.moderation.JoinMessageCommand;
 import wtf.melonthedev.projectplugin.commands.MessageCommand;
 import wtf.melonthedev.projectplugin.commands.StatusCommand;
 import wtf.melonthedev.projectplugin.utils.AfkSystem;
@@ -48,7 +46,7 @@ public class PlayerJoinListener implements Listener {
         Lifesteal.validateHearts(event.getPlayer());
 
         //HARDCORE
-        Main.getPlugin().handlePlayerJoinSpectatorVisibility(event.getPlayer());
+        //Main.getPlugin().handlePlayerJoinSpectatorVisibility(event.getPlayer());
         if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) && (event.getPlayer().getGameMode() == GameMode.SPECTATOR || event.getPlayer().isDead())) {
             event.getPlayer().playerListName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));
             event.getPlayer().displayName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));
@@ -57,7 +55,7 @@ public class PlayerJoinListener implements Listener {
             event.joinMessage(Component.text(ChatColor.GREEN + ">>" + ChatColor.AQUA + " [Survivalprojekt] " + event.getPlayer().getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)]));
         //STATUS
         if (StatusCommand.statusList.containsKey(event.getPlayer().getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || event.getPlayer().getGameMode() != GameMode.SPECTATOR)) {
-            StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().getMiniMessageComponent(StatusCommand.statusList.get(event.getPlayer().getName())));
+            StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().getMMComponent(StatusCommand.statusList.get(event.getPlayer().getName())));
             //StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().translateHexAndCharColorCodes(StatusCommand.statusList.get(event.getPlayer().getName())));
         }
 

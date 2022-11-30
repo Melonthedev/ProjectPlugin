@@ -1,8 +1,7 @@
-package wtf.melonthedev.projectplugin.commands;
+package wtf.melonthedev.projectplugin.commands.moderation;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +14,7 @@ public class ISeeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.isOp()) {
-            sender.sendMessage(Main.getPlugin().getMiniMessageComponent("<rainbow><bold>ISEE " + (args.length > 0 ? args[0] : "YOU")));
+            sender.sendMessage(Main.getPlugin().getMMComponent("<rainbow><bold>ISEE " + (args.length > 0 ? args[0] : "YOU")));
             return true;
         }
         if (args.length < 1) {

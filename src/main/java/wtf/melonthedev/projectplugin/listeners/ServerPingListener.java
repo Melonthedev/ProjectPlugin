@@ -84,7 +84,7 @@ public class ServerPingListener implements Listener {
     public void onServerListPing(ServerListPingEvent event) {
         Random random = new Random();
         //event.setMotd(ChatColor.GOLD + "Survivalprojekt 4.0" + ChatColor.AQUA + " | Survival SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
-        event.motd(Component.join(JoinConfiguration.noSeparators(), Component.text(ChatColor.GOLD.toString()), Main.getPlugin().getMiniMessageComponent("<rainbow:" + random.nextInt(10) + ">" + Main.PROJECT_NAME), Component.text(ChatColor.AQUA + " | " + (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) ? "Hardcore" : "Survival")  +  " SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)])));
+        event.motd(Component.join(JoinConfiguration.noSeparators(), Component.text(ChatColor.GOLD.toString()), Main.getPlugin().getMMComponent("<rainbow:" + random.nextInt(10) + ">" + Main.PROJECT_NAME), Component.text(ChatColor.AQUA + " | " + (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) ? "Hardcore" : "Survival")  +  " SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)])));
     }
 
 }

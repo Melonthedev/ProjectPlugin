@@ -1,10 +1,9 @@
-package wtf.melonthedev.projectplugin.commands;
+package wtf.melonthedev.projectplugin.commands.information;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
@@ -49,16 +48,16 @@ public class ColorCodesCommand implements TabExecutor {
                 sender.sendMessage(colorinfo + "---------------------------------");
             } else if (args[0].equalsIgnoreCase("extras")) {
                 sender.sendMessage(colorinfo + "---------- Color Codes Extras ----------");
-                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- RAINBOW: <rainbow> - "), Main.getPlugin().getMiniMessageComponent("<rainbow>Really long example")));
+                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- RAINBOW: <rainbow> - "), Main.getPlugin().getMMComponent("<rainbow>Really long example")));
                 sender.sendMessage(colorinfo + "- BOLD: <bold> or <b> - " + ChatColor.BOLD + " Example");
                 sender.sendMessage(colorinfo + "- ITALIC: <italic> or <em> or <i> - " + ChatColor.ITALIC + " Example");
                 sender.sendMessage(colorinfo + "- UNDERLINED: <underlined> or <u> - " + ChatColor.UNDERLINE + " Example");
                 sender.sendMessage(colorinfo + "- STRIKETHROUGH: <strikethrough> or <st> - " + ChatColor.STRIKETHROUGH + " Example");
                 sender.sendMessage(colorinfo + "- OBFUSCATED: <obfuscated> or <obf> - " + ChatColor.MAGIC + " Example");
-                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- HOVER: <hover:show_text:'test'> - "), Main.getPlugin().getMiniMessageComponent("<aqua><hover:show_text:'test'>Example (hover me)")));
-                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- KEYBIND: <key:key.jump> - "), Main.getPlugin().getMiniMessageComponent("<aqua>Example: Your jump key is <key:key.jump>")));
-                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- GRADIENT: <gradient:[color1]:[color...]> - "), Main.getPlugin().getMiniMessageComponent("<gradient:green:blue>Really long example")));
-                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- FONT: <font:[key]> - "), Main.getPlugin().getMiniMessageComponent("Example: <font:uniform>Uniform <font:alt>Alt")));
+                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- HOVER: <hover:show_text:'test'> - "), Main.getPlugin().getMMComponent("<aqua><hover:show_text:'test'>Example (hover me)")));
+                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- KEYBIND: <key:key.jump> - "), Main.getPlugin().getMMComponent("<aqua>Example: Your jump key is <key:key.jump>")));
+                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- GRADIENT: <gradient:[color1]:[color...]> - "), Main.getPlugin().getMMComponent("<gradient:green:blue>Really long example")));
+                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- FONT: <font:[key]> - "), Main.getPlugin().getMMComponent("Example: <font:uniform>Uniform <font:alt>Alt")));
                 sender.sendMessage(colorinfo + "---------------------------------");
             }
             /*for (ChatColor color : ChatColor.values()) {

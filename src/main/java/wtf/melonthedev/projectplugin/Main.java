@@ -12,20 +12,21 @@ import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 import wtf.melonthedev.projectplugin.commands.*;
+import wtf.melonthedev.projectplugin.commands.information.ColorCodesCommand;
+import wtf.melonthedev.projectplugin.commands.information.PositionCommand;
+import wtf.melonthedev.projectplugin.commands.information.WerIstImNetherCommand;
+import wtf.melonthedev.projectplugin.commands.lifesteal.LifestealCommand;
+import wtf.melonthedev.projectplugin.commands.lifesteal.WithdrawHeartCommand;
+import wtf.melonthedev.projectplugin.commands.moderation.*;
+import wtf.melonthedev.projectplugin.commands.pvpcooldown.PvpCooldownCommand;
+import wtf.melonthedev.projectplugin.commands.pvpcooldown.SkipPvpCooldownCommand;
 import wtf.melonthedev.projectplugin.listeners.*;
-import wtf.melonthedev.projectplugin.utils.Lifesteal;
-import wtf.melonthedev.projectplugin.utils.LocationUtils;
-import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
+import wtf.melonthedev.projectplugin.utils.*;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public final class Main extends JavaPlugin {
 
@@ -34,17 +35,6 @@ public final class Main extends JavaPlugin {
     public static HashMap<Player, Location> deathlocations = new HashMap<>();
     public static HashMap<Player, Boolean> spawnElytraPlayers = new HashMap<>();
     public static HashMap<UUID, ItemStack> joinMessages = new HashMap<>();
-    public static String[] donators = new String[] {
-            "Progeto",
-            "El_Crafter",
-            "Groß_Gandhini",
-            "Jonbadon",
-            "Soro",
-            "Sprengmeister444",
-            "stebadon",
-            "Melonthedev"
-    }; // TODO: Handle per API to not be hardcoded
-    public static List<HashMap<String, HashMap<Material, Integer>>> collectedValuables = new ArrayList<>();
     private final Component[] infos = new Component[] {
             Component.text(ChatColor.GRAY + "Drücke ").append(Component.keybind("key.sneak")).append(Component.text(ChatColor.GRAY + " um von dieser Insel zu gleiten")),
             Component.text(ChatColor.GRAY + "Chatte mit " + ChatColor.WHITE + "<rainbow>" + ChatColor.GRAY + " um RGB zu schreiben"),
@@ -53,7 +43,6 @@ public final class Main extends JavaPlugin {
             Component.text(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/r" + ChatColor.GRAY + " um auf eine Privatnachricht zu antworten"),
             Component.text(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/msg" + ChatColor.GRAY + " um Nachrichten sogar an offline Spieler zu senden"),
     };
-
 
     public static String PROJECT_NAME = "Survivalprojekt 4.1";
     public static String DISCORD_INVITE = "discord.gg/AmskHwQSCT";
@@ -111,18 +100,18 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerRespawnListener(), this);
 
-        sendSpawnMessage();
+        sendSpawnActionBarMessage();
         updateTabList();
         handleEastereggDamages();
-        handleSusPlayerActivityPerHour();
-        handleCustomRecpies();
+        CustomItemSystem.handleCustomRecipes();
         PvpCooldownSystem.handleForAllPlayers();
+        PlayerActivitySystem.handleSusPlayerActivityPerHour();
         Lifesteal.init();
     }
 
     @Override
     public void onDisable() {
-        savePlayerActivity();
+        PlayerActivitySystem.savePlayerActivity();
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.playerListName(Component.text(player.getName()));
             player.displayName(Component.text(player.getName()));
@@ -139,73 +128,7 @@ public final class Main extends JavaPlugin {
         });
     }
 
-    public void handleCustomRecpies() {
-        //Invisible ItemFrame
-        ItemStack itemframe = new ItemStack(Material.ITEM_FRAME);
-        ItemMeta framemeta = itemframe.getItemMeta();
-        NamespacedKey framekey = new NamespacedKey(this, "invisible_item_frame");
-        framemeta.displayName(Component.text(ChatColor.WHITE + "Invisible Item Frame"));
-        framemeta.getPersistentDataContainer().set(framekey, PersistentDataType.BYTE, (byte) 1);
-        framemeta.addEnchant(Enchantment.CHANNELING, 1,true);
-        framemeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        itemframe.setItemMeta(framemeta);
-        ShapedRecipe framerecipe = new ShapedRecipe(framekey, itemframe);
-        framerecipe.shape("SSS", "SAS", "SSS");
-        framerecipe.setIngredient('S', Material.STICK);
-        framerecipe.setIngredient('A', Material.AMETHYST_SHARD);
-
-        Bukkit.addRecipe(framerecipe);
-
-        //Construction Heart
-        ItemStack csheart = Lifesteal.getConstructionHeartItem();
-        NamespacedKey csheartrecipekey = new NamespacedKey(this, "construction_heart_recipe");
-
-        ShapedRecipe csheartrecipe = new ShapedRecipe(csheartrecipekey, csheart);
-        csheartrecipe.shape("RNR", "DHD", "RTR");
-        csheartrecipe.setIngredient('R', Material.REDSTONE);
-        csheartrecipe.setIngredient('N', Material.NETHERITE_INGOT);
-        csheartrecipe.setIngredient('D', Material.DIAMOND_BLOCK);
-        csheartrecipe.setIngredient('H', Material.HEART_OF_THE_SEA);
-        csheartrecipe.setIngredient('T', Material.TOTEM_OF_UNDYING);
-
-        Bukkit.addRecipe(csheartrecipe);
-
-        //Heart
-        NamespacedKey heartrecipekey = new NamespacedKey(this, "heart_recipe");
-        ItemStack heart = Lifesteal.getHeartItem();
-        //SmithingRecipe heartrecipe = new SmithingRecipe(heartrecipekey, Lifesteal.getHeartItem(),
-        //        new RecipeChoice.ExactChoice(Lifesteal.getConstructionHeartItem()),
-        //        new RecipeChoice.MaterialChoice(Material.NETHER_STAR));
-
-        //Bukkit.addRecipe(heartrecipe);
-
-
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            player.discoverRecipe(framekey);
-            player.discoverRecipe(csheartrecipekey);
-            //player.discoverRecipe(heartrecipekey);
-        });
-    }
-
-    public void handleSeeSpectators() {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        if (scoreboard.getTeam("players") != null) return;
-        scoreboard.registerNewTeam("players");
-        Team players = scoreboard.getTeam("players");
-        if (players == null) return;
-        Bukkit.getOnlinePlayers().forEach(players::addPlayer);
-        players.setCanSeeFriendlyInvisibles(true);
-    }
-
-    public void handlePlayerJoinSpectatorVisibility(Player player) {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        if (scoreboard.getTeam("players") == null) handleSeeSpectators();
-        Team players = scoreboard.getTeam("players");
-        if (players == null) return;
-        players.addPlayer(player);
-    }
-
-    public void sendSpawnMessage() {
+    public void sendSpawnActionBarMessage() {
         AtomicInteger i = new AtomicInteger();
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -225,7 +148,7 @@ public final class Main extends JavaPlugin {
 
     public void setCustomPlayerListHeader(Player player) {
         player.sendPlayerListHeaderAndFooter(
-                Component.join(JoinConfiguration.noSeparators(), Component.text(ChatColor.GREEN.toString() + ChatColor.BOLD), getMiniMessageComponent("<rainbow>" + PROJECT_NAME), Component.text("\n" + ChatColor.RESET + ChatColor.GREEN + "McSurvivalprojekt.de")),
+                Component.join(JoinConfiguration.noSeparators(), Component.text(ChatColor.GREEN.toString() + ChatColor.BOLD), getMMComponent("<rainbow>" + PROJECT_NAME), Component.text("\n" + ChatColor.RESET + ChatColor.GREEN + "McSurvivalprojekt.de")),
                 Component.text(ChatColor.AQUA + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.AQUA + "TPS: " + Math.round(getServer().getTPS()[0]))
         );
     }
@@ -243,7 +166,7 @@ public final class Main extends JavaPlugin {
         saveConfig();
     }
 
-    public Component getMiniMessageComponent(String message) {
+    public Component getMMComponent(String message) {
         MiniMessage mm = MiniMessage.builder()
                 .tags(TagResolver.builder()
                         .resolver(StandardTags.color())
@@ -261,24 +184,6 @@ public final class Main extends JavaPlugin {
         return mm.deserialize(message);
     }
 
-    public String translateHexAndCharColorCodes(String message)
-    {
-        final Pattern hexPattern = Pattern.compile("&#" + "([A-Fa-f0-9]{6})" + "#");
-        Matcher matcher = hexPattern.matcher(message);
-        char COLOR_CHAR = ChatColor.COLOR_CHAR;
-        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
-        while (matcher.find())
-        {
-            String group = matcher.group(1);
-            matcher.appendReplacement(buffer, COLOR_CHAR + "x"
-                    + COLOR_CHAR + group.charAt(0) + COLOR_CHAR + group.charAt(1)
-                    + COLOR_CHAR + group.charAt(2) + COLOR_CHAR + group.charAt(3)
-                    + COLOR_CHAR + group.charAt(4) + COLOR_CHAR + group.charAt(5)
-            );
-        }
-        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
-    }
-
     public void handleEastereggDamages() {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             Player jonbadon = Bukkit.getPlayer("Jonbadon");
@@ -289,22 +194,6 @@ public final class Main extends JavaPlugin {
             if (tantalos != null && (tantalos.getInventory().getItemInMainHand().getType() == Material.TNT || tantalos.getInventory().getItemInOffHand().getType() == Material.TNT))
                 tantalos.damage(1);
         }, 0, 1);
-    }
-
-    public void handleSusPlayerActivityPerHour() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                collectedValuables.add(new HashMap<>());
-            }
-        }.runTaskTimer(this, 0, 72000); // 1h
-    }
-
-    public void savePlayerActivity() {
-        getConfig().set("playeractivity", collectedValuables);
-    }
-    public HashMap<String, HashMap<Material, Integer>> getLatestPlayerActivityEntry() {
-        return collectedValuables.get(collectedValuables.size() - 1);
     }
 
     public static Main getPlugin() {

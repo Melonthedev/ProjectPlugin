@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.commands;
+package wtf.melonthedev.projectplugin.commands.information;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.commands.DonatorsCommand;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ public class WerIstImNetherCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.isOp() && !Arrays.asList(Main.donators).contains(sender.getName())) {
+        if (!sender.isOp() && (sender instanceof Player && !DonatorsCommand.getDonators().contains(((Player) sender).getUniqueId()))) {
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "Hey, es sieht so aus als hättest du nicht zu der Finanzierung des Servers beigetragen. Das ist nicht schlimm, aber damit dieser Command nicht zu viel Power hat, dürfen ihn nur die Unterstützer verwenden. Vielen Dank für dein Verständnis.");
             sender.sendMessage(ChatColor.GRAY + "Du kannst dich zu jeder Zeit dazu bereit erklären, den Server zu unterstützen, schreibe dazu einfach jemanden aus dem Team an.");
             sender.sendMessage(ChatColor.GRAY.toString() + ChatColor.ITALIC + "Wenn du diese Nachricht erhälst, obwohl du ein Unterstützer bist, wende dich bitte schnellstmöglich an uns.");

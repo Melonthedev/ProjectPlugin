@@ -34,7 +34,7 @@ public class PlayerDeathListener implements Listener {
         }
 
         if (Main.getPlugin().getConfig().getBoolean("hardcore.giantDeathTitle", false))
-            Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Main.getPlugin().getMiniMessageComponent("<red>" + event.getPlayer().getName() + " died.</red>"), event.deathMessage() == null ? Component.text("") : Component.text(ChatColor.BLUE + PlainTextComponentSerializer.plainText().serialize(event.deathMessage())))));
+            Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Main.getPlugin().getMMComponent("<red>" + event.getPlayer().getName() + " died.</red>"), event.deathMessage() == null ? Component.text("") : Component.text(ChatColor.BLUE + PlainTextComponentSerializer.plainText().serialize(event.deathMessage())))));
 
         if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)) {
             event.getPlayer().sendMessage(ChatColor.RED + "You died!");

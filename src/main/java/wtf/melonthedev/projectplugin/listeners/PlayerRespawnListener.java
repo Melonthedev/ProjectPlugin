@@ -10,7 +10,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 import wtf.melonthedev.projectplugin.Main;
@@ -21,9 +20,9 @@ public class PlayerRespawnListener implements Listener {
     public void onRespawn(PlayerPostRespawnEvent event) {
         if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)) {
             event.getPlayer().showTitle(Title.title(Component.text(ChatColor.RED + "You died!"), Component.text(ChatColor.GRAY + "You won't respawn!")));
-            event.getPlayer().sendMessage(Main.getPlugin().getMiniMessageComponent("<yellow>If you want to spectate your team or friends,"));
-            event.getPlayer().sendMessage(Main.getPlugin().getMiniMessageComponent("<yellow>run <aqua>/allowheadpickup PlayerName</aqua><yellow> and"));
-            event.getPlayer().sendMessage(Main.getPlugin().getMiniMessageComponent("<yellow>ask them to pick your head up at the <light_purple>graveyard</light_purple><yellow> at spawn!"));
+            event.getPlayer().sendMessage(Main.getPlugin().getMMComponent("<yellow>If you want to spectate your team or friends,"));
+            event.getPlayer().sendMessage(Main.getPlugin().getMMComponent("<yellow>run <aqua>/allowheadpickup PlayerName</aqua><yellow> and"));
+            event.getPlayer().sendMessage(Main.getPlugin().getMMComponent("<yellow>ask them to pick your head up at the <light_purple>graveyard</light_purple><yellow> at spawn!"));
             event.getPlayer().setGameMode(GameMode.SPECTATOR);
             event.getPlayer().setSilent(true);
             event.getPlayer().setAffectsSpawning(false);
