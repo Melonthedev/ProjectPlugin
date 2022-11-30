@@ -37,10 +37,7 @@ public class LifestealCommand implements TabExecutor {
             sender.sendMessage(prefix + ChatColor.RED + "You are not allowed to use this command.");
             return true;
         }
-        if (!Lifesteal.isLifestealActive()){
-            sender.sendMessage(Lifesteal.prefix + ChatColor.RED + "Lifesteal is not active.");
-            return true;
-        }
+
 
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("enable")) {
@@ -51,7 +48,12 @@ public class LifestealCommand implements TabExecutor {
                 Lifesteal.setLifestealActive(false);
                 sender.sendMessage(prefix + "You disabled Lifesteal!");
                 return true;
-            } else if (args[0].equalsIgnoreCase("giveheartitem")) {
+            }
+            if (!Lifesteal.isLifestealActive()){
+                sender.sendMessage(Lifesteal.prefix + ChatColor.RED + "Lifesteal is not active.");
+                return true;
+            }
+            if (args[0].equalsIgnoreCase("giveheartitem")) {
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(prefix + "You must be a player!");
                     return true;
