@@ -63,7 +63,10 @@ public class LifestealCommand implements TabExecutor {
                 return true;
             }
         }
-
+        if (!Lifesteal.isLifestealActive()){
+            sender.sendMessage(Lifesteal.prefix + ChatColor.RED + "Lifesteal is not active.");
+            return true;
+        }
         if (args.length < 2) {
             sender.sendMessage(prefix + ChatColor.RED + "Syntax: /lifesteal " + Arrays.toString(subCommands).replace(", ", " | ").replace("[", "<").replace("]", ">"));
             return true;
