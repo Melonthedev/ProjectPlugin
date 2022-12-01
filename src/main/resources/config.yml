@@ -24,9 +24,12 @@ config:
   newPlayerWelcomeMessage:
     enabled: true
     message: §l§aPlayerName, Herzlich Willkommen auf Survivalprojekt!
+  afkSystem:
+    enabled: true
+    timeoutInMinutes: 10
+    handleSleepingPercentage: true
 
-
-  # /hardcore
+# /hardcore
 hardcore:
   enabled: false
   giantDeathTitle: false

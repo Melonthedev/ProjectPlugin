@@ -25,7 +25,7 @@ public class AfkSystem {
     private AfkSystem() {}
 
     public static void handleAfkModus(Player player) {
-        if (player.getGameMode() == GameMode.SPECTATOR && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false))
+        if (Main.isFeatureDisabled("afkSystem") || (player.getGameMode() == GameMode.SPECTATOR && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)) )
             return;
         if (isAfk(player)) {
             disableAfkMode(player);
@@ -42,7 +42,7 @@ public class AfkSystem {
             if (afkTimeoutTasks.containsKey(player) && Bukkit.getOnlinePlayers().contains(player)) {
                 enableAfkModus(player);
             }
-        }, 20 * 60 * 10);
+        }, 20L * 60 * Main.getPlugin().getConfig().getInt("config.afkSystem.timeoutInMinutes", 10));
         afkTimeoutTasks.put(player, task);
     }
 
@@ -67,7 +67,7 @@ public class AfkSystem {
         afkTimeoutTasks.remove(player);
         player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "[AFK] " + ChatColor.RESET + ChatColor.RED + "Du bist nun nicht mehr im AFK Modus!");
         if (StatusCommand.statusList.containsKey(player.getName())) {
-            StatusCommand.setStatus(player, Main.getPlugin().getMMComponent(StatusCommand.statusList.get(player.getName())));
+            StatusCommand.setStatus(player, Main.getMMComponent(StatusCommand.statusList.get(player.getName())));
         } else {
             player.displayName(Component.text(player.getName()));
             player.playerListName(Component.text(player.getName()));
@@ -81,6 +81,7 @@ public class AfkSystem {
 
 
     public static void handlePlayersSleepingPercentage() {
+        if (!Main.getPlugin().getConfig().getBoolean("config.afkSystem.handleSleepingPercentage", true)) return;
         int targetPlayers = Bukkit.getOnlinePlayers().size() / 2 - afkPlayers.size();
         if (targetPlayers % 2 == 0) targetPlayers++;
         int percentage = targetPlayers * 100 / Bukkit.getOnlinePlayers().size();
