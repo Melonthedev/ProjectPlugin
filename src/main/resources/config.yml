@@ -1,0 +1,64 @@
+# Configuration File for Project Plugin by Melonthedev & Stebadon
+# McSurvivalprojekt.de
+
+# Start with /survivalprojekt startProject
+projectActive: false
+
+# Constants
+projectName: Survivalprojekt 4.1
+discordInvite: discord.gg/AmskHwQSCT
+
+config:
+  # /toggleendaccessibility
+  isendaccessible: true
+  # /logoutput
+  logging: normal
+  actionBarSpawnMessages:
+    enabled: true
+  customTabListInfo:
+    enabled: true
+  eastereggDamage:
+    enabled: true
+  customJoinMessages:
+    enabled: true
+  newPlayerWelcomeMessage:
+    enabled: true
+    message: §l§aPlayerName, Herzlich Willkommen auf Survivalprojekt!
+
+
+  # /hardcore
+hardcore:
+  enabled: false
+  giantDeathTitle: false
+
+# /lifesteal
+lifesteal:
+  enabled: false
+  hearts: {}
+
+# Entries: uuid: remainingMinutes
+pvpCooldown: {}
+
+# Donators of Survivalprojekt (Unterstuetzer)
+# Entries: uuid: true/false
+donators:
+  425723a9-6817-4afc-8566-dab11a88e1de: true #Melonthedev
+  ec95ea3b-83b2-49af-aaa9-247ec876b9e8: true #Stebadon
+  eda01caf-cdc4-4be0-856a-f8b8bbec2560: true #Sprengmeister444
+  774cae75-594b-4c47-b872-0ed504c0d64d: true #Soro
+  13b65170-0e29-4e6b-961e-c4643bfc08f9: true #Jonbadon
+  dedaa175-6e4e-4ae0-b8d4-5a366838073d: true #El_Crafter
+  58faaa81-7df2-4645-8708-44ccb63bbddd: true #Progeto
+  00ad0b76-9173-481e-9a1e-804e1245d8c3: true #TheAquaBaron
+
+# Custom joinmessages which will be randomly displayed whenever a player joins
+joinmessages: [
+    "ist nun online und bleibt das auch hoffentlich",
+    "hat sich wiedereinmal hierher verirrt",
+    "ist jetzt hier und will nicht sterben",
+    "hat sich verklickt aber bleibt",
+    "ist nur online um seine Farm zu leeren",
+    "ist auf den Server gehoppst",
+    "ist jetzt online und will nicht sterben",
+    "wollte eigentlich nicht hier sein aber ist jetzt online"
+]

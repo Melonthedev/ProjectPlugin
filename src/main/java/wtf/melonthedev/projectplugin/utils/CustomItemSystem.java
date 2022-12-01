@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -15,11 +16,13 @@ import wtf.melonthedev.projectplugin.Main;
 
 public class CustomItemSystem {
 
+    static NamespacedKey framekey = new NamespacedKey(Main.getPlugin(), "invisible_item_frame");
+    static NamespacedKey csheartrecipekey = new NamespacedKey(Main.getPlugin(), "construction_heart_recipe");
+
     public static void handleCustomRecipes() {
         //Invisible ItemFrame
         ItemStack itemframe = new ItemStack(Material.ITEM_FRAME);
         ItemMeta framemeta = itemframe.getItemMeta();
-        NamespacedKey framekey = new NamespacedKey(Main.getPlugin(), "invisible_item_frame");
         framemeta.displayName(Component.text(ChatColor.WHITE + "Invisible Item Frame"));
         framemeta.getPersistentDataContainer().set(framekey, PersistentDataType.BYTE, (byte) 1);
         framemeta.addEnchant(Enchantment.CHANNELING, 1,true);
@@ -34,7 +37,6 @@ public class CustomItemSystem {
 
         //Construction Heart
         ItemStack csheart = Lifesteal.getConstructionHeartItem();
-        NamespacedKey csheartrecipekey = new NamespacedKey(Main.getPlugin(), "construction_heart_recipe");
 
         ShapedRecipe csheartrecipe = new ShapedRecipe(csheartrecipekey, csheart);
         csheartrecipe.shape("RNR", "DHD", "RTR");
@@ -55,11 +57,12 @@ public class CustomItemSystem {
 
         //Bukkit.addRecipe(heartrecipe);
 
+        Bukkit.getOnlinePlayers().forEach(CustomItemSystem::discoverCustomRecipes);
+    }
 
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            player.discoverRecipe(framekey);
-            player.discoverRecipe(csheartrecipekey);
-        });
+    public static void discoverCustomRecipes(Player player) {
+        player.discoverRecipe(framekey);
+        player.discoverRecipe(csheartrecipekey);
     }
 
 

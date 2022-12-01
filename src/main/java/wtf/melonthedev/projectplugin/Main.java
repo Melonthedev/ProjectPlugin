@@ -50,6 +50,7 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        handleConfig();
         getLogger().log(Level.INFO, "**********************");
         getLogger().log(Level.INFO, "*** Project Plugin ***");
         getLogger().log(Level.INFO, "*** by Melonthedev ***");
@@ -120,6 +121,19 @@ public final class Main extends JavaPlugin {
         }
     }
 
+
+    public void handleConfig() {
+        saveDefaultConfig(); // Default Config in resources/config.yml
+
+        // Load Constants
+        if (getConfig().getString("projectName") != null) PROJECT_NAME = getConfig().getString("projectName");
+        if (getConfig().getString("discordInvite") != null) DISCORD_INVITE = getConfig().getString("discordInvite");
+    }
+
+    public static boolean isFeatureDisabled(String feature) {
+        return !Main.getPlugin().getConfig().getBoolean("config." + feature + ".enabled", false);
+    }
+
     public void handleHardcoreModus() {
         boolean flag = getConfig().getBoolean("hardcore.enabled", false);
         Bukkit.getOnlinePlayers().forEach(player -> {
@@ -128,7 +142,15 @@ public final class Main extends JavaPlugin {
         });
     }
 
+    public static void handleFirstJoin(Player player) {
+        if (!player.hasPlayedBefore() && !Main.isFeatureDisabled("newPlayerWelcomeMessage")) {
+            Bukkit.getServer().broadcast(Component.text(Main.getPlugin().getConfig().getString("config.newPlayerWelcomeMessage.message", "§l§aPlayerName, Herzlich Willkommen auf Survivalprojekt!").replaceFirst("PlayerName", player.getName())));
+            Bukkit.getOnlinePlayers().forEach(p -> p.playSound(p, Sound.ENTITY_GOAT_SCREAMING_AMBIENT, 1.0F, 0.5F));
+        }
+    }
+
     public void sendSpawnActionBarMessage() {
+        if (isFeatureDisabled("actionBarSpawnMessages")) return;
         AtomicInteger i = new AtomicInteger();
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -141,15 +163,17 @@ public final class Main extends JavaPlugin {
     }
 
     public void updateTabList() {
+        if (isFeatureDisabled("customTabListInfo")) return;
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) setCustomPlayerListHeader(player);
         }, 0, 80);
     }
 
-    public void setCustomPlayerListHeader(Player player) {
+    public static void setCustomPlayerListHeader(Player player) {
+        if (Main.isFeatureDisabled("customTabListInfo")) return;
         player.sendPlayerListHeaderAndFooter(
                 Component.join(JoinConfiguration.noSeparators(), Component.text(ChatColor.GREEN.toString() + ChatColor.BOLD), getMMComponent("<rainbow>" + PROJECT_NAME), Component.text("\n" + ChatColor.RESET + ChatColor.GREEN + "McSurvivalprojekt.de")),
-                Component.text(ChatColor.AQUA + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.AQUA + "TPS: " + Math.round(getServer().getTPS()[0]))
+                Component.text(ChatColor.AQUA + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.AQUA + "TPS: " + Math.round(Main.getPlugin().getServer().getTPS()[0]))
         );
     }
 
@@ -166,7 +190,7 @@ public final class Main extends JavaPlugin {
         saveConfig();
     }
 
-    public Component getMMComponent(String message) {
+    public static Component getMMComponent(String message) {
         MiniMessage mm = MiniMessage.builder()
                 .tags(TagResolver.builder()
                         .resolver(StandardTags.color())
@@ -185,9 +209,10 @@ public final class Main extends JavaPlugin {
     }
 
     public void handleEastereggDamages() {
+        if (isFeatureDisabled("eastereggDamage")) return;
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             Player jonbadon = Bukkit.getPlayer("Jonbadon");
-            if (jonbadon != null && jonbadon.getLocation().getBlock().getType() == Material.STONECUTTER)
+            if (jonbadon != null && jonbadon.getLocation().getBlock().getType() == Material.STONECUTTER && !isFeatureDisabled("eastereggDamage.jonbadon"))
                 jonbadon.damage(1);
 
             Player tantalos = Bukkit.getPlayer("Tantal0s");

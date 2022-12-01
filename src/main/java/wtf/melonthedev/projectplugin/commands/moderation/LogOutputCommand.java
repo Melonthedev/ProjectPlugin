@@ -23,21 +23,21 @@ public class LogOutputCommand implements TabExecutor {
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("normal")) {
                 sender.sendMessage(ChatColor.GREEN + "Logging is now set to normal!");
-                Main.getPlugin().getConfig().set("logging", "normal");
+                Main.getPlugin().getConfig().set("config.logging", "normal");
                 Main.getPlugin().saveConfig();
             } else if (args[0].equalsIgnoreCase("detailed")) {
                 sender.sendMessage(ChatColor.GREEN + "Logging is now set to detailed!");
-                Main.getPlugin().getConfig().set("logging", "detailed");
+                Main.getPlugin().getConfig().set("config.logging", "detailed");
                 Main.getPlugin().saveConfig();
             } else if (args[0].equalsIgnoreCase("off")) {
                 sender.sendMessage(ChatColor.GREEN + "Logging is now disabled!");
-                Main.getPlugin().getConfig().set("logging", "off");
+                Main.getPlugin().getConfig().set("config.logging", "off");
                 Main.getPlugin().saveConfig();
             } else {
                 sender.sendMessage(ChatColor.RED + "Syntaxerror: /logoutput <normal/detailed/off>");
             }
         } else if (args.length == 0) {
-            sender.sendMessage(ChatColor.AQUA + "Log Output is currently set to " + Main.getPlugin().getConfig().getString("logging"));
+            sender.sendMessage(ChatColor.AQUA + "Log Output is currently set to " + Main.getPlugin().getConfig().getString("config.logging"));
         } else {
             sender.sendMessage(ChatColor.RED + "Syntaxerror: /logoutput <normal/detailed/off>");
         }

@@ -83,6 +83,11 @@ public class StatusCommand implements TabExecutor {
         player.playerListName(statusFinal);
     }
 
+    public static void handlePlayerJoin(Player player) {
+        if (statusList.containsKey(player.getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
+            setStatus(player, Main.getMMComponent(statusList.get(player.getName())));
+    }
+
 
 
     @Override

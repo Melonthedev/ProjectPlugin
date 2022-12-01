@@ -2,6 +2,7 @@ package wtf.melonthedev.projectplugin.listeners;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -11,57 +12,41 @@ import wtf.melonthedev.projectplugin.commands.moderation.JoinMessageCommand;
 import wtf.melonthedev.projectplugin.commands.MessageCommand;
 import wtf.melonthedev.projectplugin.commands.StatusCommand;
 import wtf.melonthedev.projectplugin.utils.AfkSystem;
+import wtf.melonthedev.projectplugin.utils.CustomItemSystem;
 import wtf.melonthedev.projectplugin.utils.Lifesteal;
 import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class PlayerJoinListener implements Listener {
 
-    public static String[] joinMessages = {
-      "ist nun online und bleibt das auch hoffentlich",
-      "hat sich wiedereinmal hierher verirrt",
-      "ist jetzt hier und will nicht sterben",
-      "hat sich verklickt aber bleibt",
-      "ist nur online um seine Farm zu leeren",
-      "ist auf den Server gehoppst",
-      "ist jetzt online und will nicht sterben",
-      "wollte eigentlich nicht hier sein aber ist jetzt online",
-    };
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Main.getPlugin().setCustomPlayerListHeader(event.getPlayer());
-
-        //FIRST JOIN
-        if (!event.getPlayer().hasPlayedBefore()) {
-            Bukkit.getServer().broadcast(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + event.getPlayer().getName() + ", Herzlich Willkommen auf Survivalprojekt!"));
-            Bukkit.getOnlinePlayers().forEach(player -> player.playSound(event.getPlayer(), Sound.ENTITY_GOAT_SCREAMING_AMBIENT, 1.0F, 0.5F));
-        }
-
-        //PVP COOLDOWN
-        PvpCooldownSystem.handleForPlayer(event.getPlayer());
-
-        //LIFESTEAL
+        handleJoinMessage(event);
+        Main.handleFirstJoin(event.getPlayer());
+        Main.setCustomPlayerListHeader(event.getPlayer());
         Lifesteal.validateHearts(event.getPlayer());
+        AfkSystem.handlePlayersSleepingPercentage();
+        StatusCommand.handlePlayerJoin(event.getPlayer());
+        MessageCommand.handleNewMessages(event.getPlayer());
+        CustomItemSystem.discoverCustomRecipes(event.getPlayer());
+        PvpCooldownSystem.handleForPlayer(event.getPlayer());
+        JoinMessageCommand.handleJoinMessage(event.getPlayer());
+    }
 
-        //HARDCORE
-        //Main.getPlugin().handlePlayerJoinSpectatorVisibility(event.getPlayer());
+    public void handleJoinMessage(PlayerJoinEvent event) {
         if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) && (event.getPlayer().getGameMode() == GameMode.SPECTATOR || event.getPlayer().isDead())) {
             event.getPlayer().playerListName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));
             event.getPlayer().displayName(Component.text(ChatColor.GRAY + "[Spectator] " + event.getPlayer().getName()));
-            event.joinMessage(Component.text(ChatColor.GREEN + ">>" + ChatColor.GRAY + " [Survivalprojekt] " + event.getPlayer().getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)]));
-        } else
-            event.joinMessage(Component.text(ChatColor.GREEN + ">>" + ChatColor.AQUA + " [Survivalprojekt] " + event.getPlayer().getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)]));
-        //STATUS
-        if (StatusCommand.statusList.containsKey(event.getPlayer().getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || event.getPlayer().getGameMode() != GameMode.SPECTATOR)) {
-            StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().getMMComponent(StatusCommand.statusList.get(event.getPlayer().getName())));
-            //StatusCommand.setStatus(event.getPlayer(), Main.getPlugin().translateHexAndCharColorCodes(StatusCommand.statusList.get(event.getPlayer().getName())));
-        }
+            if (!Main.isFeatureDisabled("customJoinMessages")) event.joinMessage(getRandomJoinMessage(event.getPlayer(), true));
+        } else if (!Main.isFeatureDisabled("customJoinMessages")) event.joinMessage(getRandomJoinMessage(event.getPlayer(), false));
+    }
 
-        AfkSystem.handlePlayersSleepingPercentage();
-        MessageCommand.handleNewMessages(event.getPlayer());
-        JoinMessageCommand.handleJoinMessage(event.getPlayer());
+    public Component getRandomJoinMessage(Player player, boolean spectator) {
+        String[] joinMessages = Main.getPlugin().getConfig().getStringList("joinmessages").toArray(String[]::new);
+        return Component.text(ChatColor.GREEN + ">>" + (spectator ? ChatColor.GRAY : ChatColor.AQUA) + " [Survivalprojekt] " + player.getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)]);
     }
 
     @EventHandler

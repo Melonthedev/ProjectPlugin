@@ -190,13 +190,13 @@ public class ActionLogger implements Listener {
                 +  " from " + owner
                 + (details != null ? " - " + details : "");
         if (!Main.getPlugin().getConfig().contains("logging")
-                || (!Objects.equals(Main.getPlugin().getConfig().getString("logging"), "normal")
-                && !Objects.equals(Main.getPlugin().getConfig().getString("logging"), "detailed")
-                && !Objects.equals(Main.getPlugin().getConfig().getString("logging"), "off"))) {
-            Main.getPlugin().getConfig().set("logging", "normal");
+                || (!Objects.equals(Main.getPlugin().getConfig().getString("config.logging"), "normal")
+                && !Objects.equals(Main.getPlugin().getConfig().getString("config.logging"), "detailed")
+                && !Objects.equals(Main.getPlugin().getConfig().getString("config.logging"), "off"))) {
+            Main.getPlugin().getConfig().set("config.logging", "normal");
             Main.getPlugin().saveConfig();
         }
-        String logLevel = Main.getPlugin().getConfig().getString("logging");
+        String logLevel = Main.getPlugin().getConfig().getString("config.logging");
         if (logLevel == null) logLevel = "normal";
         if ((important && logLevel.equals("normal")) || logLevel.equals("detailed"))
             Main.getPlugin().getLogger().info(info);
