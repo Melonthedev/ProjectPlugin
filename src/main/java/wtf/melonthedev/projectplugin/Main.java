@@ -35,14 +35,15 @@ public final class Main extends JavaPlugin {
     public static HashMap<Player, Location> deathlocations = new HashMap<>();
     public static HashMap<Player, Boolean> spawnElytraPlayers = new HashMap<>();
     public static HashMap<UUID, ItemStack> joinMessages = new HashMap<>();
-    private final Component[] infos = new Component[] {
+    private Component[] infos;
+    /*private final Component[] infos = new Component[] {
             Component.text(ChatColor.GRAY + "Drücke ").append(Component.keybind("key.sneak")).append(Component.text(ChatColor.GRAY + " um von dieser Insel zu gleiten")),
             Component.text(ChatColor.GRAY + "Chatte mit " + ChatColor.WHITE + "<rainbow>" + ChatColor.GRAY + " um RGB zu schreiben"),
             Component.text(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/status" + ChatColor.GRAY + " um einen Status zu setzen"),
             Component.text(ChatColor.GRAY + "Rechtsklicke sneakend ein " + ChatColor.WHITE + "Schild" + ChatColor.GRAY + " um den Inhalt zu bearbeiten"),
             Component.text(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/r" + ChatColor.GRAY + " um auf eine Privatnachricht zu antworten"),
             Component.text(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/msg" + ChatColor.GRAY + " um Nachrichten sogar an offline Spieler zu senden"),
-    };
+    };*/
 
     public static String PROJECT_NAME = "Survivalprojekt 4.1";
     public static String DISCORD_INVITE = "discord.gg/AmskHwQSCT";
@@ -80,6 +81,7 @@ public final class Main extends JavaPlugin {
         getCommand("withdraw").setExecutor(new WithdrawHeartCommand());
         getCommand("lifesteal").setExecutor(new LifestealCommand());
         getCommand("pvpcooldown").setExecutor(new PvpCooldownCommand());
+        getCommand("donators").setExecutor(new DonatorsCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 
@@ -128,6 +130,11 @@ public final class Main extends JavaPlugin {
         // Load Constants
         if (getConfig().getString("projectName") != null) PROJECT_NAME = getConfig().getString("projectName");
         if (getConfig().getString("discordInvite") != null) DISCORD_INVITE = getConfig().getString("discordInvite");
+        //Actionbar Messages
+        String[] messages = getConfig().getStringList("actionbarmessages").toArray(String[]::new);
+        infos = new Component[messages.length];
+        for (int i = 0; i < messages.length; i++)
+            infos[i] = getMMComponent(messages[i]);
     }
 
     public static boolean isFeatureDisabled(String feature) {

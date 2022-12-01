@@ -91,3 +91,6 @@ commands:
 
   logoutput:
     description: LogOutput Command [TEAM ONLY]
+
+  donators:
+    description: Manage donators server permissions [TEAM ONLY]

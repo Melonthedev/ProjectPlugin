@@ -8,6 +8,10 @@ projectActive: false
 projectName: Survivalprojekt 4.1
 discordInvite: discord.gg/AmskHwQSCT
 
+spawn:
+  world: world
+  radius: 20
+
 config:
   # /toggleendaccessibility
   isendaccessible: true
@@ -28,6 +32,9 @@ config:
     enabled: true
     timeoutInMinutes: 10
     handleSleepingPercentage: true
+  customServerMotds:
+    enabled: true
+    showServerInfos: true
 
 # /hardcore
 hardcore:
@@ -64,4 +71,44 @@ joinmessages: [
     "ist auf den Server gehoppst",
     "ist jetzt online und will nicht sterben",
     "wollte eigentlich nicht hier sein aber ist jetzt online"
+]
+
+actionbarmessages: [
+  "<gray>Drücke <white><key:key.sneak></white> um von dieser Insel zu gleiten",
+  "<gray>Chatte mit <white>\\<rainbow></white> um RGB zu schreiben",
+  "<gray>Benutze <white>/status</white> um einen Status zu setzen",
+  "<gray>Rechtsklicke sneakend ein <white>Schild</white> um den Inhalt zu bearbeiten",
+  "<gray>Benutze <white>/r</white> um auf eine Privatnachricht zu antworten",
+  "<gray>Benutze <white>/msg</white> um Nachrichten sogar an offline Spieler zu senden"
+]
+
+motds: [
+    "GUYS MOTD TIME",
+    "Auch anständige?",
+    "Tantal0s ist wieder am griefen",
+    "MelonClient ist scheiße - Jonbadon",
+    "wieder mal die alten?",
+    "Joris ist klein",
+    "Mobbing in den MOTD's?",
+    "Ja",
+    "Gerne",
+    "Kann ich machen - Tantal0s",
+    "Aber ich will hier nd eherenlos werden",
+    "MOTD Channel: ALLES wird genommen",
+    "imagine man liked seine eigenen vorschläge",
+    "Sorry, zu lang für sie",
+    "Also die Serverliste",
+    "schade",
+    "aber eig random genug",
+    "Tantalos für die mündliche 1 in Geschi???",
+    "Lancelot ist mal wieder AFK",
+    "Die Qualität dieser MOTD's, 1A",
+    "Kritisch...",
+    "aber wahr",
+    "Joris sucht immer noch sein Pigstep",
+    "Das ist doch geil!",
+    "Steffen ist schon tot",
+    "und hat es verdient",
+    "Findet schnitzelbrötchen besser als Freunde",
+    "https://youtu.be/dQw4w9WgXcQ"
 ]

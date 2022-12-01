@@ -34,7 +34,8 @@ public class ServerPingListener implements Listener {
             "Hilfe ich bin in einer MOTD's Fabrik gefangen!",
             "https://youtu.be/dQw4w9WgXcQ"
     };*/
-    String[] motds = new String[] {
+    String[] motds = Main.getPlugin().getConfig().getStringList("motds").toArray(String[]::new);
+            /*new String[] {
             "GUYS MOTD TIME",
             "Auch anständige?",
             "Tantal0s ist wieder am griefen",
@@ -63,7 +64,7 @@ public class ServerPingListener implements Listener {
             "und hat es verdient",
             "Destreuer findet schnitzelbrötchen besser als Freunde",
             "https://youtu.be/dQw4w9WgXcQ"
-    };
+    };*/
     ChatColor[] colors = new ChatColor[] {
             ChatColor.GRAY,
             ChatColor.GREEN,
@@ -82,9 +83,18 @@ public class ServerPingListener implements Listener {
 
     @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
+        if (Main.isFeatureDisabled("customServerMotds")) return;
         Random random = new Random();
-        //event.setMotd(ChatColor.GOLD + "Survivalprojekt 4.0" + ChatColor.AQUA + " | Survival SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
-        event.motd(Component.join(JoinConfiguration.noSeparators(), Component.text(ChatColor.GOLD.toString()), Main.getPlugin().getMMComponent("<rainbow:" + random.nextInt(10) + ">" + Main.PROJECT_NAME), Component.text(ChatColor.AQUA + " | " + (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) ? "Hardcore" : "Survival")  +  " SMP \n" +  colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)])));
+        Component randomMotd = Component.text(colors[random.nextInt(colors.length)] + motds[random.nextInt(motds.length)]);
+        Component motd = randomMotd;
+        if (Main.getPlugin().getConfig().getBoolean("config.customServerMotds.showServerInfos", true)) {
+            motd = Component.join(
+                    JoinConfiguration.noSeparators(),
+                    Component.text(ChatColor.GOLD.toString()), Main.getMMComponent("<rainbow:" + random.nextInt(10) + ">" + Main.PROJECT_NAME),
+                    Component.text(ChatColor.AQUA + " | " + (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) ? "Hardcore" : "Survival")
+                            +  " SMP \n"), randomMotd);
+        }
+        event.motd(motd);
     }
 
 }

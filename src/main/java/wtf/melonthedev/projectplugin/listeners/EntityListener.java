@@ -31,6 +31,9 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onExplode(EntityExplodeEvent event) {
+        event.blockList().forEach(block -> {
+            if (LocationUtils.isLocationInSpawnArea(block.getLocation())) event.blockList().remove(block);
+        });
         if (!LocationUtils.isLocationInSpawnArea(event.getLocation())) return;
         event.blockList().clear();
     }
