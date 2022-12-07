@@ -94,3 +94,6 @@ commands:
 
   donators:
     description: Manage donators server permissions [TEAM ONLY]
+
+  graveyard:
+    description: sets graveyard position

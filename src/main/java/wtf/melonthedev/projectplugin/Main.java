@@ -16,6 +16,7 @@ import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.commands.information.ColorCodesCommand;
 import wtf.melonthedev.projectplugin.commands.information.PositionCommand;
 import wtf.melonthedev.projectplugin.commands.information.WerIstImNetherCommand;
+import wtf.melonthedev.projectplugin.commands.lifesteal.GravayardCommand;
 import wtf.melonthedev.projectplugin.commands.lifesteal.LifestealCommand;
 import wtf.melonthedev.projectplugin.commands.lifesteal.WithdrawHeartCommand;
 import wtf.melonthedev.projectplugin.commands.moderation.*;
@@ -82,6 +83,7 @@ public final class Main extends JavaPlugin {
         getCommand("lifesteal").setExecutor(new LifestealCommand());
         getCommand("pvpcooldown").setExecutor(new PvpCooldownCommand());
         getCommand("donators").setExecutor(new DonatorsCommand());
+        getCommand("graveyard").setExecutor(new GravayardCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
 
