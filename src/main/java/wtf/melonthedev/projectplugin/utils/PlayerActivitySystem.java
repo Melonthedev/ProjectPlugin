@@ -22,8 +22,8 @@ public class PlayerActivitySystem {
     }
 
     public static void savePlayerActivity() {
-        Main.getPlugin().getConfig().set("playeractivity", collectedValuables);
-        Main.getPlugin().saveConfig();
+        //Main.getPlugin().getConfig().set("playeractivity", collectedValuables);
+        //Main.getPlugin().saveConfig();
     }
     public static HashMap<String, HashMap<Material, Integer>> getLatestPlayerActivityEntry() {
         return collectedValuables.get(collectedValuables.size() - 1);

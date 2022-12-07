@@ -40,9 +40,9 @@ public class PlayerRespawnListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onEntityMount(EntityMountEvent event) {
-        if (!event.getEntity().getLocation().getBlock().getType().equals(Material.AIR) || event.getEntity().getType() == EntityType.VEX) {
+        if (event.getEntity().getType() == EntityType.VEX) {
             event.setCancelled(true);
             event.getEntity().sendMessage(ChatColor.RED + "Sorry, but you can't do that!mount");
         }

@@ -14,7 +14,7 @@ public class ISeeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.isOp()) {
-            sender.sendMessage(Main.getPlugin().getMMComponent("<rainbow><bold>ISEE " + (args.length > 0 ? args[0] : "YOU")));
+            sender.sendMessage(Main.getMMComponent("<rainbow><bold>ISEE " + (args.length > 0 ? args[0] : "YOU")));
             return true;
         }
         if (args.length < 1) {
