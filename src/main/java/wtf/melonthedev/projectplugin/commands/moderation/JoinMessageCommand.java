@@ -21,10 +21,10 @@ public class JoinMessageCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.RED + "Syntaxerror: /joinmessage <player> <msg>");
+            sender.sendMessage(ChatColor.RED + "Syntaxerror: /joinmessage <player> <msg/reset>");
             return true;
         }
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(ChatColor.RED + "You must be a player to run this command.");
             return true;
         }
@@ -32,12 +32,18 @@ public class JoinMessageCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "You are not allowed to run this command.");
             return true;
         }
-        Player player = (Player) sender;
         OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[0]);
         if (target == null || !target.hasPlayedBefore()) {
             sender.sendMessage(ChatColor.RED + "You cannot send a joinmessage to " + args[0]);
             return true;
         }
+
+        if (args.length == 2 && args[1].equalsIgnoreCase("reset")) {
+            Main.joinMessages.remove(target.getUniqueId());
+            player.sendMessage(ChatColor.GREEN + "You have removed the joinmessage from " + target.getName() + ".");
+            return true;
+        }
+
         StringBuilder builder = new StringBuilder();
         for (String s : Arrays.copyOfRange(args, 1, args.length))
             builder.append(s).append(" ");

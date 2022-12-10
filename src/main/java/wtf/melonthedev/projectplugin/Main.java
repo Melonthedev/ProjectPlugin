@@ -6,11 +6,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.commands.information.ColorCodesCommand;
@@ -33,18 +30,10 @@ public final class Main extends JavaPlugin {
 
     private static Main plugin;
     public static HashMap<Player, Location> locations = new HashMap<>();
-    public static HashMap<Player, Location> deathlocations = new HashMap<>();
+    public static HashMap<UUID, Location> deathlocations = new HashMap<>();
     public static HashMap<Player, Boolean> spawnElytraPlayers = new HashMap<>();
     public static HashMap<UUID, ItemStack> joinMessages = new HashMap<>();
     private Component[] infos;
-    /*private final Component[] infos = new Component[] {
-            Component.text(ChatColor.GRAY + "Drücke ").append(Component.keybind("key.sneak")).append(Component.text(ChatColor.GRAY + " um von dieser Insel zu gleiten")),
-            Component.text(ChatColor.GRAY + "Chatte mit " + ChatColor.WHITE + "<rainbow>" + ChatColor.GRAY + " um RGB zu schreiben"),
-            Component.text(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/status" + ChatColor.GRAY + " um einen Status zu setzen"),
-            Component.text(ChatColor.GRAY + "Rechtsklicke sneakend ein " + ChatColor.WHITE + "Schild" + ChatColor.GRAY + " um den Inhalt zu bearbeiten"),
-            Component.text(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/r" + ChatColor.GRAY + " um auf eine Privatnachricht zu antworten"),
-            Component.text(ChatColor.GRAY + "Benutze " + ChatColor.WHITE + "/msg" + ChatColor.GRAY + " um Nachrichten sogar an offline Spieler zu senden"),
-    };*/
 
     public static String PROJECT_NAME = "Survivalprojekt 4.1";
     public static String DISCORD_INVITE = "discord.gg/AmskHwQSCT";
@@ -68,7 +57,6 @@ public final class Main extends JavaPlugin {
         getCommand("reply").setExecutor(new ReplyCommand());
         getCommand("spectatestebadon").setExecutor(new SpectateStebadonCommand());
         getCommand("logoutput").setExecutor(new LogOutputCommand());
-        getCommand("bounty").setExecutor(new BountyCommand());
         getCommand("deathlocation").setExecutor(new DeathLocationCommand());
         getCommand("checksusplayeractivity").setExecutor(new CheckSusPlayerActivityCommand());
         getCommand("afk").setExecutor(new AfkCommand());
@@ -84,8 +72,10 @@ public final class Main extends JavaPlugin {
         getCommand("pvpcooldown").setExecutor(new PvpCooldownCommand());
         getCommand("donators").setExecutor(new DonatorsCommand());
         getCommand("graveyard").setExecutor(new GravayardCommand());
+        getCommand("manageplayer").setExecutor(new ManagePlayerCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
+        //getCommand("bounty").setExecutor(new BountyCommand());
 
         //LISTENER REGISTRATION
         //getServer().getPluginManager().registerEvents(votekickInstance, this);
@@ -145,10 +135,7 @@ public final class Main extends JavaPlugin {
 
     public void handleHardcoreModus() {
         boolean flag = getConfig().getBoolean("hardcore.enabled", false);
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            player.getWorld().setHardcore(flag);
-            player.getWorld().setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
-        });
+        Bukkit.getOnlinePlayers().forEach(player -> player.getWorld().setHardcore(flag));
     }
 
     public static void handleFirstJoin(Player player) {
@@ -173,9 +160,7 @@ public final class Main extends JavaPlugin {
 
     public void updateTabList() {
         if (isFeatureDisabled("customTabListInfo")) return;
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
-            for (Player player : Bukkit.getOnlinePlayers()) setCustomPlayerListHeader(player);
-        }, 0, 80);
+        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getOnlinePlayers().forEach(Main::setCustomPlayerListHeader), 0, 80);
     }
 
     public static void setCustomPlayerListHeader(Player player) {
@@ -187,15 +172,15 @@ public final class Main extends JavaPlugin {
     }
 
     public boolean isEndAccessible() {
-        if (!getConfig().contains("config.isendaccessible")) {
-            getConfig().set("config.isendaccessible", false);
+        if (!getConfig().contains("config.endaccessible")) {
+            getConfig().set("config.endaccessible", false);
             saveConfig();
         }
-        return getConfig().getBoolean("config.isendaccessible");
+        return getConfig().getBoolean("config.endaccessible");
     }
 
     public void setEndAccessible(boolean accessible) {
-        getConfig().set("config.isendaccessible", accessible);
+        getConfig().set("config.endaccessible", accessible);
         saveConfig();
     }
 

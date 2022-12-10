@@ -1,5 +1,6 @@
 package wtf.melonthedev.projectplugin.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,14 +12,18 @@ public class DeathLocationCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (Main.deathlocations.containsKey(player)) {
-                Location loc = Main.deathlocations.get(player);
-                player.sendMessage(loc.getX() + " " + loc.getY() + " " + loc.getZ());
-            } else
-                player.sendMessage("Sorry, nur für Notfälle ;)");
+        if (!(sender instanceof Player player)) return true;
+        if (Main.isFeatureDisabled("deathLocationCommand")) {
+            player.sendMessage(ChatColor.RED + "This command is disabled for the current project.");
+            return true;
         }
+        //if (!Main.deathlocations.containsKey(player.getUniqueId())) {
+        if (player.getLastDeathLocation() == null) {
+            player.sendMessage(ChatColor.RED + "Sorry, there is no saved deathlocation!");
+            return true;
+        }
+        Location loc = player.getLastDeathLocation();//Main.deathlocations.get(player.getUniqueId());
+        player.sendMessage(ChatColor.GOLD + "You died at X: " + loc.getBlockX() + " Y: " + loc.getBlockY() + " Z: " + loc.getBlockZ());
         return false;
     }
 }

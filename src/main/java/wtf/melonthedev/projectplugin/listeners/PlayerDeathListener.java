@@ -92,7 +92,7 @@ public class PlayerDeathListener implements Listener {
                 && event.getEntity().getBedSpawnLocation().distance(event.getEntity().getLocation()) > 4000
                 && (event.getEntity().getInventory().contains(Material.NETHERITE_AXE)
                 || event.getEntity().getInventory().contains(Material.NETHERITE_SWORD))) {
-            Main.deathlocations.put(event.getEntity(), event.getEntity().getLocation());
+            Main.deathlocations.put(event.getEntity().getUniqueId(), event.getEntity().getLocation());
             event.deathMessage(Component.join(JoinConfiguration.noSeparators(), event.deathMessage(), Component.text(" und muss jetzt seeehhhr weit laufen :/")));
             Component component = Component.text(ChatColor.AQUA + "Nicht aufgeben! Aber wehe du klickst das hier an!");
             component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/deathlocation"));

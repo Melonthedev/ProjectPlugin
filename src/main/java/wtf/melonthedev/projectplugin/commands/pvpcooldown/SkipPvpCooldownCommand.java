@@ -2,20 +2,21 @@ package wtf.melonthedev.projectplugin.commands.pvpcooldown;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
 
-import java.util.List;
-
-public class SkipPvpCooldownCommand implements TabExecutor {
+public class SkipPvpCooldownCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player)) return true;
-        Player player = (Player) sender;
+        if (!(sender instanceof Player player)) return true;
+        if (Main.isFeatureDisabled("skippablePvpCooldown")) {
+            player.sendMessage(ChatColor.RED + "Sorry, skipping the pvpcooldown was disabled for the current project!");
+            return true;
+        }
         if (!PvpCooldownSystem.pvpCooldowns.containsKey(player.getUniqueId())) {
             player.sendMessage(ChatColor.RED + "You don't have a pvp cooldown!");
             return true;
@@ -24,10 +25,5 @@ public class SkipPvpCooldownCommand implements TabExecutor {
         player.sendMessage(ChatColor.GREEN + "You skipped your pvp cooldown!");
         player.sendMessage(ChatColor.GREEN + "You cannot undo this action!");
         return false;
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return null;
     }
 }

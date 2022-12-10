@@ -8,6 +8,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MessageCommand implements TabExecutor {
 
@@ -25,10 +26,9 @@ public class MessageCommand implements TabExecutor {
         for (String word : words) message.append(word).append(" ");
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.AQUA + "Your message will be delivered as soon as " + args[0] + " is online!");
-            if (!offlinePlayerMessages.containsKey(args[0])) {
+            sender.sendMessage(ChatColor.AQUA + "Your message will be delivered as soon as " + args[0] + " joins the server!");
+            if (!offlinePlayerMessages.containsKey(args[0]))
                 offlinePlayerMessages.put(args[0], new ArrayList<>());
-            }
             offlinePlayerMessages.get(args[0]).add(new AbstractMap.SimpleEntry<>(sender.getName(), message.toString()));
             return true;
         }
@@ -39,20 +39,19 @@ public class MessageCommand implements TabExecutor {
         return false;
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        List<String> tab = new ArrayList<>();
-        if (args.length <= 1) {
-            for (Player player : Bukkit.getOnlinePlayers()) tab.add(player.getName());
-        }
-        return tab;
-    }
-
     public static void handleNewMessages(Player player) {
         if (offlinePlayerMessages.containsKey(player.getName())) {
             for (Map.Entry<String, String> entry : offlinePlayerMessages.get(player.getName()))
                 player.sendMessage(ChatColor.GRAY + entry.getKey() + " whispers to you: " + entry.getValue());
             offlinePlayerMessages.remove(player.getName());
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> tab = new ArrayList<>();
+        if (args.length <= 1)
+            tab.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
+        return tab;
     }
 }

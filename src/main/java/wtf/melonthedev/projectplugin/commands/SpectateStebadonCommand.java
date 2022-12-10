@@ -13,14 +13,17 @@ public class SpectateStebadonCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        /*if (sender.getName().equalsIgnoreCase("stebadon")) {
-            sender.sendMessage(ChatColor.RED + "Du bist leider nicht dazu berechtigt, diesen Command zu verwender!");
+        if (sender.getName().equalsIgnoreCase("stebadon")) {
+            sender.sendMessage(ChatColor.RED + "Du bist leider nicht dazu berechtigt, diesen Command zu verwenden!");
             return true;
         }
-        if (!(sender instanceof Player)) return true;
-        Player player = (Player) sender;
+        if (Main.isFeatureDisabled("spectateStebadonEasteregg")) {
+            sender.sendMessage(ChatColor.RED + "Dieser Command ist momentan nicht verfügbar! Ich weiß, traurig. Aber naja.");
+            return true;
+        }
+        if (!(sender instanceof Player player)) return true;
         if (Bukkit.getPlayer("stebadon") == null) {
-            sender.sendMessage(ChatColor.RED + "Hey ey sorry aber stebadon ist halt grad net online ¯\\_(ツ)_/¯");
+            sender.sendMessage(ChatColor.RED + "Hey ey sorry aber stebadon ist grad net online ¯\\_(ツ)_/¯");
             return true;
         }
         Player target = Bukkit.getPlayer("stebadon");
@@ -35,8 +38,7 @@ public class SpectateStebadonCommand implements CommandExecutor {
         Main.locations.put(player, player.getLocation());
         player.setGameMode(GameMode.SPECTATOR);
         player.setSpectatorTarget(target);
-        runTeleportloop(player);*/
-        sender.sendMessage(ChatColor.RED + "Dieser Command wurde verklagt und ist deshalb momentan nicht verfügbar! Für weitere Informationen schreiben sie mir auf Discord!");
+        runTeleportloop(player);
         return false;
     }
 
@@ -44,6 +46,7 @@ public class SpectateStebadonCommand implements CommandExecutor {
     public void runTeleportloop(Player player) {
         Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), () -> {
             if (!Main.locations.containsKey(player)) return;
+            if (Main.isFeatureDisabled("spectateStebadonEasteregg")) return;
             if (player != null && player.getSpectatorTarget() == null) {
                 player.setSpectatorTarget(null);
                 player.teleport(Main.locations.get(player));

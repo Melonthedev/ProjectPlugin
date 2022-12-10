@@ -10,8 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import wtf.melonthedev.projectplugin.Main;
 
 public class AllowSpectatorCommand implements CommandExecutor {
+
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)) {
             sender.sendMessage(ChatColor.GREEN + "Hardcore mode is not enabled so you cannot use this command!");
             return true;
@@ -25,10 +26,8 @@ public class AllowSpectatorCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Player '" + args[0] + "' was not found!");
             return true;
         }
-
-
-
-
+        sender.sendMessage("This feature is not completed yet. It may never be. Sorry!");
+        //TODO: Implement Spectate System
         return false;
     }
 

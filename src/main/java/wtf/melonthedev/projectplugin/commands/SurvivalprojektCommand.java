@@ -22,7 +22,7 @@ public class SurvivalprojektCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(Main.getPlugin().getMMComponent("<gold>You are playing on </gold><rainbow>" + Main.PROJECT_NAME + "</rainbow><gold>!"));
+            sender.sendMessage(Main.getMMComponent("<gold>You are playing on </gold><rainbow>" + Main.PROJECT_NAME + "</rainbow><gold>!"));
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "Discord: " + Main.DISCORD_INVITE);
             sender.sendMessage(ChatColor.GREEN + "Website: McSurvivalprojekt.de");
             sender.sendMessage(ChatColor.AQUA + "Developer: Melonthedev#1848");
@@ -36,7 +36,7 @@ public class SurvivalprojektCommand implements TabExecutor {
 
         if (args.length == 1) {
             switch (args[0]) {
-                case "startProject":
+                case "startProject" -> {
                     sender.sendMessage(ChatColor.GREEN + "Starting Project...");
                     Main.getPlugin().getConfig().set("projectActive", false);
                     Main.getPlugin().saveConfig();
@@ -52,8 +52,8 @@ public class SurvivalprojektCommand implements TabExecutor {
                     Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "1"), Main.getPlugin().getMMComponent("<rainbow>" + Main.PROJECT_NAME + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 8);
                     Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> startProject(sender), 80 + 40 * 9);
                     Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.empty(), Main.getPlugin().getMMComponent("<gold>Have Fun!</gold>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 10);
-                    break;
-                case "setupProject":
+                }
+                case "setupProject" -> {
                     Main.getPlugin().getConfig().set("projectActive", true);
                     Main.getPlugin().saveConfig();
                     Bukkit.getWorlds().get(0).getWorldBorder().setCenter(Bukkit.getWorlds().get(0).getSpawnLocation());
@@ -62,12 +62,11 @@ public class SurvivalprojektCommand implements TabExecutor {
                     sender.sendMessage(ChatColor.GREEN + "Worldborder set to 16 blocks!");
                     Main.getPlugin().setEndAccessible(false);
                     sender.sendMessage(ChatColor.GREEN + "Blocked End Access!");
-                    //Main.getPlugin().handlePvpCooldown(false);
                     PvpCooldownSystem.resetAllPvpCooldowns();
                     sender.sendMessage(ChatColor.GREEN + "Reset PvP Cooldowns!");
                     sender.sendMessage(ChatColor.GREEN + "Done!");
-                    break;
-                case "stopProject":
+                }
+                case "stopProject" -> {
                     Main.getPlugin().getConfig().set("projectActive", false);
                     Main.getPlugin().saveConfig();
                     sender.sendMessage(ChatColor.GREEN + "Stopped Project!");
@@ -76,20 +75,16 @@ public class SurvivalprojektCommand implements TabExecutor {
                     Main.getPlugin().setEndAccessible(true);
                     sender.sendMessage(ChatColor.GREEN + "Unblocked End Access!");
                     sender.sendMessage(ChatColor.GREEN + "Done!");
-                    break;
-                case "startProjectInstantly":
-                    startProject(sender);
-                    break;
+                }
+                case "startProjectInstantly" -> startProject(sender);
             }
         }
-
         return false;
     }
 
     public void startProject(CommandSender sender) {
         Main.getPlugin().getConfig().set("projectActive", true);
         Main.getPlugin().saveConfig();
-        //Main.getPlugin().handlePvpCooldown(true);
         sender.sendMessage(ChatColor.GREEN + "Blocked End Access!");
         Main.getPlugin().setEndAccessible(false);
         Bukkit.getWorlds().get(0).setTime(0);

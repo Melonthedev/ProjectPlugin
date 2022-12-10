@@ -58,18 +58,6 @@ public class DonatorsCommand implements TabExecutor {
         return false;
     }
 
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        List<String> tab = new ArrayList<>();
-        if (args.length == 1) {
-            tab.add("list");
-            tab.add("add");
-            tab.add("remove");
-        } else if (args.length == 2)
-            tab.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
-        return tab;
-    }
-
     public static List<UUID> getDonators() {
         List<UUID> donators = new ArrayList<>();
         ConfigurationSection donatorsection = Main.getPlugin().getConfig().getConfigurationSection("donators");
@@ -86,4 +74,15 @@ public class DonatorsCommand implements TabExecutor {
         return donators;
     }
 
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        List<String> tab = new ArrayList<>();
+        if (args.length == 1) {
+            tab.add("list");
+            tab.add("add");
+            tab.add("remove");
+        } else if (args.length == 2)
+            tab.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
+        return tab;
+    }
 }
