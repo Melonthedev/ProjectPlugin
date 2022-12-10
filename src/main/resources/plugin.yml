@@ -32,11 +32,6 @@ commands:
       - whisper
       - tell
 
-  bounty:
-    description: Setzt ein Kopfgeld auf einen Spieler
-    aliases:
-      - kopfgeld
-
   deathlocation:
     description: Zeigt deine Todesposition an
 
@@ -52,9 +47,16 @@ commands:
   withdraw:
     description: gib mir herzen
 
+  graveyard:
+    description: Sets graveyard positions
+
   #DEPRECATED
   spectatestebadon:
     description: hmmmmmmmmmm SuS [Deprecated]
+  #bounty:
+  #  description: Setzt ein Kopfgeld auf einen Spieler
+  #  aliases:
+  #    - kopfgeld
   #votekick:
   #  description: Votekick Command
   #lockchest:
@@ -95,5 +97,5 @@ commands:
   donators:
     description: Manage donators server permissions [TEAM ONLY]
 
-  graveyard:
-    description: sets graveyard position
+  manageplayer:
+    description: Manages a specific player [TEAM ONLY]

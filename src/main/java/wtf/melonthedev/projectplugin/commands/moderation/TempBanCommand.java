@@ -50,9 +50,9 @@ public class TempBanCommand implements TabExecutor {
             expirationDate.add(Calendar.DAY_OF_MONTH, 1);
         }
         if (target.isOnline() && target.getPlayer() != null)
-            target.getPlayer().kick(Component.text("You are banned from Survivalprojekt.\n" + (reason.length() == 0 ? "" : "Reason: " + reason) + "\nExpires: " + expirationDate.toString()));
+            target.getPlayer().kick(Component.text(ChatColor.RED + "You are banned from Survivalprojekt.\n" + ChatColor.AQUA + (reason.length() == 0 ? "" : "Reason: " + reason) + ChatColor.GREEN + "\nExpires: " + getDuration().getTime()));
         Bukkit.getBanList(BanList.Type.NAME).addBan(target.getName(), reason.toString(), getDuration().getTime(), sender.getName());
-        sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been banned for " + reason + ". Ban expires: " + getDuration() + ".");
+        sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been banned for " + reason + ". Ban expires: " + getDuration().getTime() + ".");
         ActionLogger.logAction(target.getName(), "was banned", null, sender.getName(), reason.toString(), true);
         expirationDate = null;
         return false;

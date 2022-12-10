@@ -11,10 +11,9 @@ discordInvite: discord.gg/AmskHwQSCT
 spawn:
   world: world
   radius: 20
-
 config:
   # /toggleendaccessibility
-  isendaccessible: true
+  endaccessible: true
   # /logoutput
   logging: normal
   actionBarSpawnMessages:
@@ -23,7 +22,11 @@ config:
     enabled: true
   eastereggDamage:
     enabled: true
+  spectateStebadonEasteregg:
+    enabled: false
   customJoinMessages:
+    enabled: true
+  customQuitMessages:
     enabled: true
   newPlayerWelcomeMessage:
     enabled: true
@@ -35,6 +38,10 @@ config:
   customServerMotds:
     enabled: true
     showServerInfos: true
+  deathLocationCommand:
+    enabled: false
+  skippablePvpCooldown:
+    enabled: true
 
 # /hardcore
 hardcore:
