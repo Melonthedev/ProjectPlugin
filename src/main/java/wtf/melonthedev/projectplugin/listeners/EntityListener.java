@@ -107,12 +107,12 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onEntityRescue(EntityResurrectEvent event) {
-        if (Lifesteal.isLifestealActive()) event.setCancelled(true);
+        if (Lifesteal.isLifestealActive() && Lifesteal.isTotemBlocked()) event.setCancelled(true);
     }
 
     @EventHandler
-    public void onEntityRescue(PlayerArmorChangeEvent event) {
-        if (Lifesteal.isLifestealActive() && event.getSlotType() == PlayerArmorChangeEvent.SlotType.CHEST && event.getNewItem() != null && event.getNewItem().getType() == Material.ELYTRA) {
+    public void onArmorChange(PlayerArmorChangeEvent event) {
+        if (Lifesteal.isLifestealActive() && Lifesteal.isElytraBlocked() && event.getSlotType() == PlayerArmorChangeEvent.SlotType.CHEST && event.getNewItem() != null && event.getNewItem().getType() == Material.ELYTRA) {
             event.getPlayer().getInventory().setChestplate(new ItemStack(Material.AIR));
             event.getPlayer().getInventory().addItem(event.getNewItem());
         }

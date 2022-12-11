@@ -22,26 +22,22 @@ import wtf.melonthedev.projectplugin.utils.Lifesteal;
 public class PlayerInteractListener implements Listener {
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
+    public void onFireworkInteract(PlayerInteractEvent event) {
+        if (!event.hasItem() || event.getItem() == null) return;
+        if ((event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST) == null
+                || event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST).getType() != Material.ELYTRA)
+                && event.getItem().getType() == Material.FIREWORK_ROCKET)
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onHeartItemInteract(PlayerInteractEvent event) {
         NamespacedKey key = new NamespacedKey(Main.getPlugin(), "heart");
-        if (!event.hasItem()) return;
-        if (event.getItem() == null) return;
+        if (!event.hasItem() || event.getItem() == null) return;
         if (event.getItem().getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.BYTE)
                 && event.getItem().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.BYTE) == 1
-                && Lifesteal.isLifestealActive() && event.getAction().isRightClick()){
-            ItemStack heart = event.getItem();
-            if (Lifesteal.getHeartCount(event.getPlayer().getUniqueId()) >= 20){
-                event.getPlayer().sendMessage(Lifesteal.prefix + ChatColor.RED + "Error: You reached the maximum count of hearts.");
-                return;
-            }
-            Lifesteal.addHeartItemToPlayer(event.getPlayer(), heart);
-        }
-        if (event.getAction() == Action.RIGHT_CLICK_AIR) return;
-        if (event.getItem().getType() != Material.FIREWORK_ROCKET) return;
-        if (event.getPlayer().getEquipment() == null
-                || event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST) == null
-                || event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST).getType() != Material.ELYTRA)
-            event.setCancelled(true);
+                && Lifesteal.isLifestealActive() && event.getAction().isRightClick())
+            Lifesteal.addHeartItemToPlayer(event.getPlayer(), event.getItem());
     }
 
     @EventHandler
@@ -51,7 +47,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getClickedBlock().getType() != Material.END_PORTAL_FRAME) return;
         if (Main.getPlugin().isEndAccessible()) return;
         event.setCancelled(true);
-        event.getPlayer().sendActionBar(Component.text(ChatColor.AQUA + "Das END ist blockiert. Es wird bald geöffnet."));
+        event.getPlayer().sendActionBar(Component.text(ChatColor.AQUA + "Das End ist blockiert. Es wird bald geöffnet."));
     }
 
     @EventHandler

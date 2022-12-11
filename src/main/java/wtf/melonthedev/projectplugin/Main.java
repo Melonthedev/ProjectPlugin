@@ -96,6 +96,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerRespawnListener(), this);
+        getServer().getPluginManager().registerEvents(new CraftListener(), this);
 
         sendSpawnActionBarMessage();
         updateTabList();

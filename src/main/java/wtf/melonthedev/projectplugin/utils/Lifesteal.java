@@ -48,6 +48,16 @@ public class Lifesteal {
         return Main.getPlugin().getConfig().getBoolean("lifesteal.enabled", false);
     }
 
+    public static boolean isNetheriteBlocked() {
+        return Main.getPlugin().getConfig().getBoolean("lifesteal.blocknetherite", true);
+    }
+    public static boolean isTotemBlocked() {
+        return Main.getPlugin().getConfig().getBoolean("lifesteal.blocktotems", true);
+    }
+    public static boolean isElytraBlocked() {
+        return Main.getPlugin().getConfig().getBoolean("lifesteal.blockelytra", true);
+    }
+
     /**
     * Set whether the Lifesteal System is active e.g. if hearts can be crafted
      **/

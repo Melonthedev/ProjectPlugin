@@ -51,6 +51,9 @@ hardcore:
 # /lifesteal
 lifesteal:
   enabled: false
+  blocknetherite: true
+  blockelytra: true
+  blocktotems: true
   hearts: {}
 
 # Entries: uuid: remainingMinutes
