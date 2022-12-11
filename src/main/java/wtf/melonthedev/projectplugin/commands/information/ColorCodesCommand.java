@@ -48,26 +48,18 @@ public class ColorCodesCommand implements TabExecutor {
                 sender.sendMessage(colorinfo + "---------------------------------");
             } else if (args[0].equalsIgnoreCase("extras")) {
                 sender.sendMessage(colorinfo + "---------- Color Codes Extras ----------");
-                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- RAINBOW: <rainbow> - "), Main.getPlugin().getMMComponent("<rainbow>Really long example")));
+                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- RAINBOW: <rainbow> - "), Main.getMMComponent("<rainbow>Really long example")));
                 sender.sendMessage(colorinfo + "- BOLD: <bold> or <b> - " + ChatColor.BOLD + " Example");
                 sender.sendMessage(colorinfo + "- ITALIC: <italic> or <em> or <i> - " + ChatColor.ITALIC + " Example");
                 sender.sendMessage(colorinfo + "- UNDERLINED: <underlined> or <u> - " + ChatColor.UNDERLINE + " Example");
                 sender.sendMessage(colorinfo + "- STRIKETHROUGH: <strikethrough> or <st> - " + ChatColor.STRIKETHROUGH + " Example");
                 sender.sendMessage(colorinfo + "- OBFUSCATED: <obfuscated> or <obf> - " + ChatColor.MAGIC + " Example");
-                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- HOVER: <hover:show_text:'test'> - "), Main.getPlugin().getMMComponent("<aqua><hover:show_text:'test'>Example (hover me)")));
-                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- KEYBIND: <key:key.jump> - "), Main.getPlugin().getMMComponent("<aqua>Example: Your jump key is <key:key.jump>")));
-                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- GRADIENT: <gradient:[color1]:[color...]> - "), Main.getPlugin().getMMComponent("<gradient:green:blue>Really long example")));
-                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- FONT: <font:[key]> - "), Main.getPlugin().getMMComponent("Example: <font:uniform>Uniform <font:alt>Alt")));
+                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- HOVER: <hover:show_text:'test'> - "), Main.getMMComponent("<aqua><hover:show_text:'test'>Example (hover me)")));
+                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- KEYBIND: <key:key.jump> - "), Main.getMMComponent("<aqua>Example: Your jump key is <key:key.jump>")));
+                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- GRADIENT: <gradient:[color1]:[color...]> - "), Main.getMMComponent("<gradient:green:blue>Really long example")));
+                sender.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(colorinfo + "- FONT: <font:[key]> - "), Main.getMMComponent("Example: <font:uniform>Uniform <font:alt>Alt")));
                 sender.sendMessage(colorinfo + "---------------------------------");
             }
-            /*for (ChatColor color : ChatColor.values()) {
-                if (!args[0].equalsIgnoreCase(color.name())) continue;
-                sender.sendMessage(colorinfo + "Der Farbcode für " + args[0] + " ist <" + color.name() + ">");
-                sender.sendMessage(color + "So wird es bei Benutzung aussehen :)");
-                sender.sendMessage(colorinfo + "-------------------------------");
-                return true;
-            }
-            sender.sendMessage(ChatColor.RED + "Diese Farbe wurde nicht gefunden: '" + args[0] + "'. Such deine Farbe in der Liste: /colorcodes");*/
         } else {
             sender.sendMessage(colorinfo + "---------- Color Codes ----------");
             sender.sendMessage(colorinfo + "You can use the following colors in chat: ");
@@ -93,7 +85,6 @@ public class ColorCodesCommand implements TabExecutor {
         }
         return false;
     }
-
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.commands.information.ColorCodesCommand;
 import wtf.melonthedev.projectplugin.commands.information.PositionCommand;
+import wtf.melonthedev.projectplugin.commands.information.TimerCommand;
 import wtf.melonthedev.projectplugin.commands.information.WerIstImNetherCommand;
 import wtf.melonthedev.projectplugin.commands.lifesteal.GravayardCommand;
 import wtf.melonthedev.projectplugin.commands.lifesteal.LifestealCommand;
@@ -73,6 +74,7 @@ public final class Main extends JavaPlugin {
         getCommand("donators").setExecutor(new DonatorsCommand());
         getCommand("graveyard").setExecutor(new GravayardCommand());
         getCommand("manageplayer").setExecutor(new ManagePlayerCommand());
+        getCommand("timer").setExecutor(new TimerCommand());
         //getCommand("votekick").setExecutor(votekickInstance);
         //getCommand("lockchest").setExecutor(lockchestInstance);
         //getCommand("bounty").setExecutor(new BountyCommand());
@@ -106,13 +108,11 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        StatusCommand.onDisable();
+        PvpCooldownSystem.onDisable();
         PlayerActivitySystem.savePlayerActivity();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.playerListName(Component.text(player.getName()));
-            player.displayName(Component.text(player.getName()));
-            if (PvpCooldownSystem.pvpCooldowns.containsKey(player.getUniqueId()))
-                player.hideBossBar(PvpCooldownSystem.pvpCooldowns.get(player.getUniqueId()).getBar());
-        }
+        TimerSystem.stopTimer();
+        Lifesteal.onDisable();
     }
 
 

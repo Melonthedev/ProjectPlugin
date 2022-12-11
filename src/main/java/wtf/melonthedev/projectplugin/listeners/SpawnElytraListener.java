@@ -10,15 +10,21 @@ import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.utils.Lifesteal;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
 public class SpawnElytraListener implements Listener {
 
     @EventHandler
-    public void onEntityToggleGlide(EntityToggleGlideEvent event) {//LocationUtils.isLocationInSpawnArea(entity.getLocation()) &&
-        if (!(event.getEntity() instanceof Player)) return;
-        Player player = (Player) event.getEntity();
-        if (player.getEquipment() != null && player.getEquipment().getItem(EquipmentSlot.CHEST) != null && player.getEquipment().getItem(EquipmentSlot.CHEST).getType() == Material.ELYTRA) return;
+    public void onEntityToggleGlide(EntityToggleGlideEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (player.getEquipment().getItem(EquipmentSlot.CHEST) != null
+                && player.getEquipment().getItem(EquipmentSlot.CHEST).getType() == Material.ELYTRA) {
+            if (Lifesteal.isLifestealActive()) {
+                event.setCancelled(true);
+            }
+            return;
+        }
         if (player.getLocation().getY() > 20 && player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR && LocationUtils.isLocationNearSpawnArea(player.getLocation()) && Main.spawnElytraPlayers.getOrDefault(player, false)) {
             event.setCancelled(true);
             return;

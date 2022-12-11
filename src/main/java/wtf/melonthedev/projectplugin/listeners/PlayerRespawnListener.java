@@ -20,9 +20,9 @@ public class PlayerRespawnListener implements Listener {
     public void onRespawn(PlayerPostRespawnEvent event) {
         if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)) {
             event.getPlayer().showTitle(Title.title(Component.text(ChatColor.RED + "You died!"), Component.text(ChatColor.GRAY + "You won't respawn!")));
-            event.getPlayer().sendMessage(Main.getPlugin().getMMComponent("<yellow>If you want to spectate your team or friends,"));
-            event.getPlayer().sendMessage(Main.getPlugin().getMMComponent("<yellow>run <aqua>/allowheadpickup PlayerName</aqua><yellow> and"));
-            event.getPlayer().sendMessage(Main.getPlugin().getMMComponent("<yellow>ask them to pick your head up at the <light_purple>graveyard</light_purple><yellow> at spawn!"));
+            event.getPlayer().sendMessage(Main.getMMComponent("<yellow>If you want to spectate your team or friends,"));
+            event.getPlayer().sendMessage(Main.getMMComponent("<yellow>run <aqua>/allowheadpickup PlayerName</aqua><yellow> and"));
+            event.getPlayer().sendMessage(Main.getMMComponent("<yellow>ask them to pick your head up at the <light_purple>graveyard</light_purple><yellow> at spawn!"));
             event.getPlayer().setGameMode(GameMode.SPECTATOR);
             event.getPlayer().setSilent(true);
             event.getPlayer().setAffectsSpawning(false);
@@ -34,17 +34,9 @@ public class PlayerRespawnListener implements Listener {
 
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
-        if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.SPECTATE)) {
+        if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.SPECTATE) && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "Sorry, but you can't do that!");
-        }
-    }
-
-    @EventHandler
-    public void onEntityMount(EntityMountEvent event) {
-        if (event.getEntity().getType() == EntityType.VEX) {
-            event.setCancelled(true);
-            event.getEntity().sendMessage(ChatColor.RED + "Sorry, but you can't do that!mount");
         }
     }
 

@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scoreboard.*;
 import wtf.melonthedev.projectplugin.Main;
 
 import java.util.*;
@@ -23,12 +24,24 @@ public class Lifesteal {
     private Lifesteal() {} // Utility Class, cannot be instantiated
 
     public static final String prefix = ChatColor.GREEN + ChatColor.BOLD.toString() + "[Life" + ChatColor.DARK_RED + ChatColor.BOLD + "Steal] " + ChatColor.RESET;
+    public static Objective heartsObjective;
 
     public static void init() {
-        //TODO: Load infos from config for players, show messages, ...
-
         if (!isLifestealActive()) return;
+        handleScoreboard();
         Bukkit.getOnlinePlayers().forEach(Lifesteal::validateHearts);
+    }
+
+    public static void handleScoreboard() {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+        heartsObjective = scoreboard.getObjective("hearts");
+        if (heartsObjective == null) heartsObjective = scoreboard.registerNewObjective("hearts", Criteria.DUMMY, Component.text(ChatColor.RED + "❤"));
+        heartsObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+    }
+
+    public static void onDisable() {
+        if (heartsObjective != null) heartsObjective.unregister();
+        heartsObjective = null;
     }
 
     public static boolean isLifestealActive() {
@@ -41,6 +54,8 @@ public class Lifesteal {
     public static void setLifestealActive(boolean flag) {
         Main.getPlugin().getConfig().set("lifesteal.enabled", flag);
         Main.getPlugin().saveConfig();
+        if (flag) Bukkit.getOnlinePlayers().forEach(Lifesteal::validateHearts);
+        else Bukkit.getOnlinePlayers().forEach(Lifesteal::resetHearts);
     }
 
     public static int getDefaultHeartCount() {
@@ -124,7 +139,7 @@ public class Lifesteal {
         Player target = Bukkit.getPlayer(uuid);
         if (target == null) return;
         target.getInventory().clear();
-        target.kick(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n"+ ChatColor.WHITE + "You lost all your hearts.\n" + ChatColor.AQUA + "Ask your friends to revive you.\n" + ChatColor.GOLD + "Don't give up!"), PlayerKickEvent.Cause.BANNED);
+        target.kick(Component.text(ChatColor.BOLD.toString() + ChatColor.GREEN + "Life" + ChatColor.DARK_RED + "Steal\n" + ChatColor.WHITE + "You lost all your hearts.\n" + ChatColor.AQUA + "Ask your friends to revive you.\n" + ChatColor.GOLD + "Don't give up!"), PlayerKickEvent.Cause.BANNED);
     }
 
     public static void validateHearts(Player player) {
@@ -137,6 +152,15 @@ public class Lifesteal {
         //player.setHealthScale(hearts*2);
         if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null) player.registerAttribute(Attribute.GENERIC_MAX_HEALTH);
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(hearts*2);
+        if (heartsObjective == null) handleScoreboard();
+        heartsObjective.getScore(player).setScore(hearts);
+    }
+
+    public static void resetHearts(Player player) {
+        if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null) player.registerAttribute(Attribute.GENERIC_MAX_HEALTH);
+        Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(20);
+        if (heartsObjective != null) heartsObjective.unregister();
+        heartsObjective = null;
     }
 
     public static void handleLogin(AsyncPlayerPreLoginEvent event) {
@@ -162,9 +186,5 @@ public class Lifesteal {
         heart.setAmount(heart.getAmount() - 1);
         giveHeart(player.getUniqueId(), 1);
     }
-
-
-
-    //...
 
 }

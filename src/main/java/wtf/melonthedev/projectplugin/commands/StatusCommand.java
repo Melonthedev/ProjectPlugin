@@ -3,6 +3,7 @@ package wtf.melonthedev.projectplugin.commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -78,6 +79,13 @@ public class StatusCommand implements TabExecutor {
     public static void handlePlayerJoin(Player player) {
         if (statusList.containsKey(player.getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
             setStatus(player, Main.getMMComponent(statusList.get(player.getName())));
+    }
+
+    public static void onDisable() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.playerListName(Component.text(player.getName()));
+            player.displayName(Component.text(player.getName()));
+        }
     }
 
     @Override

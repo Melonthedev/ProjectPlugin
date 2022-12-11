@@ -26,6 +26,13 @@ public class PvpCooldownSystem {
             pvpCooldowns.get(player.getUniqueId()).start();
     }
 
+    public static void onDisable() {
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if (PvpCooldownSystem.pvpCooldowns.containsKey(player.getUniqueId()))
+                player.hideBossBar(PvpCooldownSystem.pvpCooldowns.get(player.getUniqueId()).getBar());
+        });
+    }
+
     public static void startForPlayer(UUID uuid, int minutes) {
         if (pvpCooldowns.containsKey(uuid))
             pvpCooldowns.get(uuid).disable();

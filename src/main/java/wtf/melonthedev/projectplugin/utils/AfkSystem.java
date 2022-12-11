@@ -25,7 +25,7 @@ public class AfkSystem {
     private AfkSystem() {}
 
     public static void handleAfkModus(Player player) {
-        if (Main.isFeatureDisabled("afkSystem") || (player.getGameMode() == GameMode.SPECTATOR && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)) )
+        if (Main.isFeatureDisabled("afkSystem") || (player.getGameMode() == GameMode.SPECTATOR && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)))
             return;
         if (isAfk(player)) {
             disableAfkMode(player);
@@ -47,6 +47,7 @@ public class AfkSystem {
     }
 
     public static void enableAfkModus(Player player) {
+        if (player.getGameMode() == GameMode.SPECTATOR && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)) return;
         afkPlayers.add(player);
         player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "[AFK] " + ChatColor.RESET + ChatColor.RED + "Du bist nun im AFK Modus! Du kannst trotzdem sterben.");
         Bukkit.getServer().broadcast(Component.text(ChatColor.RED + player.getName() + ChatColor.GRAY + " ist nun im AFK Modus!"));

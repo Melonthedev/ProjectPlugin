@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -15,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ManagePlayerCommand implements TabExecutor {
 
@@ -60,7 +63,7 @@ public class ManagePlayerCommand implements TabExecutor {
             case "location" -> sender.sendMessage("Location: " + targetOnline.getLocation());
             case "gamemode" -> sender.sendMessage("Gamemode: " + targetOnline.getGameMode().name());
             case "client" -> sender.sendMessage("Client: " + targetOnline.getClientBrandName());
-            case "boostElytra" -> sender.sendMessage("Boosted with: " + targetOnline.boostElytra(new ItemStack(Material.FIREWORK_ROCKET)).getName());
+            case "boostelytra" -> sender.sendMessage("Boosted with: " + targetOnline.boostElytra(new ItemStack(Material.FIREWORK_ROCKET)).getName());
             case "applyMending" -> sender.sendMessage("Mending applied! Remaining: " + targetOnline.applyMending(100));
             case "xp" -> sender.sendMessage("XP: " + targetOnline.getExp());
             case "health" -> sender.sendMessage("Health: " + targetOnline.getHealth());
@@ -73,8 +76,8 @@ public class ManagePlayerCommand implements TabExecutor {
             case "deathlocation" -> sender.sendMessage("Death Location: " + targetOnline.getLastDeathLocation());
             case "facing" -> sender.sendMessage("Facing: " + targetOnline.getFacing().name());
             case "reset" -> {
-                targetOnline.setHealth(20);
-                targetOnline.setHealth(20);
+                targetOnline.setHealth(Objects.requireNonNull(targetOnline.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
+                targetOnline.setFoodLevel(20);
                 sender.sendMessage(ChatColor.GREEN + "Success!");
             }
         }
@@ -85,7 +88,9 @@ public class ManagePlayerCommand implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> tab = new ArrayList<>();
-        if (args.length == 2) {
+        if (args.length == 1) {
+            tab.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
+        } else if (args.length == 2) {
             tab.add("uuid");
             tab.add("online");
             tab.add("respawn");

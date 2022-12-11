@@ -1,5 +1,6 @@
 package wtf.melonthedev.projectplugin.listeners;
 
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -19,15 +20,13 @@ public class EntityDamageByEntityListener implements Listener {
         if (LocationUtils.isLocationInSpawnArea(event.getEntity().getLocation())) {
             event.setCancelled(true);
         }
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player && PvpCooldownSystem.pvpCooldowns.containsKey(event.getDamager().getUniqueId()) && Main.getPlugin().getConfig().getBoolean("projectActive", false)) {
+        if (event.getDamager() instanceof Player damager && event.getEntity() instanceof Player && PvpCooldownSystem.pvpCooldowns.containsKey(event.getDamager().getUniqueId()) && Main.getPlugin().getConfig().getBoolean("projectActive", false)) {
             event.setCancelled(true);
-            Player damager = (Player) event.getDamager();
-            damager.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "PvP Cooldown ist aktiv! Überspringe mit /skipPvpCooldown"));
+            damager.sendActionBar(Component.text(ChatColor.RED + "PvP Cooldown ist aktiv! Überspringe mit /skipPvpCooldown"));
         }
-        if (event.getEntity() instanceof Player && event.getDamager() instanceof Player && PvpCooldownSystem.pvpCooldowns.containsKey(event.getEntity().getUniqueId())  && Main.getPlugin().getConfig().getBoolean("projectActive", false)) {
+        if (event.getEntity() instanceof Player && event.getDamager() instanceof Player damager && PvpCooldownSystem.pvpCooldowns.containsKey(event.getEntity().getUniqueId())  && Main.getPlugin().getConfig().getBoolean("projectActive", false)) {
             event.setCancelled(true);
-            Player damager = (Player) event.getDamager();
-            damager.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Dieser Spieler ist im PvP Cooldown!"));
+            damager.sendActionBar(Component.text(ChatColor.RED + "Dieser Spieler ist im PvP Cooldown!"));
         }
     }
     @EventHandler
