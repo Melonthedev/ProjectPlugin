@@ -91,8 +91,7 @@ public class ServerPingListener implements Listener {
             motd = Component.join(
                     JoinConfiguration.noSeparators(),
                     Component.text(ChatColor.GOLD.toString()), Main.getMMComponent("<rainbow:" + random.nextInt(10) + ">" + Main.PROJECT_NAME),
-                    Component.text(ChatColor.AQUA + " | " + (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) ? "Hardcore" : "Survival")
-                            +  " SMP \n"), randomMotd);
+                    Component.text(ChatColor.AQUA + " | " + Main.PROJECT_TYPE + " \n"), randomMotd);
         }
         event.motd(motd);
     }
