@@ -34,7 +34,7 @@ public class PlayerRespawnListener implements Listener {
 
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
-        if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.SPECTATE) && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)) {
+        if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.SPECTATE) && Main.getPlugin().getConfig().getBoolean("hardcore.blockSpectatorTeleport", false)) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "Sorry, but you can't do that!");
         }
