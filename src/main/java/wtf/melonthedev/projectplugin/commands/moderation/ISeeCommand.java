@@ -6,17 +6,22 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class ISeeCommand implements CommandExecutor {
+public class ISeeCommand implements TabExecutor {
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.isOp()) {
@@ -24,7 +29,7 @@ public class ISeeCommand implements CommandExecutor {
             return true;
         }
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.RED + "Syntaxerror: /isee <player> <text/armor/ec>");
+            sender.sendMessage(ChatColor.RED + "Syntaxerror: /isee <player> (<text/armor/ec>)");
             return true;
         }
         Player target = Bukkit.getPlayer(args[0]);
@@ -32,19 +37,21 @@ public class ISeeCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Player is offline.");
             return true;
         }
-        if (sender instanceof Player && args[1].equalsIgnoreCase("ec")) {
+
+        if (args.length == 1) {
             Player player = (Player) sender;
+            player.openInventory(target.getInventory());
+            return true;
+        }
+
+        if (sender instanceof Player player && args[1].equalsIgnoreCase("ec")) {
             player.openInventory(target.getEnderChest());
-        } else if (sender instanceof Player && args[1].equalsIgnoreCase("armor")) {
-            Player player = (Player) sender;
+        } else if (sender instanceof Player player && args[1].equalsIgnoreCase("armor")) {
             Inventory inv = Bukkit.createInventory(null, 27, Component.text("Armor of " + target.getName()));
             Arrays.stream(target.getInventory().getArmorContents()).filter(Objects::nonNull).collect(Collectors.toList()).forEach(inv::addItem);
             Arrays.stream(target.getInventory().getExtraContents()).filter(Objects::nonNull).collect(Collectors.toList()).forEach(inv::addItem);
             player.openInventory(inv);
-        } else if (sender instanceof Player && !args[1].equalsIgnoreCase("text")) {
-            Player player = (Player) sender;
-            player.openInventory(target.getInventory());
-        } else {
+        } else if (args[1].equalsIgnoreCase("text")) {
             sender.sendMessage(ChatColor.AQUA + "---- Inventory of " + target.getName() + " -----");
             sender.sendMessage(ChatColor.AQUA + "Armor:");
             for (ItemStack stack : target.getInventory().getArmorContents()) {
@@ -63,5 +70,19 @@ public class ISeeCommand implements CommandExecutor {
             }
         }
         return false;
+    }
+
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        List<String> tab = new ArrayList<>();
+        if (args.length == 1) {
+            tab.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
+        } else if (args.length == 2) {
+            tab.add("text");
+            tab.add("ec");
+            tab.add("armor");
+        }
+        return tab;
     }
 }
