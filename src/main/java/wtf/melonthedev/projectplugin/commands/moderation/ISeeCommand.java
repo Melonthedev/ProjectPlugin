@@ -1,12 +1,14 @@
 package wtf.melonthedev.projectplugin.commands.moderation;
 
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -14,10 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ISeeCommand implements TabExecutor {
@@ -52,26 +51,39 @@ public class ISeeCommand implements TabExecutor {
             Arrays.stream(target.getInventory().getExtraContents()).filter(Objects::nonNull).collect(Collectors.toList()).forEach(inv::addItem);
             player.openInventory(inv);
         } else if (args[1].equalsIgnoreCase("text")) {
-            sender.sendMessage(ChatColor.AQUA + "---- Inventory of " + target.getName() + " -----");
+            sender.sendMessage(ChatColor.GOLD + "---- Inventory of " + target.getName() + " -----");
             sender.sendMessage(ChatColor.AQUA + "Armor:");
             for (ItemStack stack : target.getInventory().getArmorContents()) {
                 if (stack == null) continue;
-                sender.sendMessage(ChatColor.AQUA + "- " + stack.getType() + " (" + stack.getEnchantments() + ")");
+                sender.sendMessage(ChatColor.AQUA + "- " + ChatColor.YELLOW + stack.getAmount() + "x " + ChatColor.AQUA + StringUtils.capitalize(stack.getType().getKey().asString().replaceAll("minecraft:", "").toLowerCase().replaceAll("_", " ")) + " " + getEnchantmentsString(stack.getEnchantments()));
             }
-            sender.sendMessage(ChatColor.AQUA + "Extra:");
+            sender.sendMessage(ChatColor.BLUE + "Extra:");
             for (ItemStack stack : target.getInventory().getExtraContents()) {
                 if (stack == null) continue;
-                sender.sendMessage(ChatColor.AQUA + "- " + stack.getType() + " " + stack.getAmount() + "x (" + stack.getEnchantments() + ")");
+                sender.sendMessage(ChatColor.BLUE + "- " + ChatColor.YELLOW + stack.getAmount() + "x " + ChatColor.BLUE + StringUtils.capitalize(stack.getType().getKey().asString().replaceAll("minecraft:", "").toLowerCase().replaceAll("_", " ")) + " " + getEnchantmentsString(stack.getEnchantments()));
             }
-            sender.sendMessage(ChatColor.AQUA + "Storage:");
+            sender.sendMessage(ChatColor.GREEN + "Storage:");
             for (ItemStack stack : target.getInventory().getStorageContents()) {
                 if (stack == null) continue;
-                sender.sendMessage(ChatColor.AQUA + "- " + stack.getType() + " " + stack.getAmount() + "x (" + stack.getEnchantments() + ")");
+                sender.sendMessage(ChatColor.GREEN + "- " + ChatColor.YELLOW + stack.getAmount() + "x " + ChatColor.GREEN + StringUtils.capitalize(stack.getType().getKey().asString().replaceAll("minecraft:", "").toLowerCase().replaceAll("_", " ")) + " " + getEnchantmentsString(stack.getEnchantments()));
             }
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "EnderChest:");
+            for (ItemStack stack : target.getEnderChest().getStorageContents()) {
+                if (stack == null) continue;
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + "- " + ChatColor.YELLOW + stack.getAmount() + "x " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(stack.getType().getKey().asString().replaceAll("minecraft:", "").toLowerCase().replaceAll("_", " ")) + " " + getEnchantmentsString(stack.getEnchantments()));
+            }
+            sender.sendMessage(ChatColor.GOLD + "----------------------------------");
         }
         return false;
     }
 
+
+    public String getEnchantmentsString(Map<Enchantment, Integer> list) {
+        if (list.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder("(");
+        list.forEach((enchantment, integer) -> sb.append(StringUtils.capitalize(enchantment.getKey().asString().toLowerCase().replaceAll("minecraft:", ""))).append(" ").append(integer).append(", "));
+        return sb.substring(0, sb.length() - 2) + ")";
+    }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
