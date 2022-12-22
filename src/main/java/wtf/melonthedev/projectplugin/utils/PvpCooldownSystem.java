@@ -33,6 +33,10 @@ public class PvpCooldownSystem {
         });
     }
 
+    public static void startForAllPlayers(int minutes) {
+        Bukkit.getOnlinePlayers().stream().map(Entity::getUniqueId).forEach(uuid -> startForPlayer(uuid, minutes));
+    }
+
     public static void startForPlayer(UUID uuid, int minutes) {
         if (pvpCooldowns.containsKey(uuid))
             pvpCooldowns.get(uuid).disable();
