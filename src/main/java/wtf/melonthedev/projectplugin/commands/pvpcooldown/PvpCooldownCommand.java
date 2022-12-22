@@ -36,6 +36,10 @@ public class PvpCooldownCommand implements TabExecutor {
             }
             try {
                 int minutes = Integer.parseInt(args[2]);
+                if (minutes <= 0) {
+                    sender.sendMessage(prefix + "Minutes must be above 0!");
+                    return true;
+                }
                 PvpCooldownSystem.startForPlayer(target.getUniqueId(), minutes);
                 sender.sendMessage(prefix + ChatColor.GREEN + "Success! Started PvP Cooldown of " + target.getName() + " for " + minutes + " Minutes.");
             } catch (NumberFormatException e) {
@@ -47,6 +51,10 @@ public class PvpCooldownCommand implements TabExecutor {
             if (args[0].equalsIgnoreCase("startForAll")) {
                 try {
                     int minutes = Integer.parseInt(args[1]);
+                    if (minutes <= 0) {
+                        sender.sendMessage(prefix + "Minutes must be above 0!");
+                        return true;
+                    }
                     Bukkit.getOnlinePlayers().forEach(player -> PvpCooldownSystem.startForPlayer(player.getUniqueId(), minutes));
                     sender.sendMessage(prefix + ChatColor.GREEN + "Success! Started PvP Cooldown of all players for " + minutes + " Minutes.");
                 } catch (NumberFormatException e) {
