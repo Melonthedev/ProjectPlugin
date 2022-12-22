@@ -6,6 +6,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.*;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,6 +38,7 @@ public final class Main extends JavaPlugin {
     private Component[] infos;
 
     public static String PROJECT_NAME = "Survivalprojekt 4.1";
+    public static String PROJECT_TYPE = "Survival SMP";
     public static String DISCORD_INVITE = "discord.gg/AmskHwQSCT";
 
     @Override
@@ -46,38 +48,10 @@ public final class Main extends JavaPlugin {
         getLogger().log(Level.INFO, "**********************");
         getLogger().log(Level.INFO, "*** Project Plugin ***");
         getLogger().log(Level.INFO, "*** by Melonthedev ***");
-        getLogger().log(Level.INFO, "**** and Stebadon  ****");
+        getLogger().log(Level.INFO, "**** and Stebadon ****");
         getLogger().log(Level.INFO, "**********************");
 
-        //COMMAND REGISTRATION
-        getCommand("status").setExecutor(new StatusCommand());
-        getCommand("position").setExecutor(new PositionCommand());
-        getCommand("colorcodes").setExecutor(new ColorCodesCommand());
-        getCommand("toggleendaccessibility").setExecutor(new ToggleEndAccessibilityCommand());
-        getCommand("message").setExecutor(new MessageCommand());
-        getCommand("reply").setExecutor(new ReplyCommand());
-        getCommand("spectatestebadon").setExecutor(new SpectateStebadonCommand());
-        getCommand("logoutput").setExecutor(new LogOutputCommand());
-        getCommand("deathlocation").setExecutor(new DeathLocationCommand());
-        getCommand("checksusplayeractivity").setExecutor(new CheckSusPlayerActivityCommand());
-        getCommand("afk").setExecutor(new AfkCommand());
-        getCommand("weristimnether").setExecutor(new WerIstImNetherCommand());
-        getCommand("tempban").setExecutor(new TempBanCommand());
-        getCommand("joinmessage").setExecutor(new JoinMessageCommand());
-        getCommand("isee").setExecutor(new ISeeCommand());
-        getCommand("hardcore").setExecutor(new HardCoreCommand());
-        getCommand("survivalprojekt").setExecutor(new SurvivalprojektCommand());
-        getCommand("skippvpcooldown").setExecutor(new SkipPvpCooldownCommand());
-        getCommand("withdraw").setExecutor(new WithdrawHeartCommand());
-        getCommand("lifesteal").setExecutor(new LifestealCommand());
-        getCommand("pvpcooldown").setExecutor(new PvpCooldownCommand());
-        getCommand("donators").setExecutor(new DonatorsCommand());
-        getCommand("graveyard").setExecutor(new GravayardCommand());
-        getCommand("manageplayer").setExecutor(new ManagePlayerCommand());
-        getCommand("timer").setExecutor(new TimerCommand());
-        //getCommand("votekick").setExecutor(votekickInstance);
-        //getCommand("lockchest").setExecutor(lockchestInstance);
-        //getCommand("bounty").setExecutor(new BountyCommand());
+        handleCommands();
 
         //LISTENER REGISTRATION
         //getServer().getPluginManager().registerEvents(votekickInstance, this);
@@ -116,12 +90,53 @@ public final class Main extends JavaPlugin {
         Lifesteal.onDisable();
     }
 
+    public void handleCommands() {
+        HashMap<String, CommandExecutor> commands = new HashMap<>();
+        commands.put("status", new StatusCommand());
+        commands.put("position", new PositionCommand());
+        commands.put("colorcodes", new ColorCodesCommand());
+        commands.put("toggleendaccessibility", new ToggleEndAccessibilityCommand());
+        commands.put("message", new MessageCommand());
+        commands.put("reply", new ReplyCommand());
+        commands.put("spectatestebadon", new SpectateStebadonCommand());
+        commands.put("logoutput", new LogOutputCommand());
+        commands.put("deathlocation", new DeathLocationCommand());
+        commands.put("checksusplayeractivity", new CheckSusPlayerActivityCommand());
+        commands.put("afk", new AfkCommand());
+        commands.put("weristimnether", new WerIstImNetherCommand());
+        commands.put("tempban", new TempBanCommand());
+        commands.put("joinmessage", new JoinMessageCommand());
+        commands.put("isee", new ISeeCommand());
+        commands.put("hardcore", new HardCoreCommand());
+        commands.put("survivalprojekt", new SurvivalprojektCommand());
+        commands.put("skippvpcooldown", new SkipPvpCooldownCommand());
+        commands.put("withdraw", new WithdrawHeartCommand());
+        commands.put("lifesteal", new LifestealCommand());
+        commands.put("pvpcooldown", new PvpCooldownCommand());
+        commands.put("donators", new DonatorsCommand());
+        commands.put("graveyard", new GravayardCommand());
+        commands.put("manageplayer", new ManagePlayerCommand());
+        commands.put("timer", new TimerCommand());
+
+        commands.forEach((command, executor) -> {
+            try {
+                if (!isCommandDisabled(command))
+                    Objects.requireNonNull(getCommand(command)).setExecutor(executor);
+            } catch (NullPointerException e) {
+                getLogger().log(Level.SEVERE, "===================================================================");
+                getLogger().log(Level.SEVERE, "Command '" + command + "' was not found! Registered in plugin.yml?");
+                getLogger().log(Level.SEVERE, "===================================================================");
+            }
+        });
+    }
+
 
     public void handleConfig() {
         saveDefaultConfig(); // Default Config in resources/config.yml
 
         // Load Constants
         if (getConfig().getString("projectName") != null) PROJECT_NAME = getConfig().getString("projectName");
+        if (getConfig().getString("projectType") != null) PROJECT_TYPE = getConfig().getString("projectType");
         if (getConfig().getString("discordInvite") != null) DISCORD_INVITE = getConfig().getString("discordInvite");
         //Actionbar Messages
         String[] messages = getConfig().getStringList("actionbarmessages").toArray(String[]::new);
@@ -132,6 +147,10 @@ public final class Main extends JavaPlugin {
 
     public static boolean isFeatureDisabled(String feature) {
         return !Main.getPlugin().getConfig().getBoolean("config." + feature + ".enabled", false);
+    }
+
+    public static boolean isCommandDisabled(String command) {
+        return Main.getPlugin().getConfig().getBoolean("config.disabledcommands." + command, false);
     }
 
     public void handleHardcoreModus() {
@@ -166,8 +185,9 @@ public final class Main extends JavaPlugin {
 
     public static void setCustomPlayerListHeader(Player player) {
         if (Main.isFeatureDisabled("customTabListInfo")) return;
+        String type = getPlugin().getConfig().getBoolean("showProjectType", false) ? " <aqua>" + PROJECT_TYPE : "";
         player.sendPlayerListHeaderAndFooter(
-                Component.join(JoinConfiguration.noSeparators(), Component.text(ChatColor.GREEN.toString() + ChatColor.BOLD), getMMComponent("<rainbow>" + PROJECT_NAME), Component.text("\n" + ChatColor.RESET + ChatColor.GREEN + "McSurvivalprojekt.de")),
+                Component.join(JoinConfiguration.noSeparators(), Component.text(ChatColor.GREEN.toString() + ChatColor.BOLD), getMMComponent("<rainbow>" + PROJECT_NAME), getMMComponent(type), Component.text("\n" + ChatColor.RESET + ChatColor.GREEN + "McSurvivalprojekt.de")),
                 Component.text(ChatColor.AQUA + "Online: " + Bukkit.getOnlinePlayers().size() + ChatColor.GRAY + " | " + ChatColor.AQUA + "TPS: " + Math.round(Main.getPlugin().getServer().getTPS()[0]))
         );
     }
@@ -207,7 +227,7 @@ public final class Main extends JavaPlugin {
         if (isFeatureDisabled("eastereggDamage")) return;
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             Player jonbadon = Bukkit.getPlayer("Jonbadon");
-            if (jonbadon != null && jonbadon.getLocation().getBlock().getType() == Material.STONECUTTER && !isFeatureDisabled("eastereggDamage.jonbadon"))
+            if (jonbadon != null && jonbadon.getLocation().getBlock().getType() == Material.STONECUTTER)
                 jonbadon.damage(1);
 
             Player tantalos = Bukkit.getPlayer("Tantal0s");
