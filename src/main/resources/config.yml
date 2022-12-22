@@ -1,17 +1,22 @@
 # Configuration File for Project Plugin by Melonthedev & Stebadon
 # McSurvivalprojekt.de
 
-# Start with /survivalprojekt startProject
-projectActive: false
-
 # Constants
 projectName: Survivalprojekt 4.1
+projectType: Survival SMP
+showProjectType: false
 discordInvite: discord.gg/AmskHwQSCT
+
+# Start with /survivalprojekt startProject
+projectActive: false
 
 spawn:
   world: world
   radius: 20
+
 config:
+  disabledcommands:
+    status: false # true if command should be disabled. works for every command
   # /toggleendaccessibility
   endaccessible: true
   # /logoutput
@@ -47,6 +52,7 @@ config:
 hardcore:
   enabled: false
   giantDeathTitle: false
+  blockSpectatorTeleport: true
 
 # /lifesteal
 lifesteal:
