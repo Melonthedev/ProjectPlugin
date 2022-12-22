@@ -1,7 +1,5 @@
 package wtf.melonthedev.projectplugin.commands.information;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.JoinConfiguration;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -11,11 +9,9 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.TimerSystem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
