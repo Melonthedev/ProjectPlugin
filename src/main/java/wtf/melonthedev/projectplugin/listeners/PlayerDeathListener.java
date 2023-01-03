@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.listeners.featurelisteners.ActionLogger;
 import wtf.melonthedev.projectplugin.utils.ItemStacks;
 import wtf.melonthedev.projectplugin.utils.Lifesteal;
 import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;

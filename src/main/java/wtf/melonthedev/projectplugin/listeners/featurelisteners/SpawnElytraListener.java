@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.listeners;
+package wtf.melonthedev.projectplugin.listeners.featurelisteners;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;

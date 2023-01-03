@@ -22,6 +22,9 @@ import wtf.melonthedev.projectplugin.commands.moderation.*;
 import wtf.melonthedev.projectplugin.commands.pvpcooldown.PvpCooldownCommand;
 import wtf.melonthedev.projectplugin.commands.pvpcooldown.SkipPvpCooldownCommand;
 import wtf.melonthedev.projectplugin.listeners.*;
+import wtf.melonthedev.projectplugin.listeners.featurelisteners.ActionLogger;
+import wtf.melonthedev.projectplugin.listeners.featurelisteners.SignEditListener;
+import wtf.melonthedev.projectplugin.listeners.featurelisteners.SpawnElytraListener;
 import wtf.melonthedev.projectplugin.utils.*;
 
 import java.util.*;

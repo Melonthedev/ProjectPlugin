@@ -14,13 +14,8 @@ import java.util.HashMap;
 public class BlockListener implements Listener {
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
-
-    }
-
-    @EventHandler
     public void onCraft(PrepareSmithingEvent event) {
-        if (event.getInventory().getInputEquipment().getItemMeta().getDisplayName().equals(Lifesteal.getConstructionHeartItem().getItemMeta().getDisplayName())
+        if (event.getInventory().getInputEquipment().getItemMeta().getDisplayName().equals(Lifesteal.getConstructionHeartItem().getItemMeta().getDisplayName()) //UNSAFE
                 && event.getInventory().getInputMineral().getType() == Material.NETHER_STAR
                 && Lifesteal.isLifestealActive()) {
             event.setResult(Lifesteal.getHeartItem());

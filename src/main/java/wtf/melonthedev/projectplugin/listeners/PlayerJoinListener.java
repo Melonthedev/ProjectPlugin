@@ -11,10 +11,7 @@ import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.commands.moderation.JoinMessageCommand;
 import wtf.melonthedev.projectplugin.commands.MessageCommand;
 import wtf.melonthedev.projectplugin.commands.StatusCommand;
-import wtf.melonthedev.projectplugin.utils.AfkSystem;
-import wtf.melonthedev.projectplugin.utils.CustomItemSystem;
-import wtf.melonthedev.projectplugin.utils.Lifesteal;
-import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
+import wtf.melonthedev.projectplugin.utils.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +26,7 @@ public class PlayerJoinListener implements Listener {
         Main.setCustomPlayerListHeader(event.getPlayer());
         Lifesteal.validateHearts(event.getPlayer());
         AfkSystem.handlePlayersSleepingPercentage();
+        TimerSystem.handleAutoShow(event.getPlayer());
         StatusCommand.handlePlayerJoin(event.getPlayer());
         MessageCommand.handleNewMessages(event.getPlayer());
         CustomItemSystem.discoverCustomRecipes(event.getPlayer());
@@ -53,4 +51,5 @@ public class PlayerJoinListener implements Listener {
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
         Lifesteal.handleLogin(event);
     }
+
 }

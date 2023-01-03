@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.listeners;
+package wtf.melonthedev.projectplugin.listeners.featurelisteners;
 
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;

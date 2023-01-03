@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wtf.melonthedev.projectplugin.listeners.ActionLogger;
+import wtf.melonthedev.projectplugin.listeners.featurelisteners.ActionLogger;
 
 import java.util.*;
 

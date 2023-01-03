@@ -78,20 +78,17 @@ public class TimerSystem {
     public static void setAutoShow(boolean flag) {
         autoShow = flag;
     }
-    //public static void setColor(ChatColor color) {
-    //    TimerSystem.color = color;
-    //}
 
     public static Timer getTimer() {
         return timer;
     }
 
-    //public static ChatColor getColor() {
-    //    return color;
-    //}
-
     public static boolean isAutoShow() {
         return autoShow;
+    }
+
+    public static void handleAutoShow(Player player) {
+        if (isAutoShow()) showToPlayer(player.getUniqueId());
     }
 
     public static String getPrefix() {
