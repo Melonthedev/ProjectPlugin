@@ -53,7 +53,7 @@ public class AfkSystem {
         }.runTaskTimer(Main.getPlugin(), 0, 40);
         player.displayName(Component.text(ChatColor.RED.toString() + ChatColor.BOLD + "[AFK] " + ChatColor.RESET + player.getName()));
         player.playerListName(Component.text(ChatColor.RED.toString() + ChatColor.BOLD + "[AFK] " + ChatColor.RESET + player.getName()));
-        handlePlayersSleepingPercentage();
+        player.setSleepingIgnored(true);
     }
 
     public static void disableAfkMode(Player player) {
@@ -61,11 +61,15 @@ public class AfkSystem {
         afkTimeoutTasks.remove(player);
         player.displayName(Component.text(player.getName()));
         player.playerListName(Component.text(player.getName()));
+        player.setSleepingIgnored(false);
         player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "[AFK] " + ChatColor.RESET + ChatColor.RED + "Du bist nun nicht mehr im AFK Modus!");
         StatusCommand.handlePlayerJoin(player);
-        handlePlayersSleepingPercentage();
     }
 
+    /**
+     * @deprecated in favor of Player.java setSleepingIgnored() method
+     */
+    @Deprecated
     public static void handlePlayersSleepingPercentage() {
         if (!Main.getPlugin().getConfig().getBoolean("config.afkSystem.handleSleepingPercentage", true)) return;
         int targetPlayers = (Bukkit.getOnlinePlayers().size() - afkPlayers.size()) / 2;

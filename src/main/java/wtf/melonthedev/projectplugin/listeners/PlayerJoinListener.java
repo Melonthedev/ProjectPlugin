@@ -20,10 +20,10 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         handleJoinMessage(event);
+        event.getPlayer().setSleepingIgnored(false);
         Main.handleFirstJoin(event.getPlayer());
         Main.setCustomPlayerListHeader(event.getPlayer());
         Lifesteal.validateHearts(event.getPlayer());
-        AfkSystem.handlePlayersSleepingPercentage();
         TimerSystem.handleAutoShow(event.getPlayer());
         StatusCommand.handlePlayerJoin(event.getPlayer());
         MessageCommand.handleNewMessages(event.getPlayer());

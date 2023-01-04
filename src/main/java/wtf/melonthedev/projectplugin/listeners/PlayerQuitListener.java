@@ -19,7 +19,6 @@ public class PlayerQuitListener implements Listener {
             AfkSystem.afkTimeoutTasks.remove(event.getPlayer());
             AfkSystem.afkPlayers.remove(event.getPlayer());
         }
-        AfkSystem.handlePlayersSleepingPercentage();
         Component quitMsg = event.quitMessage();
         PvpCooldownSystem.pauseForPlayer(event.getPlayer());
         if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", true) && event.getPlayer().getGameMode() == GameMode.SPECTATOR) {
