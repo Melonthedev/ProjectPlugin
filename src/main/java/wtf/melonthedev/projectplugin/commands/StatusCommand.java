@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.utils.AfkSystem;
+import wtf.melonthedev.projectplugin.modules.AfkSystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;

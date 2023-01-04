@@ -9,32 +9,40 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.utils.Lifesteal;
+import wtf.melonthedev.projectplugin.modules.Lifesteal;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
+import java.util.HashMap;
+
 public class SpawnElytraListener implements Listener {
+
+    public HashMap<Player, Boolean> spawnElytraPlayers = new HashMap<>();
 
     @EventHandler
     public void onEntityToggleGlide(EntityToggleGlideEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (player.getEquipment().getItem(EquipmentSlot.CHEST) != null
-                && player.getEquipment().getItem(EquipmentSlot.CHEST).getType() == Material.ELYTRA) {
+        if (player.getEquipment().getItem(EquipmentSlot.CHEST).getType() == Material.ELYTRA) {
             if (Lifesteal.isLifestealActive() && Lifesteal.isElytraBlocked()) event.setCancelled(true);
             return;
         }
-        if (player.getLocation().getY() > 20 && player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR && LocationUtils.isLocationNearSpawnArea(player.getLocation()) && Main.spawnElytraPlayers.getOrDefault(player, false)) {
+        if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR
+                && LocationUtils.isLocationNearSpawnArea(player.getLocation())
+                && spawnElytraPlayers.getOrDefault(player, false)
+                && player.getLocation().getY() > 20) {
             event.setCancelled(true);
             return;
         }
-        Main.spawnElytraPlayers.remove(player);
+        spawnElytraPlayers.remove(player);
     }
 
     @EventHandler
     public void onPlayerSneak(PlayerToggleSneakEvent event) {
         Block block = event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
-        if (block.getType() != Material.AIR || block.getRelative(BlockFace.DOWN).getType() != Material.AIR || event.getPlayer().isFlying() || !LocationUtils.isLocationInSpawnArea(event.getPlayer().getLocation())) return;
+        if (block.getType() != Material.AIR
+                || block.getRelative(BlockFace.DOWN).getType() != Material.AIR
+                || event.getPlayer().isFlying()
+                || !LocationUtils.isLocationInSpawnArea(event.getPlayer().getLocation())) return;
         event.getPlayer().setGliding(true);
-        Main.spawnElytraPlayers.put(event.getPlayer(), true);
+        spawnElytraPlayers.put(event.getPlayer(), true);
     }
 }

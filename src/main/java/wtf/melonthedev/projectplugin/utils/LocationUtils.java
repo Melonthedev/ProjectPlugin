@@ -5,25 +5,27 @@ import wtf.melonthedev.projectplugin.Main;
 
 public class LocationUtils {
 
-    //Utility Class, Cannot be instantiated
-    private LocationUtils() {}
+    private LocationUtils() {} //Utility Class, cannot be instantiated
 
     public static boolean isLocationInSpawnArea(Location loc) {
-        if (loc.getWorld() == null) return false;
-        if (!loc.getWorld().getName().equals(Main.getPlugin().getConfig().getString("spawn.world", "world"))) return false;
-        Location relativeSpawnLocation = loc.getWorld().getSpawnLocation();
-        relativeSpawnLocation.setY(loc.getY());
-        if (loc.getWorld() != relativeSpawnLocation.getWorld()) return false;
+        Location relativeSpawnLocation = getRelativeSpawnLocation(loc);
+        if (relativeSpawnLocation == null) return false;
         return relativeSpawnLocation.distance(loc) <= Main.getPlugin().getConfig().getInt("spawn.radius", 20);
     }
 
     public static boolean isLocationNearSpawnArea(Location loc) {
-        if (loc.getWorld() == null) return false;
-        if (!loc.getWorld().getName().equals(Main.getPlugin().getConfig().getString("spawn.world", "world"))) return false;
+        Location relativeSpawnLocation = getRelativeSpawnLocation(loc);
+        if (relativeSpawnLocation == null) return false;
+        return relativeSpawnLocation.distance(loc) <= 5000;
+    }
+
+    public static Location getRelativeSpawnLocation(Location loc) {
+        if (loc.getWorld() == null) return null;
+        if (!loc.getWorld().getName().equals(Main.getPlugin().getConfig().getString("spawn.world", "world"))) return null;
         Location relativeSpawnLocation = loc.getWorld().getSpawnLocation();
         relativeSpawnLocation.setY(loc.getY());
-        if (loc.getWorld() != relativeSpawnLocation.getWorld()) return false;
-        return relativeSpawnLocation.distance(loc) <= 5000;
+        if (loc.getWorld() != relativeSpawnLocation.getWorld()) return null;
+        return relativeSpawnLocation;
     }
 
 }

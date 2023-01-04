@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.utils;
+package wtf.melonthedev.projectplugin.modules;
 
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @deprecated in favor of Log4Minecraft
+ */
+@Deprecated
 public class PlayerActivitySystem {
 
     public static List<HashMap<String, HashMap<Material, Integer>>> collectedValuables = new ArrayList<>();
@@ -28,5 +32,6 @@ public class PlayerActivitySystem {
     public static HashMap<String, HashMap<Material, Integer>> getLatestPlayerActivityEntry() {
         return collectedValuables.get(collectedValuables.size() - 1);
     }
+
 
 }

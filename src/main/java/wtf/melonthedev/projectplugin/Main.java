@@ -8,7 +8,6 @@ import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.commands.information.ColorCodesCommand;
@@ -25,6 +24,7 @@ import wtf.melonthedev.projectplugin.listeners.*;
 import wtf.melonthedev.projectplugin.listeners.featurelisteners.ActionLogger;
 import wtf.melonthedev.projectplugin.listeners.featurelisteners.SignEditListener;
 import wtf.melonthedev.projectplugin.listeners.featurelisteners.SpawnElytraListener;
+import wtf.melonthedev.projectplugin.modules.*;
 import wtf.melonthedev.projectplugin.utils.*;
 
 import java.util.*;
@@ -34,11 +34,7 @@ import java.util.logging.Level;
 public final class Main extends JavaPlugin {
 
     private static Main plugin;
-    public static HashMap<Player, Location> locations = new HashMap<>();
-    public static HashMap<UUID, Location> deathlocations = new HashMap<>();
-    public static HashMap<Player, Boolean> spawnElytraPlayers = new HashMap<>();
-    public static HashMap<UUID, ItemStack> joinMessages = new HashMap<>();
-    private Component[] infos;
+    private Component[] actionbarInfos;
 
     public static String PROJECT_NAME = "Survivalprojekt 4.1";
     public static String PROJECT_TYPE = "Survival SMP";
@@ -57,8 +53,6 @@ public final class Main extends JavaPlugin {
         handleCommands();
 
         //LISTENER REGISTRATION
-        //getServer().getPluginManager().registerEvents(votekickInstance, this);
-        //getServer().getPluginManager().registerEvents(lockchestInstance, this);
         getServer().getPluginManager().registerEvents(new SpawnElytraListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
@@ -80,7 +74,7 @@ public final class Main extends JavaPlugin {
         handleEastereggDamages();
         CustomItemSystem.handleCustomRecipes();
         PvpCooldownSystem.handleForAllPlayers();
-        PlayerActivitySystem.handleSusPlayerActivityPerHour();
+        //PlayerActivitySystem.handleSusPlayerActivityPerHour();
         Lifesteal.init();
     }
 
@@ -88,7 +82,6 @@ public final class Main extends JavaPlugin {
     public void onDisable() {
         StatusCommand.onDisable();
         PvpCooldownSystem.onDisable();
-        PlayerActivitySystem.savePlayerActivity();
         TimerSystem.stopTimer();
         Lifesteal.onDisable();
     }
@@ -135,17 +128,17 @@ public final class Main extends JavaPlugin {
 
 
     public void handleConfig() {
-        saveDefaultConfig(); // Default Config in resources/config.yml
-
+        // Default Config in resources/config.yml
+        saveDefaultConfig();
         // Load Constants
         if (getConfig().getString("projectName") != null) PROJECT_NAME = getConfig().getString("projectName");
         if (getConfig().getString("projectType") != null) PROJECT_TYPE = getConfig().getString("projectType");
         if (getConfig().getString("discordInvite") != null) DISCORD_INVITE = getConfig().getString("discordInvite");
         //Actionbar Messages
         String[] messages = getConfig().getStringList("actionbarmessages").toArray(String[]::new);
-        infos = new Component[messages.length];
+        actionbarInfos = new Component[messages.length];
         for (int i = 0; i < messages.length; i++)
-            infos[i] = getMMComponent(messages[i]);
+            actionbarInfos[i] = getMMComponent(messages[i]);
     }
 
     public static boolean isFeatureDisabled(String feature) {
@@ -174,10 +167,10 @@ public final class Main extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (!LocationUtils.isLocationInSpawnArea(player.getLocation())) continue;
-                player.sendActionBar(infos[i.get()]);
+                player.sendActionBar(actionbarInfos[i.get()]);
             }
             i.getAndIncrement();
-            if (i.get() >= infos.length) i.set(0);
+            if (i.get() >= actionbarInfos.length) i.set(0);
         }, 0, 80);
     }
 

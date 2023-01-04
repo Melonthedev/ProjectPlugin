@@ -31,6 +31,9 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.stream.Collectors;
 
+/**
+ * @deprecated in favor of Log4Minecraft
+ */
 public class ActionLogger implements Listener {
 
     public static final HashMap<Location, String> blockLog = new HashMap<>();

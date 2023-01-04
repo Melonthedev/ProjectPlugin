@@ -4,10 +4,9 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.PrepareSmithingEvent;
-import wtf.melonthedev.projectplugin.utils.Lifesteal;
-import wtf.melonthedev.projectplugin.utils.PlayerActivitySystem;
+import wtf.melonthedev.projectplugin.modules.Lifesteal;
+import wtf.melonthedev.projectplugin.modules.PlayerActivitySystem;
 
 import java.util.HashMap;
 
@@ -24,7 +23,7 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        Material material = event.getBlock().getType();
+        /*Material material = event.getBlock().getType();
         if (material == Material.DIAMOND_ORE
                 || material == Material.EMERALD_ORE
                 || material == Material.IRON_ORE
@@ -40,6 +39,6 @@ public class BlockListener implements Listener {
             if (!PlayerActivitySystem.getLatestPlayerActivityEntry().containsKey(event.getPlayer().getName()))
                 PlayerActivitySystem.getLatestPlayerActivityEntry().put(event.getPlayer().getName(), new HashMap<>());
             PlayerActivitySystem.getLatestPlayerActivityEntry().get(event.getPlayer().getName()).put(material, PlayerActivitySystem.getLatestPlayerActivityEntry().get(event.getPlayer().getName()).getOrDefault(material, 0) + 1);
-        }
+        }*/
     }
 }

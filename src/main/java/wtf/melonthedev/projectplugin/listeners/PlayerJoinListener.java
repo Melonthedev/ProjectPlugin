@@ -11,10 +11,8 @@ import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.commands.moderation.JoinMessageCommand;
 import wtf.melonthedev.projectplugin.commands.MessageCommand;
 import wtf.melonthedev.projectplugin.commands.StatusCommand;
-import wtf.melonthedev.projectplugin.utils.*;
+import wtf.melonthedev.projectplugin.modules.*;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class PlayerJoinListener implements Listener {

@@ -4,16 +4,14 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
+import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 
 import java.time.Duration;
 import java.util.ArrayList;

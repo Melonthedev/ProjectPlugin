@@ -1,8 +1,6 @@
 package wtf.melonthedev.projectplugin.listeners;
 
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
-import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
+import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 
 public class EntityDamageByEntityListener implements Listener {
 

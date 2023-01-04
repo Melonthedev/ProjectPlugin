@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.utils;
+package wtf.melonthedev.projectplugin.modules;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;

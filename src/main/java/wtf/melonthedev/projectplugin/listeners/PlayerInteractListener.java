@@ -15,9 +15,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.utils.Lifesteal;
+import wtf.melonthedev.projectplugin.modules.Lifesteal;
 
 public class PlayerInteractListener implements Listener {
 

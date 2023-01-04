@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.utils;
+package wtf.melonthedev.projectplugin.modules;
 
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class PvpCooldown {
         Main.getPlugin().getConfig().set("pvpCooldown." + uuid, remainingMinutes);
         bar.progress(1);
         bar.color(BossBar.Color.GREEN);
-        bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 3h"));
+        bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown"));
         Player player = Bukkit.getPlayer(uuid);
         if (player != null) {
             player.showBossBar(bar);

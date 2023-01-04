@@ -17,8 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.listeners.featurelisteners.ActionLogger;
 import wtf.melonthedev.projectplugin.utils.ItemStacks;
-import wtf.melonthedev.projectplugin.utils.Lifesteal;
-import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
+import wtf.melonthedev.projectplugin.modules.Lifesteal;
+import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -93,7 +93,6 @@ public class PlayerDeathListener implements Listener {
                 && event.getEntity().getBedSpawnLocation().distance(event.getEntity().getLocation()) > 4000
                 && (event.getEntity().getInventory().contains(Material.NETHERITE_AXE)
                 || event.getEntity().getInventory().contains(Material.NETHERITE_SWORD))) {
-            Main.deathlocations.put(event.getEntity().getUniqueId(), event.getEntity().getLocation());
             event.deathMessage(Component.join(JoinConfiguration.noSeparators(), event.deathMessage(), Component.text(" und muss jetzt seeehhhr weit laufen :/")));
             Component component = Component.text(ChatColor.AQUA + "Nicht aufgeben! Aber wehe du klickst das hier an!");
             component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/deathlocation"));

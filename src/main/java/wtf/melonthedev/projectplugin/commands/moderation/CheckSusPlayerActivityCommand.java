@@ -6,8 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.utils.PlayerActivitySystem;
+import wtf.melonthedev.projectplugin.modules.PlayerActivitySystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;

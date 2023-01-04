@@ -12,6 +12,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Different ItemStacks for several old modules (Pet System, Shop System, ...)
+ * @deprecated
+ */
+@Deprecated
 public class ItemStacks {
 
     public static ChatColor colorinfo = ChatColor.AQUA;

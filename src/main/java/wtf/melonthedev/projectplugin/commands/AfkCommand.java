@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.utils.AfkSystem;
+import wtf.melonthedev.projectplugin.modules.AfkSystem;
 
 public class AfkCommand implements CommandExecutor {
 

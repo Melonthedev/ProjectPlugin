@@ -22,7 +22,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.utils.Lifesteal;
+import wtf.melonthedev.projectplugin.modules.CustomItemSystem;
+import wtf.melonthedev.projectplugin.modules.Lifesteal;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
 import java.util.Objects;
@@ -79,13 +80,7 @@ public class EntityListener implements Listener {
         if (!event.getEntity().getPersistentDataContainer().has(key) || event.getEntity().getPersistentDataContainer().get(key, PersistentDataType.BYTE) != 1)
             return;
         event.setCancelled(true);
-        ItemStack item = new ItemStack(Material.ITEM_FRAME);
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text(ChatColor.WHITE + "Invisible Item Frame"));
-        meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
-        meta.addEnchant(Enchantment.CHANNELING, 1,true);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        item.setItemMeta(meta);
+        ItemStack item = CustomItemSystem.getInvisibleItemFrameItem();
         ItemFrame frame = (ItemFrame) event.getEntity();
         frame.getWorld().dropItem(frame.getLocation().add(0, -0.3, 0).add(frame.getFacing().getDirection().multiply(0.2)), item);
         frame.remove();

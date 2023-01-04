@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.utils;
+package wtf.melonthedev.projectplugin.modules;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -21,23 +21,15 @@ public class CustomItemSystem {
 
     public static void handleCustomRecipes() {
         //Invisible ItemFrame
-        ItemStack itemframe = new ItemStack(Material.ITEM_FRAME);
-        ItemMeta framemeta = itemframe.getItemMeta();
-        framemeta.displayName(Component.text(ChatColor.WHITE + "Invisible Item Frame"));
-        framemeta.getPersistentDataContainer().set(framekey, PersistentDataType.BYTE, (byte) 1);
-        framemeta.addEnchant(Enchantment.CHANNELING, 1,true);
-        framemeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        itemframe.setItemMeta(framemeta);
+        ItemStack itemframe = getInvisibleItemFrameItem();
         ShapedRecipe framerecipe = new ShapedRecipe(framekey, itemframe);
         framerecipe.shape("SSS", "SAS", "SSS");
         framerecipe.setIngredient('S', Material.STICK);
         framerecipe.setIngredient('A', Material.AMETHYST_SHARD);
-
         Bukkit.addRecipe(framerecipe);
 
         //Construction Heart
         ItemStack csheart = Lifesteal.getConstructionHeartItem();
-
         ShapedRecipe csheartrecipe = new ShapedRecipe(csheartrecipekey, csheart);
         csheartrecipe.shape("RNR", "DHD", "RTR");
         csheartrecipe.setIngredient('R', Material.REDSTONE);
@@ -45,16 +37,13 @@ public class CustomItemSystem {
         csheartrecipe.setIngredient('D', Material.DIAMOND_BLOCK);
         csheartrecipe.setIngredient('H', Material.HEART_OF_THE_SEA);
         csheartrecipe.setIngredient('T', Material.TOTEM_OF_UNDYING);
-
         Bukkit.addRecipe(csheartrecipe);
 
         //Heart
-        NamespacedKey heartrecipekey = new NamespacedKey(Main.getPlugin(), "heart_recipe");
-        ItemStack heart = Lifesteal.getHeartItem();
+        //ItemStack heart = Lifesteal.getHeartItem();
         //SmithingRecipe heartrecipe = new SmithingRecipe(heartrecipekey, Lifesteal.getHeartItem(),
         //        new RecipeChoice.ExactChoice(Lifesteal.getConstructionHeartItem()),
         //        new RecipeChoice.MaterialChoice(Material.NETHER_STAR));
-
         //Bukkit.addRecipe(heartrecipe);
 
         Bukkit.getOnlinePlayers().forEach(CustomItemSystem::discoverCustomRecipes);
@@ -66,4 +55,14 @@ public class CustomItemSystem {
     }
 
 
+    public static ItemStack getInvisibleItemFrameItem() {
+        ItemStack item = new ItemStack(Material.ITEM_FRAME);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(Component.text(ChatColor.WHITE + "Invisible Item Frame"));
+        meta.getPersistentDataContainer().set(framekey, PersistentDataType.BYTE, (byte) 1);
+        meta.addEnchant(Enchantment.CHANNELING, 1,true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        item.setItemMeta(meta);
+        return item;
+    }
 }

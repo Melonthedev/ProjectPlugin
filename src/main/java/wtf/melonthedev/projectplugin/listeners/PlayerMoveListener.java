@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.utils.AfkSystem;
+import wtf.melonthedev.projectplugin.modules.AfkSystem;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
 import java.util.HashMap;

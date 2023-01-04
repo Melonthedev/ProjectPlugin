@@ -1,11 +1,6 @@
-package wtf.melonthedev.projectplugin.utils;
+package wtf.melonthedev.projectplugin.modules;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.JoinConfiguration;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import wtf.melonthedev.projectplugin.Main;
@@ -15,7 +10,6 @@ import java.util.stream.Collectors;
 
 public class TimerSystem {
 
-    //private static ChatColor color = ChatColor.GOLD;
     private static String prefix = "<gold>";
     private static Timer timer = new Timer();
     private static boolean running = true;

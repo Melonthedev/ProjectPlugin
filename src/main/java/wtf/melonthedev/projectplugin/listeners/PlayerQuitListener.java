@@ -8,8 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import wtf.melonthedev.projectplugin.Main;
-import wtf.melonthedev.projectplugin.utils.AfkSystem;
-import wtf.melonthedev.projectplugin.utils.PvpCooldownSystem;
+import wtf.melonthedev.projectplugin.modules.AfkSystem;
+import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 
 public class PlayerQuitListener implements Listener {
 

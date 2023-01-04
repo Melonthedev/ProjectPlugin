@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareSmithingEvent;
 import org.bukkit.inventory.ItemStack;
-import wtf.melonthedev.projectplugin.utils.Lifesteal;
+import wtf.melonthedev.projectplugin.modules.Lifesteal;
 
 public class CraftListener implements Listener {
 

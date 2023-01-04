@@ -3,13 +3,18 @@ package wtf.melonthedev.projectplugin.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import wtf.melonthedev.projectplugin.Main;
 
+import java.util.HashMap;
+
 public class SpectateStebadonCommand implements CommandExecutor {
+
+    public HashMap<Player, Location> locations = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -27,15 +32,15 @@ public class SpectateStebadonCommand implements CommandExecutor {
             return true;
         }
         Player target = Bukkit.getPlayer("stebadon");
-        if (Main.locations.containsKey(player) && Main.locations.get(player) != null) {
+        if (locations.containsKey(player) && locations.get(player) != null) {
             player.setSpectatorTarget(null);
-            player.teleport(Main.locations.get(player));
+            player.teleport(locations.get(player));
             player.setGameMode(GameMode.SURVIVAL);
             player.sendMessage(ChatColor.AQUA + "Du beobachtest nun nicht mehr den mit flying machine weg getragenen stebadon.");
-            Main.locations.remove(player);
+            locations.remove(player);
             return true;
         }
-        Main.locations.put(player, player.getLocation());
+        locations.put(player, player.getLocation());
         player.setGameMode(GameMode.SPECTATOR);
         player.setSpectatorTarget(target);
         runTeleportloop(player);
@@ -45,14 +50,14 @@ public class SpectateStebadonCommand implements CommandExecutor {
 
     public void runTeleportloop(Player player) {
         Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), () -> {
-            if (!Main.locations.containsKey(player)) return;
+            if (!locations.containsKey(player)) return;
             if (Main.isFeatureDisabled("spectateStebadonEasteregg")) return;
             if (player != null && player.getSpectatorTarget() == null) {
                 player.setSpectatorTarget(null);
-                player.teleport(Main.locations.get(player));
+                player.teleport(locations.get(player));
                 player.setGameMode(GameMode.SURVIVAL);
                 player.sendMessage(ChatColor.AQUA + "Du beobachtest nun nicht mehr den mit flying machine weg getragenen stebadon.");
-                Main.locations.remove(player);
+                locations.remove(player);
             }
         }, 60, 0);
     }

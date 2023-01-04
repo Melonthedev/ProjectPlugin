@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wtf.melonthedev.projectplugin.utils.Lifesteal;
+import wtf.melonthedev.projectplugin.modules.Lifesteal;
 
 import java.util.ArrayList;
 import java.util.Arrays;

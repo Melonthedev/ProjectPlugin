@@ -1,10 +1,7 @@
-package wtf.melonthedev.projectplugin.utils;
+package wtf.melonthedev.projectplugin.modules;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.GameRule;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -27,11 +24,8 @@ public class AfkSystem {
     public static void handleAfkModus(Player player) {
         if (Main.isFeatureDisabled("afkSystem") || (player.getGameMode() == GameMode.SPECTATOR && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)))
             return;
-        if (isAfk(player)) {
-            disableAfkMode(player);
-        } else {
-            startAfkModusTimeout(player);
-        }
+        if (isAfk(player)) disableAfkMode(player);
+        else startAfkModusTimeout(player);
     }
 
     public static void startAfkModusTimeout(Player player) {
@@ -39,9 +33,8 @@ public class AfkSystem {
         BukkitTask oldtask = afkTimeoutTasks.get(player);
         if (oldtask != null) oldtask.cancel();
         BukkitTask task = Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
-            if (afkTimeoutTasks.containsKey(player) && Bukkit.getOnlinePlayers().contains(player)) {
+            if (afkTimeoutTasks.containsKey(player) && Bukkit.getOnlinePlayers().contains(player))
                 enableAfkModus(player);
-            }
         }, 20L * 60 * Main.getPlugin().getConfig().getInt("config.afkSystem.timeoutInMinutes", 10));
         afkTimeoutTasks.put(player, task);
     }
@@ -66,30 +59,27 @@ public class AfkSystem {
     public static void disableAfkMode(Player player) {
         afkPlayers.remove(player);
         afkTimeoutTasks.remove(player);
+        player.displayName(Component.text(player.getName()));
+        player.playerListName(Component.text(player.getName()));
         player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "[AFK] " + ChatColor.RESET + ChatColor.RED + "Du bist nun nicht mehr im AFK Modus!");
-        if (StatusCommand.statusList.containsKey(player.getName())) {
-            StatusCommand.setStatus(player, Main.getMMComponent(StatusCommand.statusList.get(player.getName())));
-        } else {
-            player.displayName(Component.text(player.getName()));
-            player.playerListName(Component.text(player.getName()));
-        }
+        StatusCommand.handlePlayerJoin(player);
         handlePlayersSleepingPercentage();
+    }
+
+    public static void handlePlayersSleepingPercentage() {
+        if (!Main.getPlugin().getConfig().getBoolean("config.afkSystem.handleSleepingPercentage", true)) return;
+        int targetPlayers = (Bukkit.getOnlinePlayers().size() - afkPlayers.size()) / 2;
+        if (targetPlayers % 2 == 0) targetPlayers++;
+        int percentage = (targetPlayers * 100) / Bukkit.getOnlinePlayers().size();
+        //System.out.println(targetPlayers + " müssen Schlafen. Das sind " + percentage + "%");
+        World world = Bukkit.getWorld("world");
+        if (world == null)
+            return;
+        world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, percentage);
     }
 
     public static boolean isAfk(Player player) {
         return afkPlayers.contains(player);
-    }
-
-
-    public static void handlePlayersSleepingPercentage() {
-        if (!Main.getPlugin().getConfig().getBoolean("config.afkSystem.handleSleepingPercentage", true)) return;
-        int targetPlayers = Bukkit.getOnlinePlayers().size() / 2 - afkPlayers.size();
-        if (targetPlayers % 2 == 0) targetPlayers++;
-        int percentage = targetPlayers * 100 / Bukkit.getOnlinePlayers().size();
-        System.out.println(targetPlayers + " müssen Schlafen. Das sind " + percentage + "%");
-        if (Bukkit.getWorld("world") == null)
-            return;
-        Objects.requireNonNull(Bukkit.getWorld("world")).setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, percentage);
     }
 
 }

@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.utils;
+package wtf.melonthedev.projectplugin.modules;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -21,7 +21,7 @@ import java.util.*;
 
 public class Lifesteal {
 
-    private Lifesteal() {} // Utility Class, cannot be instantiated
+    private Lifesteal() {}
 
     public static final String prefix = ChatColor.GREEN + ChatColor.BOLD.toString() + "[Life" + ChatColor.DARK_RED + ChatColor.BOLD + "Steal] " + ChatColor.RESET;
     public static Objective heartsObjective;
@@ -159,7 +159,6 @@ public class Lifesteal {
             eliminatePlayer(player.getUniqueId());
             return;
         }
-        //player.setHealthScale(hearts*2);
         if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null) player.registerAttribute(Attribute.GENERIC_MAX_HEALTH);
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(hearts*2);
         if (heartsObjective == null) handleScoreboard();
@@ -196,5 +195,4 @@ public class Lifesteal {
         heart.setAmount(heart.getAmount() - 1);
         giveHeart(player.getUniqueId(), 1);
     }
-
 }
