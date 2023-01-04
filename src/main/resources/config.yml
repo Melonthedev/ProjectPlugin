@@ -39,7 +39,6 @@ config:
   afkSystem:
     enabled: true
     timeoutInMinutes: 10
-    handleSleepingPercentage: true
   customServerMotds:
     enabled: true
     showServerInfos: true

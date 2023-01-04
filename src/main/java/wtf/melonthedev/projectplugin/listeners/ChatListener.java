@@ -8,16 +8,8 @@ import wtf.melonthedev.projectplugin.Main;
 
 public class ChatListener implements Listener {
 
-    //@EventHandler
-   // public void onChat(AsyncPlayerChatEvent event) {
-   //     //event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
-   //     event.setMessage(Main.getPlugin().translateHexAndCharColorCodes(event.getMessage()));
-   // }
-
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        event.message(Main.getPlugin().getMMComponent(PlainTextComponentSerializer.plainText().serialize(event.message())));
+        event.message(Main.getMMComponent(PlainTextComponentSerializer.plainText().serialize(event.message())));
     }
-
-
 }

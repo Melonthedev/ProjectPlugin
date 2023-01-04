@@ -12,59 +12,7 @@ import java.util.Random;
 
 public class ServerPingListener implements Listener {
 
-    /*String[] motds = new String[] {
-            "Hallo",
-            "Super :)",
-            "Haha",
-            "Wird genommen xD",
-            "OK brauchen neuen Tread. Dieser wird zu ernst genommen",
-            "Brauchen wir überhaupt MOTDs?",
-            "Alter nicht euer ernst",
-            "Achtung was du schreibst",
-            "Das nimmt er alles als MODT.",
-            "stebadon pinned a message to this channel.",
-            "Hat was...",
-            "Ich hasse Melon Client - Jonbadon",
-            "Progeto ist heute ganz krass",
-            "Joinen! Joinen! Joinen! Joinen!",
-            "Ich sehe alles als eine MOTD",
-            "Der beste SMP-Server",
-            "Der mit riesigem Abstand beste SMP-Server!",
-            "Strenggenommen ist es \"the\" SMP - Jonbadon",
-            "Hilfe ich bin in einer MOTD's Fabrik gefangen!",
-            "https://youtu.be/dQw4w9WgXcQ"
-    };*/
     String[] motds = Main.getPlugin().getConfig().getStringList("motds").toArray(String[]::new);
-            /*new String[] {
-            "GUYS MOTD TIME",
-            "Auch anständige?",
-            "Tantal0s ist wieder am griefen",
-            "MelonClient ist scheiße - Jonbadon",
-            "wieder mal die alten?",
-            "Joris ist klein",
-            "Mobbing in den MOTD's?",
-            "Ja",
-            "Gerne",
-            "Kann ich machen - Tantal0s",
-            "Aber ich will hier nd eherenlos werden",
-            "MOTD Channel: ALLES wird genommen",
-            "imagine man liked seine eigenen vorschläge",
-            "Sorry, zu lang für sie",
-            "Also die Serverliste",
-            "schade",
-            "aber eig random genug",
-            "Tantalos für die mündliche 1 in Geschi???",
-            "Lancelot ist mal wieder AFK",
-            "Die Qualität dieser MOTD's, 1A",
-            "Kritisch...",
-            "aber wahr",
-            "Joris sucht immer noch sein Pigstep",
-            "Das ist doch geil!",
-            "Steffen ist schon tot",
-            "und hat es verdient",
-            "Destreuer findet schnitzelbrötchen besser als Freunde",
-            "https://youtu.be/dQw4w9WgXcQ"
-    };*/
     ChatColor[] colors = new ChatColor[] {
             ChatColor.GRAY,
             ChatColor.GREEN,
@@ -95,5 +43,4 @@ public class ServerPingListener implements Listener {
         }
         event.motd(motd);
     }
-
 }
