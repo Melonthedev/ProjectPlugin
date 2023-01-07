@@ -55,7 +55,7 @@ public class GravayardCommand implements TabExecutor {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> tab = new ArrayList<>();
         if (sender instanceof Player) {
-            Block targetBlock = ((Player) sender).getTargetBlock(5);
+            Block targetBlock = ((Player) sender).getTargetBlockExact(5);
             if (targetBlock == null) return tab;
             if (args.length == 1) {
                 tab.add(String.valueOf(targetBlock.getX()));

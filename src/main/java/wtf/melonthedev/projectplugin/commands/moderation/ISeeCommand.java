@@ -47,8 +47,8 @@ public class ISeeCommand implements TabExecutor {
             player.openInventory(target.getEnderChest());
         } else if (sender instanceof Player player && args[1].equalsIgnoreCase("armor")) {
             Inventory inv = Bukkit.createInventory(null, 27, Component.text("Armor of " + target.getName()));
-            Arrays.stream(target.getInventory().getArmorContents()).filter(Objects::nonNull).collect(Collectors.toList()).forEach(inv::addItem);
-            Arrays.stream(target.getInventory().getExtraContents()).filter(Objects::nonNull).collect(Collectors.toList()).forEach(inv::addItem);
+            Arrays.stream(target.getInventory().getArmorContents()).filter(Objects::nonNull).toList().forEach(inv::addItem);
+            Arrays.stream(target.getInventory().getExtraContents()).filter(Objects::nonNull).toList().forEach(inv::addItem);
             player.openInventory(inv);
         } else if (args[1].equalsIgnoreCase("text")) {
             sender.sendMessage(ChatColor.GOLD + "---- Inventory of " + target.getName() + " -----");
