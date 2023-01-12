@@ -171,7 +171,7 @@ public final class Main extends JavaPlugin {
             }
             i.getAndIncrement();
             if (i.get() >= actionbarInfos.length) i.set(0);
-        }, 0, 80);
+        }, 0, 100);
     }
 
     public void updateTabList() {

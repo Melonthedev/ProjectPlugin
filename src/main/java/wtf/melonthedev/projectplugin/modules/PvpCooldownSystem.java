@@ -7,9 +7,10 @@ import wtf.melonthedev.projectplugin.Main;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PvpCooldownSystem {
-    public static HashMap<UUID, PvpCooldown> pvpCooldowns = new HashMap<>();
+    public static ConcurrentHashMap<UUID, PvpCooldown> pvpCooldowns = new ConcurrentHashMap<>();
 
     public static void handleForAllPlayers() {
         Bukkit.getOnlinePlayers().forEach(PvpCooldownSystem::handleForPlayer);

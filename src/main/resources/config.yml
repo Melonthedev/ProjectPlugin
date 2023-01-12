@@ -88,14 +88,20 @@ joinmessages: [
     "wollte eigentlich nicht hier sein aber ist jetzt online"
 ]
 
-actionbarmessages: [
-  "<gray>Drücke <white><key:key.sneak></white> um von dieser Insel zu gleiten",
-  "<gray>Chatte mit <white>\\<rainbow></white> um RGB zu schreiben",
-  "<gray>Benutze <white>/status</white> um einen Status zu setzen",
-  "<gray>Rechtsklicke sneakend ein <white>Schild</white> um den Inhalt zu bearbeiten",
-  "<gray>Benutze <white>/r</white> um auf eine Privatnachricht zu antworten",
-  "<gray>Benutze <white>/msg</white> um Nachrichten sogar an offline Spieler zu senden"
-]
+actionbarmessages:
+- "<gray>Drücke <white><key:key.sneak></white> um von dieser Insel zu gleiten",
+- "<gray>Chatte mit <white>\\<rainbow></white> um RGB zu schreiben",
+- "<gray>Benutze <white>/status</white> um einen Status zu setzen",
+- "<gray>Rechtsklicke sneakend ein <white>Schild</white> um den Inhalt zu bearbeiten",
+- "<gray>Benutze <white>/r</white> um auf eine Privatnachricht zu antworten",
+- "<gray>Benutze <white>/msg</white> um Nachrichten sogar an offline Spieler zu senden"#
+# LIFESTEAL INFOS
+#- <gray>Benutze <white>/withdraw</white> um Herzen in Items umzuwandeln
+#- <gray>Unter dem Namen eines Spielers sieht man dessen <white>Lifesteal Herzen</white> Anzahl
+#- <gray>Wenn du stirbst verlierst du permanent <white>1 Herz!</white>
+#- <gray>Wenn du keine Herzen mehr hast, <white>wirst du gebannt!</white>
+#- <gray>Benutze <white>/skipPvpCooldown</white> um deinen PvP Cooldown zu überspringen
+#- <gray>Du bekommst permanente Herzen, <white>wenn du Spieler tötest</white>
 
 motds: [
     "GUYS MOTD TIME",

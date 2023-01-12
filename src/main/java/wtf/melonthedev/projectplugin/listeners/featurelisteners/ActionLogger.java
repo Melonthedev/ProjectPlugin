@@ -184,7 +184,7 @@ public class ActionLogger implements Listener {
     }
 
     public static void logAction(String player, String action, @Nullable Location location, String owner, String type, boolean important, String details, boolean logToFile) {
-        Date currentDate = new Date();
+        /*Date currentDate = new Date();
         String info = "[" + DateFormat.getDateInstance().format(currentDate) + " " + (currentDate.getHours() < 10 ? "0" + currentDate.getHours() : currentDate.getHours()) + ":" + (currentDate.getMinutes() < 10 ? "0" + currentDate.getMinutes() : currentDate.getMinutes()) + "] "
                 + player + " "
                 + action + " "
@@ -223,7 +223,7 @@ public class ActionLogger implements Listener {
             output.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private boolean isValuable(Material material) {

@@ -81,6 +81,12 @@ public class StatusCommand implements TabExecutor {
             setStatus(player, Main.getMMComponent(statusList.get(player.getName())));
     }
 
+    public static void handleWithPvpCooldownColor(Player player) {
+        if (statusList.containsKey(player.getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
+            setStatus(player, Main.getMMComponent(statusList.get(player.getName())));
+        else player.playerListName(Component.text(ChatColor.GREEN + player.getName()));
+    }
+
     public static void onDisable() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.playerListName(Component.text(player.getName()));

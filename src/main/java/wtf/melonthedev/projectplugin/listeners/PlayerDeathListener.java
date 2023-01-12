@@ -27,7 +27,7 @@ public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        ActionLogger.logAction(event.getEntity().getName(), "died", event.getEntity().getLocation(), "\"" + PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(event.deathMessage())) + "\"", "", true);
+        //ActionLogger.logAction(event.getEntity().getName(), "died", event.getEntity().getLocation(), "\"" + PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(event.deathMessage())) + "\"", "", true);
 
         if (Lifesteal.isLifestealActive()) {
             Lifesteal.removeHeart(event.getPlayer().getUniqueId(), 1);

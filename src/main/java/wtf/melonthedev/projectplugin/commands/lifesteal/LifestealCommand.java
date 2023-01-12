@@ -88,7 +88,7 @@ public class LifestealCommand implements TabExecutor {
                     sender.sendMessage(prefix + "Removed 1 heart from " + target.getName());
                 }
                 case "revive" -> {
-                    Lifesteal.revivePlayer(target.getUniqueId());
+                    Lifesteal.unblockPlayer(target.getUniqueId());
                     sender.sendMessage(prefix + "Revived " + target.getName());
                 }
                 case "eliminate" -> {

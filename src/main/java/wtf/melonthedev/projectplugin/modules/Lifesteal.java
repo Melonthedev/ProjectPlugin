@@ -1,11 +1,10 @@
 package wtf.melonthedev.projectplugin.modules;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
+import org.bukkit.advancement.Advancement;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -14,6 +13,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.*;
 import wtf.melonthedev.projectplugin.Main;
 
@@ -80,6 +81,8 @@ public class Lifesteal {
         ItemStack heart = new ItemStack(Material.FERMENTED_SPIDER_EYE);
         ItemMeta heartmeta = heart.getItemMeta();
         heartmeta.displayName(Component.text(ChatColor.DARK_RED + "Heart"));
+        List<Component> lore = heartmeta.lore();
+        lore.add(Component.text(ChatColor.AQUA + "Right-click to consume"));
         heartmeta.addEnchant(Enchantment.CHANNELING, 1, true);
         heartmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         heartmeta.getPersistentDataContainer().set(new NamespacedKey(Main.getPlugin(), "heart"), PersistentDataType.BYTE, (byte) 1);
@@ -137,10 +140,47 @@ public class Lifesteal {
         return Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
     }
 
-    public static void revivePlayer(UUID uuid) {
+    public static void handleJoin(Player player) {
+        validateHearts(player);
+        //if (Main.getPlugin().getConfig().getBoolean("livesteal.willReviveOnJoin." + player.getUniqueId(), false))
+            revivePlayer(player);
+    }
+
+    public static void revivePlayer(Player player) {
+        //TODO: Teleport to grave, applie slow falling, add achivement sound, add achivement postmortal, summon particles, remove head from grave
+        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*2, 255));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20*6, 255));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20*20, 255));
+        Advancement advancement = Bukkit.getAdvancement(NamespacedKey.minecraft("adventure/totem_of_undying"));
+        if (advancement != null)
+            player.getAdvancementProgress(advancement).awardCriteria("0");
+        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation(), 100);
+    }
+
+    public static String getGraveIdOfPlayer(UUID uuid) {
+        ConfigurationSection section = Main.getPlugin().getConfig().getConfigurationSection("graveyardpositions");
+        if (section == null) section = Main.getPlugin().getConfig().createSection("graveyardpositions");
+        Set<String> positions = section.getKeys(false);
+        ConfigurationSection finalSection = section;
+        return positions.stream().filter(s -> Objects.equals(finalSection.getString(s + ".owner"), uuid.toString())).findFirst().orElse(null);
+    }
+
+    public static Location getGraveLocationOfPlayer(UUID uuid) {
+        String id = getGraveIdOfPlayer(uuid);
+        ConfigurationSection section = Main.getPlugin().getConfig().getConfigurationSection("graveyardpositions");
+        if (id == null) return null;
+        assert section != null;
+        int x = section.getInt(id + ".x");
+        int y = section.getInt(id + ".y");
+        int z = section.getInt(id + ".z");
+        String world = section.getString(id + ".world");
+        if (world == null) return null;
+        return new Location(Bukkit.getWorld(world), x, y, z);
+    }
+
+    public static void unblockPlayer(UUID uuid) {
         Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, getRevivedPlayerHeartCount());
         Main.getPlugin().saveConfig();
-        //TODO: Finish
     }
 
     public static void eliminatePlayer(UUID uuid) {
@@ -191,6 +231,7 @@ public class Lifesteal {
         if (!isLifestealActive()) return;
         if (getHeartCount(player.getUniqueId()) >= 20) {
             player.sendMessage(prefix + "You have reached the maximum amount of hearts possible.");
+            return;
         }
         heart.setAmount(heart.getAmount() - 1);
         giveHeart(player.getUniqueId(), 1);

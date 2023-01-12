@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.commands.StatusCommand;
 import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 
 import java.util.UUID;
@@ -36,6 +37,7 @@ public class PvpCooldown {
         Player player = Bukkit.getPlayer(uuid);
         if (player != null) {
             player.showBossBar(bar);
+            StatusCommand.handleWithPvpCooldownColor(player);
             if (remainingMinutes >= totalMinutes - 1)
                 player.showTitle(Title.title(Component.text(ChatColor.GREEN + "The PvP Cooldown has started!"), Component.text(ChatColor.AQUA + "PvP will be enabled when the timer runs out!")));
             initRunnable();
@@ -48,18 +50,16 @@ public class PvpCooldown {
             runnable.cancel();
         } catch (Exception ignored) {}
         Player player = Bukkit.getPlayer(uuid);
-        if (player != null)
+        if (player != null) {
             player.hideBossBar(bar);
+            player.playerListName(null);
+            StatusCommand.handlePlayerJoin(player);
+        }
     }
 
     public void disable() {
-        try {
-            runnable.cancel();
-        } catch (Exception ignored) {}
-        Player player = Bukkit.getPlayer(uuid);
-        if (player != null)
-            player.hideBossBar(bar);
-        Main.getPlugin().getConfig().set("pvpCooldown." + uuid, null);
+        pause();
+        Main.getPlugin().getConfig().set("pvpCooldown." + uuid, 0);
         Main.getPlugin().saveConfig();
         PvpCooldownSystem.pvpCooldowns.remove(uuid);
     }
