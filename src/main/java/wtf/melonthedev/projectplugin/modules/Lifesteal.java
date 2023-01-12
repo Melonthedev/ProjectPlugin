@@ -142,12 +142,15 @@ public class Lifesteal {
 
     public static void handleJoin(Player player) {
         validateHearts(player);
-        //if (Main.getPlugin().getConfig().getBoolean("livesteal.willReviveOnJoin." + player.getUniqueId(), false))
+        if (Main.getPlugin().getConfig().getBoolean("lifesteal.willReviveOnJoin." + player.getUniqueId(), false))
             revivePlayer(player);
     }
 
     public static void revivePlayer(Player player) {
         //TODO: Teleport to grave, applie slow falling, add achivement sound, add achivement postmortal, summon particles, remove head from grave
+        Main.getPlugin().getConfig().set("lifesteal.willReviveOnJoin." + player.getUniqueId(), null);
+        Main.getPlugin().saveConfig();
+        player.spigot().respawn();
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*2, 255));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20*6, 255));
         player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20*20, 255));
@@ -155,6 +158,9 @@ public class Lifesteal {
         if (advancement != null)
             player.getAdvancementProgress(advancement).awardCriteria("0");
         player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation(), 100);
+        Location location = getGraveLocationOfPlayer(player.getUniqueId());
+        if (location != null)
+            player.teleport(location.add(0, 30, 0));
     }
 
     public static String getGraveIdOfPlayer(UUID uuid) {
@@ -180,6 +186,7 @@ public class Lifesteal {
 
     public static void unblockPlayer(UUID uuid) {
         Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, getRevivedPlayerHeartCount());
+        Main.getPlugin().getConfig().set("lifesteal.willReviveOnJoin." + uuid, true);
         Main.getPlugin().saveConfig();
     }
 

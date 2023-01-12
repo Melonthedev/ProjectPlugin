@@ -17,7 +17,7 @@ import wtf.melonthedev.projectplugin.Main;
 public class CustomItemSystem {
 
     static NamespacedKey framekey = new NamespacedKey(Main.getPlugin(), "invisible_item_frame");
-    static NamespacedKey csheartrecipekey = new NamespacedKey(Main.getPlugin(), "construction_heart_recipe");
+    static NamespacedKey heartrecipekey = new NamespacedKey(Main.getPlugin(), "heart_recipe");
 
     public static void handleCustomRecipes() {
         //Invisible ItemFrame
@@ -28,9 +28,9 @@ public class CustomItemSystem {
         framerecipe.setIngredient('A', Material.AMETHYST_SHARD);
         Bukkit.addRecipe(framerecipe);
 
-        //Construction Heart
-        ItemStack csheart = Lifesteal.getConstructionHeartItem();
-        ShapedRecipe csheartrecipe = new ShapedRecipe(csheartrecipekey, csheart);
+        //Heart
+        ItemStack heartItem = Lifesteal.getHeartItem();
+        ShapedRecipe csheartrecipe = new ShapedRecipe(heartrecipekey, heartItem);
         csheartrecipe.shape("RNR", "DHD", "RTR");
         csheartrecipe.setIngredient('R', Material.REDSTONE);
         csheartrecipe.setIngredient('N', Material.NETHERITE_INGOT);
@@ -39,19 +39,13 @@ public class CustomItemSystem {
         csheartrecipe.setIngredient('T', Material.TOTEM_OF_UNDYING);
         Bukkit.addRecipe(csheartrecipe);
 
-        //Heart
-        //ItemStack heart = Lifesteal.getHeartItem();
-        //SmithingRecipe heartrecipe = new SmithingRecipe(heartrecipekey, Lifesteal.getHeartItem(),
-        //        new RecipeChoice.ExactChoice(Lifesteal.getConstructionHeartItem()),
-        //        new RecipeChoice.MaterialChoice(Material.NETHER_STAR));
-        //Bukkit.addRecipe(heartrecipe);
 
         Bukkit.getOnlinePlayers().forEach(CustomItemSystem::discoverCustomRecipes);
     }
 
     public static void discoverCustomRecipes(Player player) {
         player.discoverRecipe(framekey);
-        player.discoverRecipe(csheartrecipekey);
+        player.discoverRecipe(heartrecipekey);
     }
 
 

@@ -35,16 +35,16 @@ public class GravayardCommand implements TabExecutor {
 
             return true;
         }
-        if (args.length != 3) {
-            sender.sendMessage(ChatColor.RED + "Error: do /graveyard <list/add/remove>" + ChatColor.ITALIC + "x y z");
+        if (args.length != 4) {
+            sender.sendMessage(ChatColor.RED + "Error: do /graveyard <list/add/remove> " + ChatColor.ITALIC + "x y z");
         }
         switch (args[0].toLowerCase()) {
             case "add" -> {
                 try {
-                    int x = Integer.parseInt(args[0]);
-                    int y = Integer.parseInt(args[1]);
-                    int z = Integer.parseInt(args[2]);
-                    String world = sender instanceof Player p ? p.getWorld().getName() : Bukkit.getWorlds().get(0).getName();
+                    int x = Integer.parseInt(args[1]);
+                    int y = Integer.parseInt(args[2]);
+                    int z = Integer.parseInt(args[3]);
+                    String world = (sender instanceof Player p) ? p.getWorld().getName() : Bukkit.getWorlds().get(0).getName();
                     String id = world + x + y + z;
                     Main.getPlugin().getConfig().set("graveyardpositions." + id + ".x", x);
                     Main.getPlugin().getConfig().set("graveyardpositions." + id + ".y", y);
@@ -54,25 +54,25 @@ public class GravayardCommand implements TabExecutor {
                     Main.getPlugin().saveConfig();
                     sender.sendMessage(ChatColor.GREEN + "Success! You added a graveyardposition at X: " + x + " Y: " + y + " Z: " + z);
                 } catch (NumberFormatException exception) {
-                    sender.sendMessage(ChatColor.RED + "Error: Use /graveyard" + ChatColor.ITALIC + "x y z");
+                    sender.sendMessage(ChatColor.RED + "Error: Use /graveyard " + ChatColor.ITALIC + "x y z");
                 }
                 return true;
             }
             case "remove" -> {
                 try {
-                    int x = Integer.parseInt(args[0]);
-                    int y = Integer.parseInt(args[1]);
-                    int z = Integer.parseInt(args[2]);
+                    int x = Integer.parseInt(args[1]);
+                    int y = Integer.parseInt(args[2]);
+                    int z = Integer.parseInt(args[3]);
                     String world = sender instanceof Player p ? p.getWorld().getName() : Bukkit.getWorlds().get(0).getName();
                     String id = world + x + y + z;
                     Main.getPlugin().getConfig().set("graveyardpositions." + id, null);
                     Main.getPlugin().saveConfig();
                     sender.sendMessage(ChatColor.GREEN + "Success! You removed the graveyardposition at X: " + x + " Y: " + y + " Z: " + z);
                 } catch (NumberFormatException exception) {
-                    sender.sendMessage(ChatColor.RED + "Error: Use /graveyard" + ChatColor.ITALIC + "x y z");
+                    sender.sendMessage(ChatColor.RED + "Error: Use /graveyard " + ChatColor.ITALIC + "x y z");
                 }
             }
-            default -> sender.sendMessage(ChatColor.RED + "Error: do /graveyard <list/add/remove>" + ChatColor.ITALIC + "x y z");
+            default -> sender.sendMessage(ChatColor.RED + "Error: do /graveyard <list/add/remove> " + ChatColor.ITALIC + "x y z");
         }
         return false;
     }

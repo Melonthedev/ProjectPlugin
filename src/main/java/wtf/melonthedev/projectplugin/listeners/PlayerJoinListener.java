@@ -23,7 +23,7 @@ public class PlayerJoinListener implements Listener {
         event.getPlayer().setSleepingIgnored(false);
         Main.handleFirstJoin(event.getPlayer());
         Main.setCustomPlayerListHeader(event.getPlayer());
-        Lifesteal.validateHearts(event.getPlayer());
+        Lifesteal.handleJoin(event.getPlayer());
         TimerSystem.handleAutoShow(event.getPlayer());
         StatusCommand.handlePlayerJoin(event.getPlayer());
         MessageCommand.handleNewMessages(event.getPlayer());
