@@ -32,11 +32,11 @@ public class CustomItemSystem {
         if (Lifesteal.isLifestealActive()){
             ItemStack heartItem = Lifesteal.getHeartItem();
             ShapedRecipe heartrecipe = new ShapedRecipe(heartrecipekey, heartItem);
-            heartrecipe.shape("DTD", "NSN", "DHD");
+            heartrecipe.shape("DTD", "NSN", "DED");
             heartrecipe.setIngredient('S', Material.NETHER_STAR);
             heartrecipe.setIngredient('N', Material.NETHERITE_INGOT);
             heartrecipe.setIngredient('D', Material.DIAMOND_BLOCK);
-            heartrecipe.setIngredient('H', Material.HEART_OF_THE_SEA);
+            heartrecipe.setIngredient('E', Material.ENCHANTED_GOLDEN_APPLE);
             heartrecipe.setIngredient('T', Material.TOTEM_OF_UNDYING);
             Bukkit.addRecipe(heartrecipe);
         }
