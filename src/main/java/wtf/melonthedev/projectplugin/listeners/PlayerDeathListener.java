@@ -31,7 +31,11 @@ public class PlayerDeathListener implements Listener {
 
         if (Lifesteal.isLifestealActive()) {
             Lifesteal.removeHeart(event.getPlayer().getUniqueId(), 1);
-            if (event.getPlayer().getKiller() != null) Lifesteal.giveHeart(event.getPlayer().getKiller().getUniqueId(), 1);
+            if (event.getPlayer().getKiller() != null){
+                if (Lifesteal.getHeartCount(event.getPlayer().getKiller().getUniqueId()) >= 20)
+                    event.getPlayer().getWorld().dropItemNaturally(event.getPlayer().getLocation(), Lifesteal.getHeartItem());
+                else Lifesteal.giveHeart(event.getPlayer().getKiller().getUniqueId(), 1);
+            }
         }
 
         if (Main.getPlugin().getConfig().getBoolean("hardcore.giantDeathTitle", false))
