@@ -66,6 +66,7 @@ public class EntityListener implements Listener {
     @EventHandler
     public void onHangingPlace(HangingPlaceEvent event) {
         NamespacedKey key = new NamespacedKey(Main.getPlugin(), "invisible_item_frame");
+        if (event.getItemStack() == null) return;
         if (!Objects.requireNonNull(event.getItemStack()).hasItemMeta()
                 || !event.getItemStack().getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.BYTE)
                 || event.getItemStack().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.BYTE) != 1

@@ -63,11 +63,12 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
-        getServer().getPluginManager().registerEvents(new ActionLogger(), this);
+        //getServer().getPluginManager().registerEvents(new ActionLogger(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerRespawnListener(), this);
-        getServer().getPluginManager().registerEvents(new CraftListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerItemDropListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerItemHeldListener(), this);
 
         sendSpawnActionBarMessage();
         updateTabList();
@@ -113,6 +114,7 @@ public final class Main extends JavaPlugin {
         commands.put("graveyard", new GravayardCommand());
         commands.put("manageplayer", new ManagePlayerCommand());
         commands.put("timer", new TimerCommand());
+        commands.put("velocity", new VelocityCommand());
 
         commands.forEach((command, executor) -> {
             try {

@@ -104,3 +104,6 @@ commands:
 
   timer:
     description: Create and manage a timer [TEAM ONLY]
+
+  velocity:
+    description: Gives players velocity [TEAM ONLY]

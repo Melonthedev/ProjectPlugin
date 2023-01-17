@@ -1,9 +1,14 @@
 package wtf.melonthedev.projectplugin.modules;
 
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -74,34 +79,21 @@ public class Lifesteal {
     }
 
     public static int getRevivedPlayerHeartCount() {
-        return 3;
+        return 1;
     }
 
     public static ItemStack getHeartItem() {
         ItemStack heart = new ItemStack(Material.FERMENTED_SPIDER_EYE);
         ItemMeta heartmeta = heart.getItemMeta();
         heartmeta.displayName(Component.text(ChatColor.DARK_RED + "Heart"));
-        List<Component> lore = heartmeta.lore();
+        List<Component> lore = new ArrayList<>();
         lore.add(Component.text(ChatColor.AQUA + "Right-click to consume"));
+        heartmeta.lore(lore);
         heartmeta.addEnchant(Enchantment.CHANNELING, 1, true);
         heartmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         heartmeta.getPersistentDataContainer().set(new NamespacedKey(Main.getPlugin(), "heart"), PersistentDataType.BYTE, (byte) 1);
         heart.setItemMeta(heartmeta);
         return heart;
-    }
-
-    public static ItemStack getConstructionHeartItem() {
-        ItemStack csheart = new ItemStack(Material.FERMENTED_SPIDER_EYE);
-        ItemMeta csheartmeta = csheart.getItemMeta();
-        NamespacedKey csheartkey = new NamespacedKey(Main.getPlugin(), "construction_heart");
-        csheartmeta.displayName(Component.text(ChatColor.WHITE + "Construction Heart"));
-        csheartmeta.getPersistentDataContainer().set(csheartkey, PersistentDataType.BYTE, (byte) 1);
-        List<Component> lorelist = new ArrayList<>();
-        lorelist.add(Component.text("Add Netherstar"));
-        lorelist.add(Component.text("in Smithing Table"));
-        csheartmeta.lore(lorelist);
-        csheart.setItemMeta(csheartmeta);
-        return csheart;
     }
 
     public static void giveHeart(UUID uuid, Integer count) {
@@ -148,19 +140,19 @@ public class Lifesteal {
 
     public static void revivePlayer(Player player) {
         //TODO: Teleport to grave, applie slow falling, add achivement sound, add achivement postmortal, summon particles, remove head from grave
+        Location location = getGraveLocationOfPlayer(player.getUniqueId());
         Main.getPlugin().getConfig().set("lifesteal.willReviveOnJoin." + player.getUniqueId(), null);
         Main.getPlugin().saveConfig();
+        unassignGrave(player.getUniqueId());
         player.spigot().respawn();
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*2, 255));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20*6, 255));
         player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20*20, 255));
-        Advancement advancement = Bukkit.getAdvancement(NamespacedKey.minecraft("adventure/totem_of_undying"));
-        if (advancement != null)
-            player.getAdvancementProgress(advancement).awardCriteria("0");
-        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation(), 100);
-        Location location = getGraveLocationOfPlayer(player.getUniqueId());
+        Bukkit.getOnlinePlayers().forEach(p -> p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 0.9f));
+        Bukkit.broadcast(Component.join(JoinConfiguration.noSeparators(), Component.text(Lifesteal.prefix), Main.getMMComponent("<rainbow>" + player.getName() + " was revived!")));
+        player.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 100);
         if (location != null)
-            player.teleport(location.add(0, 30, 0));
+            player.teleport(location.add(0.5, 30, 0.5));
     }
 
     public static String getGraveIdOfPlayer(UUID uuid) {
@@ -184,6 +176,55 @@ public class Lifesteal {
         return new Location(Bukkit.getWorld(world), x, y, z);
     }
 
+    public static HashMap<Location, UUID> getGraves() {
+        ConfigurationSection section = Main.getPlugin().getConfig().getConfigurationSection("graveyardpositions");
+        if (section == null) section = Main.getPlugin().getConfig().createSection("graveyardpositions");
+        Set<String> positions = section.getKeys(false);
+        HashMap<Location, UUID> graves = new HashMap<>();
+        ConfigurationSection finalSection = section;
+        positions.forEach(s -> {
+            int x = finalSection.getInt(s + ".x");
+            int y = finalSection.getInt(s + ".y");
+            int z = finalSection.getInt(s + ".z");
+            String world = finalSection.getString(s + ".world");
+            String owner = finalSection.getString(s + ".owner");
+            if (world == null) return;
+            World w = Bukkit.getWorld(world);
+            UUID uuid = owner == null ? null : UUID.fromString(owner);
+            Location location = new Location(w, x, y, z);
+            graves.put(location, uuid);
+        });
+        return graves;
+    }
+
+    public static void assignGrave(UUID uuid) {
+        for (Map.Entry<Location, UUID> entry : getGraves().entrySet()) {
+            if (entry.getValue() != null) continue;
+            Location l = entry.getKey();
+            Main.getPlugin().getConfig().set("graveyardpositions." + l.getWorld().getName() + l.getBlockX() + l.getBlockY() + l.getBlockZ() + ".owner", uuid.toString());
+            Main.getPlugin().saveConfig();
+
+            Block block = l.getBlock().getRelative(BlockFace.UP);
+            block.setType(Material.PLAYER_HEAD);
+            Skull skull = (Skull) block.getState();
+            skull.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
+            skull.update();
+            return;
+        }
+    }
+
+    public static void unassignGrave(UUID uuid) {
+        for (Map.Entry<Location, UUID> entry : getGraves().entrySet()) {
+            if (entry.getValue() == null) continue;
+            if (!Objects.equals(entry.getValue().toString(), uuid.toString())) continue;
+            Location l = entry.getKey();
+            Main.getPlugin().getConfig().set("graveyardpositions." + l.getWorld().getName() + l.getBlockX() + l.getBlockY() + l.getBlockZ() + ".owner", null);
+            Main.getPlugin().saveConfig();
+            l.getBlock().getRelative(BlockFace.UP).setType(Material.AIR);
+            return;
+        }
+    }
+
     public static void unblockPlayer(UUID uuid) {
         Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, getRevivedPlayerHeartCount());
         Main.getPlugin().getConfig().set("lifesteal.willReviveOnJoin." + uuid, true);
@@ -193,6 +234,7 @@ public class Lifesteal {
     public static void eliminatePlayer(UUID uuid) {
         Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, 0);
         Main.getPlugin().saveConfig();
+        assignGrave(uuid);
         Player target = Bukkit.getPlayer(uuid);
         if (target == null) return;
         target.getInventory().clear();

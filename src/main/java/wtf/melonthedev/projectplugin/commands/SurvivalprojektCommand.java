@@ -91,7 +91,7 @@ public class SurvivalprojektCommand implements TabExecutor {
             player.setHealth(20);
             player.clearTitle();
             player.setStatistic(Statistic.TOTAL_WORLD_TIME, 0);
-            Main.getPlugin().getConfig().set("pvpCooldown." + player.getUniqueId(), null);
+            Main.getPlugin().getConfig().set("pvpCooldown." + player.getUniqueId(), 30);
             //SURO
             //player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 1));
             //player.getInventory().addItem(new ItemStack(Material.WHEAT_SEEDS, 1));

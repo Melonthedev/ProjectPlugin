@@ -17,13 +17,17 @@ public class PvpCooldownSystem {
     }
 
     public static void handleForPlayer(Player player) {
-        if (Main.getPlugin().getConfig().getInt("pvpCooldown." + player.getUniqueId(), (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || Lifesteal.isLifestealActive()) ? 180 : 0) == 0) return;
-        if (!pvpCooldowns.containsKey(player.getUniqueId()))
-            pvpCooldowns.put(player.getUniqueId(), new PvpCooldown(player.getUniqueId(), 180));
+        //if (Main.getPlugin().getConfig().getInt("pvpCooldown." + player.getUniqueId(), (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || Lifesteal.isLifestealActive()) ? 180 : 0) == 0) return;
+        //if (!pvpCooldowns.containsKey(player.getUniqueId()))
+        ///    pvpCooldowns.put(player.getUniqueId(), new PvpCooldown(player.getUniqueId(), 180));
         //int ticksPlayedSinceStart = player.getStatistic(Statistic.TOTAL_WORLD_TIME);
         //int minutesPlayedSinceStart = (ticksPlayedSinceStart / 20) / 60;
         //if (!Main.getPlugin().getConfig().getBoolean("projectActive", false) || minutesPlayedSinceStart >= pvpCooldowns.get(player.getUniqueId()).getTotalMinutes()) return;
-        if (pvpCooldowns.get(player.getUniqueId()).getRemainingMinutes() > 0)
+        if (Lifesteal.isLifestealActive()) {
+            if (!Main.getPlugin().getConfig().contains("pvpCooldown." + player.getUniqueId()))
+                startForPlayer(player.getUniqueId(), 30);
+        }
+        if (pvpCooldowns.containsKey(player.getUniqueId()) && pvpCooldowns.get(player.getUniqueId()).getRemainingMinutes() > 0)
             pvpCooldowns.get(player.getUniqueId()).start();
     }
 

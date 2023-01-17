@@ -37,6 +37,7 @@ public class GravayardCommand implements TabExecutor {
         }
         if (args.length != 4) {
             sender.sendMessage(ChatColor.RED + "Error: do /graveyard <list/add/remove> " + ChatColor.ITALIC + "x y z");
+            return true;
         }
         switch (args[0].toLowerCase()) {
             case "add" -> {
