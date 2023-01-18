@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.utils.CommandUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -89,7 +90,7 @@ public class ISeeCommand implements TabExecutor {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> tab = new ArrayList<>();
         if (args.length == 1) {
-            tab.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
+            CommandUtils.addOnlinePlayers(tab, args[0]);
         } else if (args.length == 2) {
             tab.add("text");
             tab.add("ec");

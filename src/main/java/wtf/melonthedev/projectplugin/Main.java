@@ -5,9 +5,13 @@ import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.commands.information.ColorCodesCommand;
@@ -21,13 +25,16 @@ import wtf.melonthedev.projectplugin.commands.moderation.*;
 import wtf.melonthedev.projectplugin.commands.pvpcooldown.PvpCooldownCommand;
 import wtf.melonthedev.projectplugin.commands.pvpcooldown.SkipPvpCooldownCommand;
 import wtf.melonthedev.projectplugin.listeners.*;
-import wtf.melonthedev.projectplugin.listeners.featurelisteners.ActionLogger;
 import wtf.melonthedev.projectplugin.listeners.featurelisteners.SignEditListener;
 import wtf.melonthedev.projectplugin.listeners.featurelisteners.SpawnElytraListener;
-import wtf.melonthedev.projectplugin.modules.*;
-import wtf.melonthedev.projectplugin.utils.*;
+import wtf.melonthedev.projectplugin.modules.CustomItemSystem;
+import wtf.melonthedev.projectplugin.modules.Lifesteal;
+import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
+import wtf.melonthedev.projectplugin.modules.TimerSystem;
+import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
@@ -43,32 +50,32 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        handleConfig();
         getLogger().log(Level.INFO, "**********************");
         getLogger().log(Level.INFO, "*** Project Plugin ***");
         getLogger().log(Level.INFO, "*** by Melonthedev ***");
         getLogger().log(Level.INFO, "**** and Stebadon ****");
         getLogger().log(Level.INFO, "**********************");
 
+        handleConfig();
         handleCommands();
 
         //LISTENER REGISTRATION
-        getServer().getPluginManager().registerEvents(new SpawnElytraListener(), this);
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
-        getServer().getPluginManager().registerEvents(new SignEditListener(), this);
-        getServer().getPluginManager().registerEvents(new ServerPingListener(), this);
-        getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
-        getServer().getPluginManager().registerEvents(new BlockListener(), this);
-        getServer().getPluginManager().registerEvents(new EntityListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerRespawnListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerItemDropListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerItemHeldListener(), this);
-
+        registerListener(new SpawnElytraListener());
+        registerListener(new ChatListener());
+        registerListener(new PlayerJoinListener());
+        registerListener(new PlayerQuitListener());
+        registerListener(new PlayerInteractListener());
+        registerListener(new SignEditListener());
+        registerListener(new ServerPingListener());
+        registerListener(new EntityDamageByEntityListener());
+        registerListener(new BlockListener());
+        registerListener(new EntityListener());
+        registerListener(new PlayerMoveListener());
+        registerListener(new PlayerDeathListener());
+        registerListener(new PlayerRespawnListener());
+        registerListener(new PlayerItemDropListener());
+        registerListener(new PlayerItemHeldListener());
+        
         sendSpawnActionBarMessage();
         updateTabList();
         handleEastereggDamages();
@@ -126,6 +133,9 @@ public final class Main extends JavaPlugin {
         });
     }
 
+    public void registerListener(Listener listener) {
+        getServer().getPluginManager().registerEvents(listener, this);
+    }
 
     public void handleConfig() {
         // Default Config in resources/config.yml
@@ -147,11 +157,6 @@ public final class Main extends JavaPlugin {
 
     public static boolean isCommandDisabled(String command) {
         return Main.getPlugin().getConfig().getBoolean("config.disabledcommands." + command, false);
-    }
-
-    public void handleHardcoreModus() {
-        boolean flag = getConfig().getBoolean("hardcore.enabled", false);
-        Bukkit.getOnlinePlayers().forEach(player -> player.getWorld().setHardcore(flag));
     }
 
     public static void handleFirstJoin(Player player) {

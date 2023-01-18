@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.modules.HardcoreSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class HardCoreCommand implements TabExecutor {
                     sender.sendMessage(prefix + ChatColor.RED + "Giant Title is now set to " + Main.getPlugin().getConfig().getBoolean("hardcore.giantDeathTitle", false));
                     Main.getPlugin().getConfig().set("hardcore.enabled", !Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false));
                     Main.getPlugin().saveConfig();
-                    Main.getPlugin().handleHardcoreModus();
+                    HardcoreSystem.handleHardcoreModus();
                     sender.sendMessage(prefix + ChatColor.RED + "You have " + (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) ? "enabled" : "disabled") + " the hardcore mode!");
                     return true;
                 }

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.utils.CommandUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,7 @@ public class DonatorsCommand implements TabExecutor {
             tab.add("add");
             tab.add("remove");
         } else if (args.length == 2)
-            tab.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
+            CommandUtils.addOnlinePlayers(tab, args[1]);
         return tab;
     }
 }

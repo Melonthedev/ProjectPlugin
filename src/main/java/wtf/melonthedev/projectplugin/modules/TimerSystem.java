@@ -29,9 +29,9 @@ public class TimerSystem {
                     int min = (runningSeconds / 60) % 60;
                     int hours = (runningSeconds / 60) / 60;
                     String strSec = (sec < 10) ? "0" + sec : Integer.toString(sec);
-                    String strmin = (min < 10) ? "0" + min : Integer.toString(min);
+                    String strMin = (min < 10) ? "0" + min : Integer.toString(min);
                     String strHours = (hours < 10) ? "0" + hours : Integer.toString(hours);
-                    player.sendActionBar(Main.getMMComponent(prefix + strHours + ":" + strmin + ":" + strSec));
+                    player.sendActionBar(Main.getMMComponent(prefix + strHours + ":" + strMin + ":" + strSec));
                 }
                 if (!running) return;
                 runningSeconds++;
@@ -62,7 +62,7 @@ public class TimerSystem {
     }
 
     public static void showToAll() {
-        shownPlayers.addAll(Bukkit.getOnlinePlayers().stream().map(Entity::getUniqueId).collect(Collectors.toList()));
+        shownPlayers.addAll(Bukkit.getOnlinePlayers().stream().map(Entity::getUniqueId).toList());
     }
 
     public static void showToPlayer(UUID uuid) {

@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import wtf.melonthedev.projectplugin.utils.CommandUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -50,8 +51,10 @@ public class MessageCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> tab = new ArrayList<>();
-        if (args.length == 1)
-            tab.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(s -> s.startsWith(args[0])).toList());
+        if (args.length == 1) {
+            CommandUtils.addOnlinePlayers(tab, args[0]);
+            CommandUtils.addOnlyOfflinePlayers(tab, args[0]);
+        }
         return tab;
     }
 }

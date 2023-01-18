@@ -285,4 +285,15 @@ public class Lifesteal {
         heart.setAmount(heart.getAmount() - 1);
         giveHeart(player.getUniqueId(), 1);
     }
+    
+    public static void handlePlayerDeath(Player player) {
+        if (Lifesteal.isLifestealActive()) {
+            Lifesteal.removeHeart(player.getUniqueId(), 1);
+            if (player.getKiller() != null){
+                if (Lifesteal.getHeartCount(player.getKiller().getUniqueId()) >= 20)
+                    player.getWorld().dropItemNaturally(player.getLocation(), Lifesteal.getHeartItem());
+                else Lifesteal.giveHeart(player.getKiller().getUniqueId(), 1);
+            }
+        }
+    }
 }

@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.modules.Lifesteal;
+import wtf.melonthedev.projectplugin.utils.CommandUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,7 +154,7 @@ public class LifestealCommand implements TabExecutor {
         if (args.length == 1) {
             tab.addAll(List.of(subCommands));
         } else if (args.length == 2) {
-            tab.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
+            CommandUtils.addOnlinePlayers(tab, args[1]);
         }
         return tab;
     }

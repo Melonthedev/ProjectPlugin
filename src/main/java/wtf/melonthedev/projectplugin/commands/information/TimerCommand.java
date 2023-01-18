@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.modules.TimerSystem;
+import wtf.melonthedev.projectplugin.utils.CommandUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +90,7 @@ public class TimerCommand implements TabExecutor {
         } else if (args.length == 2) {
             switch (args[0].toLowerCase()) {
                 //case "color" -> tab.addAll(Arrays.stream(ChatColor.values()).map(Enum::name).collect(Collectors.toList()));
-                case "showtoplayer" -> tab.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
+                case "showtoplayer" -> CommandUtils.addOnlinePlayers(tab, args[1]);
                 case "autoshow" -> {
                     tab.add("true");
                     tab.add("false");
