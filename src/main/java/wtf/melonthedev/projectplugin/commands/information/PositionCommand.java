@@ -29,6 +29,16 @@ public class PositionCommand implements TabExecutor {
             return true;
         } else if (args.length == 1 && sender instanceof Player player) {
             if (getPosition(args[0]) == null) {
+                if (!Main.getPlugin().getConfig().getBoolean("shownSecurityWarning." + player.getUniqueId(), false)) {
+                    player.sendMessage(prefix + ChatColor.RED + "Vorsicht!" + ChatColor.WHITE + " Du bist dabei eine " + ChatColor.RED + " öffentliche Position " + ChatColor.WHITE + " mit deinen " + ChatColor.RED + "aktuellen Koordinaten " + ChatColor.WHITE + " zu erstellen. Wenn du das wirklich möchtest, führe den Command erneut aus! Du kannst Positionen jederzeit mit '/position <Name> delete' löschen.");
+                    Main.getPlugin().getConfig().set("shownSecurityWarning." + player.getUniqueId(), true);
+                    Main.getPlugin().saveConfig();
+                    return true;
+                }
+                if (args[0].contains(".")) {
+                    player.sendMessage(prefix + "Points are not allowed!");
+                    return true;
+                }
                 savePosition(args[0], player.getLocation());
                 player.sendMessage(prefix + "Saved Position '" + args[0] + "' at " + getLocationString(player.getLocation()));
                 return true;
