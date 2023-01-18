@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.utils.CommandUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class PositionCommand implements TabExecutor {
         if (args.length == 0) {
             sender.sendMessage(prefix + "Positions: ");
             for (String name : getAllPositionNames())
-                sender.sendMessage("- " + name + " " + getLocationString(getPosition(name)));
+                sender.sendMessage("- " + name + " " + CommandUtils.getLocationString(getPosition(name)));
             return true;
         } else if (args.length == 1 && sender instanceof Player player) {
             if (getPosition(args[0]) == null) {
@@ -40,21 +41,17 @@ public class PositionCommand implements TabExecutor {
                     return true;
                 }
                 savePosition(args[0], player.getLocation());
-                player.sendMessage(prefix + "Saved Position '" + args[0] + "' at " + getLocationString(player.getLocation()));
+                player.sendMessage(prefix + "Saved Position '" + args[0] + "' at " + CommandUtils.getLocationString(player.getLocation()));
                 return true;
             }
             Location loc = getPosition(args[0]);
-            player.sendMessage(prefix + "Position '" + args[0] + "' - " + getLocationString(loc));
+            player.sendMessage(prefix + "Position '" + args[0] + "' - " + CommandUtils.getLocationString(loc));
         } else if (args.length == 2 && getPosition(args[0]) != null && args[1].equalsIgnoreCase("delete")) {
             Main.getPlugin().getConfig().set("positions." + args[0], null);
             Main.getPlugin().saveConfig();
             sender.sendMessage(prefix + "Deleted position '" + args[0] + "'!");
         }
         return false;
-    }
-
-    public String getLocationString(Location location) {
-        return ChatColor.GREEN + "X: " + location.getBlockX() + ChatColor.RED + " Y: " + location.getBlockY() + ChatColor.BLUE + " Z: " + location.getBlockZ();
     }
 
     public void savePosition(String name, Location location) {

@@ -1,6 +1,8 @@
 package wtf.melonthedev.projectplugin.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -29,5 +31,9 @@ public class CommandUtils {
                 .map(OfflinePlayer::getName)
                 .filter(Objects::nonNull)
                 .filter(s -> s.startsWith(arg)).toList());
+    }
+
+    public static String getLocationString(Location location) {
+        return ChatColor.GREEN + "X: " + location.getBlockX() + ChatColor.RED + " Y: " + location.getBlockY() + ChatColor.BLUE + " Z: " + location.getBlockZ();
     }
 }

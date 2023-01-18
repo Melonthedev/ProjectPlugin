@@ -14,9 +14,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.commands.information.PositionCommand;
+import wtf.melonthedev.projectplugin.modules.Lifesteal;
+import wtf.melonthedev.projectplugin.utils.CommandUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class GravayardCommand implements TabExecutor {
 
@@ -26,12 +30,14 @@ public class GravayardCommand implements TabExecutor {
             sender.sendMessage(ChatColor.RED + "You don't have the permissions to use this command!");
             return true;
         }
-        //if (!(sender instanceof Player p)) {
-        //    sender.sendMessage(ChatColor.RED + "Error: You are not a Player");
-        //    return true;
-        //}
         if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
-
+            sender.sendMessage(ChatColor.AQUA + "List of all graves:");
+            for (Map.Entry<Location, UUID> entry : Lifesteal.getGraves().entrySet()) {
+                String owner = entry.getValue() == null ? "Unbelegt" : (Bukkit.getOfflinePlayer(entry.getValue()).getName() == null
+                        ? entry.getValue().toString() : Bukkit.getOfflinePlayer(entry.getValue()).getName());
+                sender.sendMessage(ChatColor.AQUA + "- " + CommandUtils.getLocationString(entry.getKey())
+                        + ChatColor.AQUA + ": " + owner);
+            }
 
             return true;
         }
