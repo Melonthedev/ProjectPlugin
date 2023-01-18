@@ -21,14 +21,14 @@ public class PlayerItemDropListener implements Listener {
     public void onDrop(PlayerDropItemEvent event) {
         ItemStack stack = event.getItemDrop().getItemStack();
         NamespacedKey heartKey = new NamespacedKey(Main.getPlugin(), "heart");
-        if (stack.getType() != Material.NETHER_STAR && !stack.getItemMeta().getPersistentDataContainer().has(heartKey)) return;
+        if (stack.getType() != Material.HEART_OF_THE_SEA && !stack.getItemMeta().getPersistentDataContainer().has(heartKey)) return;
         List<Entity> nearbyItems = event.getItemDrop().getNearbyEntities(2, 2, 2);
         ItemStack secondItem = null;
         for (Entity entity : nearbyItems) {
             if (!(entity instanceof Item)) continue;
             ItemStack stack2 = ((Item) entity).getItemStack();
-            if ((stack2.getType() == Material.NETHER_STAR && stack.getItemMeta().getPersistentDataContainer().has(heartKey))
-                    || (stack2.getItemMeta().getPersistentDataContainer().has(heartKey) && stack.getType() == Material.NETHER_STAR)) secondItem = stack2;
+            if ((stack2.getType() == Material.HEART_OF_THE_SEA && stack.getItemMeta().getPersistentDataContainer().has(heartKey))
+                    || (stack2.getItemMeta().getPersistentDataContainer().has(heartKey) && stack.getType() == Material.HEART_OF_THE_SEA)) secondItem = stack2;
         }
         if (secondItem == null) return;
         HashMap<Location, UUID> locations = Lifesteal.getGraves();
