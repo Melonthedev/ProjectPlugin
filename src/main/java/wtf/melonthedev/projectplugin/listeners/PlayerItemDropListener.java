@@ -42,7 +42,7 @@ public class PlayerItemDropListener implements Listener {
                 if (Lifesteal.getHeartCount(event.getPlayer().getUniqueId()) <= 1) continue;
                 if (Main.getPlugin().getConfig().getBoolean("lifesteal.willReviveOnJoin." + uuid, false)) continue;
                 event.getPlayer().sendMessage(Lifesteal.prefix + ChatColor.GOLD + "Your revive was successful. Ask the player to join!");
-                Lifesteal.removeHeart(event.getPlayer().getUniqueId(), 1);
+                //Lifesteal.removeHeart(event.getPlayer().getUniqueId(), 1);
                 Lifesteal.unblockPlayer(uuid);
                 stack.setAmount(stack.getAmount() - 1);
                 finalSecondItem.setAmount(finalSecondItem.getAmount() - 1);
