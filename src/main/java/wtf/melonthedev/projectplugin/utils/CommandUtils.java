@@ -15,14 +15,14 @@ public class CommandUtils {
     public static void addOnlinePlayers(List<String> tab, String arg) {
         tab.addAll(Bukkit.getOnlinePlayers().stream()
                 .map(Player::getName)
-                .filter(s -> s.startsWith(arg)).toList());
+                .filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).toList());
     }
 
     public static void addOfflinePlayers(List<String> tab, String arg) {
         tab.addAll(Arrays.stream(Bukkit.getOfflinePlayers())
                 .map(OfflinePlayer::getName)
                 .filter(Objects::nonNull)
-                .filter(s -> s.startsWith(arg)).toList());
+                .filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).toList());
     }
 
     public static void addOnlyOfflinePlayers(List<String> tab, String arg) {
@@ -30,7 +30,7 @@ public class CommandUtils {
                 .filter(offlinePlayer -> !offlinePlayer.isOnline())
                 .map(OfflinePlayer::getName)
                 .filter(Objects::nonNull)
-                .filter(s -> s.startsWith(arg)).toList());
+                .filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).toList());
     }
 
     public static String getLocationString(Location location) {
