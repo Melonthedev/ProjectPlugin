@@ -63,7 +63,6 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
-        //getServer().getPluginManager().registerEvents(new ActionLogger(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerRespawnListener(), this);
@@ -75,7 +74,6 @@ public final class Main extends JavaPlugin {
         handleEastereggDamages();
         CustomItemSystem.handleCustomRecipes();
         PvpCooldownSystem.handleForAllPlayers();
-        //PlayerActivitySystem.handleSusPlayerActivityPerHour();
         Lifesteal.init();
     }
 
@@ -229,8 +227,9 @@ public final class Main extends JavaPlugin {
                 jonbadon.damage(1);
 
             Player tantalos = Bukkit.getPlayer("Tantal0s");
-            if (tantalos != null && (tantalos.getInventory().getItemInMainHand().getType() == Material.TNT || tantalos.getInventory().getItemInOffHand().getType() == Material.TNT))
-                tantalos.damage(1);
+            if (tantalos != null && (tantalos.getInventory().getItemInMainHand().getType() == Material.TNT
+                    || tantalos.getInventory().getItemInOffHand().getType() == Material.TNT))
+                tantalos.damage(tantalos.getInventory().getItemInMainHand().getAmount());
         }, 0, 1);
     }
 
