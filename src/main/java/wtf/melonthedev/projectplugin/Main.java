@@ -229,12 +229,13 @@ public final class Main extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             Player jonbadon = Bukkit.getPlayer("Jonbadon");
             if (jonbadon != null && jonbadon.getLocation().getBlock().getType() == Material.STONECUTTER)
-                jonbadon.damage(1);
+                jonbadon.damage(2);
 
             Player tantalos = Bukkit.getPlayer("Tantal0s");
             if (tantalos != null && (tantalos.getInventory().getItemInMainHand().getType() == Material.TNT
-                    || tantalos.getInventory().getItemInOffHand().getType() == Material.TNT))
-                tantalos.damage(tantalos.getInventory().getItemInMainHand().getAmount());
+                    || tantalos.getInventory().getItemInOffHand().getType() == Material.TNT)) {
+                tantalos.damage(tantalos.getInventory().getItemInMainHand().getAmount() == 1 ? 1 : (int) (tantalos.getInventory().getItemInMainHand().getAmount()/2));
+            }
         }, 0, 1);
     }
 
