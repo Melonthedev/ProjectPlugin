@@ -56,7 +56,7 @@ public class SurvivalprojektCommand implements TabExecutor {
                     Main.getPlugin().saveConfig();
                     Bukkit.getWorlds().get(0).getWorldBorder().setCenter(Bukkit.getWorlds().get(0).getSpawnLocation());
                     Bukkit.getWorlds().get(0).getWorldBorder().setWarningDistance(0);
-                    Bukkit.getWorlds().get(0).getWorldBorder().setSize(16);
+                    Bukkit.getWorlds().get(0).getWorldBorder().setSize(Main.getPlugin().getConfig().getInt("spawn.border_radius", 16));
                     sender.sendMessage(ChatColor.GREEN + "Worldborder set to 16 blocks!");
                     Main.getPlugin().setEndAccessible(false);
                     sender.sendMessage(ChatColor.GREEN + "Blocked End Access!");
