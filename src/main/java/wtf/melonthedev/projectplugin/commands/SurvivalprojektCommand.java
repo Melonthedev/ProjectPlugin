@@ -26,6 +26,7 @@ public class SurvivalprojektCommand implements TabExecutor {
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "Discord: " + Main.DISCORD_INVITE);
             sender.sendMessage(ChatColor.GREEN + "Website: McSurvivalprojekt.de");
             sender.sendMessage(ChatColor.AQUA + "Developer: Melonthedev#1848");
+            sender.sendMessage(ChatColor.AQUA + "Co-Developer: stebadon#1189");
             sender.sendMessage(ChatColor.YELLOW + "Admin: stebadon#1189");
             return true;
         }
@@ -91,16 +92,16 @@ public class SurvivalprojektCommand implements TabExecutor {
             player.setHealth(20);
             player.clearTitle();
             player.setStatistic(Statistic.TOTAL_WORLD_TIME, 0);
-            Main.getPlugin().getConfig().set("pvpCooldown." + player.getUniqueId(), 30);
+            //Main.getPlugin().getConfig().set("pvpCooldown." + player.getUniqueId(), 30);
             //SURO
             //player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 1));
             //player.getInventory().addItem(new ItemStack(Material.WHEAT_SEEDS, 1));
         });
         Main.getPlugin().saveConfig();
         sender.sendMessage(ChatColor.GREEN + "Reset Player Status!");
-        PvpCooldownSystem.handleForAllPlayers();
+        //PvpCooldownSystem.handleForAllPlayers();
         //PvpCooldownSystem.startForAllPlayers(3);
-        sender.sendMessage(ChatColor.GREEN + "Started PvP Cooldown!");
+        //sender.sendMessage(ChatColor.GREEN + "Started PvP Cooldown!");
         Bukkit.getWorlds().get(0).getWorldBorder().setWarningDistance(5);
         Bukkit.getWorlds().get(0).getWorldBorder().setSize(59999968);
         //Bukkit.getWorlds().get(0).getWorldBorder().setSize(1500);

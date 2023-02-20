@@ -43,7 +43,7 @@ public final class Main extends JavaPlugin {
     private static Main plugin;
     private Component[] actionbarInfos;
 
-    public static String PROJECT_NAME = "Survivalprojekt 4.1";
+    public static String PROJECT_NAME = "Survivalprojekt 4.3";
     public static String PROJECT_TYPE = "Survival SMP";
     public static String DISCORD_INVITE = "discord.gg/AmskHwQSCT";
 
