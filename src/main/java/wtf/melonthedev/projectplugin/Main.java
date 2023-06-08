@@ -5,11 +5,13 @@ import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import wtf.melonthedev.projectplugin.commands.*;
 import wtf.melonthedev.projectplugin.commands.information.ColorCodesCommand;
@@ -91,44 +93,43 @@ public final class Main extends JavaPlugin {
     }
 
     public void handleCommands() {
-        HashMap<String, CommandExecutor> commands = new HashMap<>();
-        commands.put("status", new StatusCommand());
-        commands.put("position", new PositionCommand());
-        commands.put("colorcodes", new ColorCodesCommand());
-        commands.put("toggleendaccessibility", new ToggleEndAccessibilityCommand());
-        commands.put("message", new MessageCommand());
-        commands.put("reply", new ReplyCommand());
-        commands.put("spectatestebadon", new SpectateStebadonCommand());
-        commands.put("logoutput", new LogOutputCommand());
-        commands.put("deathlocation", new DeathLocationCommand());
-        commands.put("checksusplayeractivity", new CheckSusPlayerActivityCommand());
-        commands.put("afk", new AfkCommand());
-        commands.put("weristimnether", new WerIstImNetherCommand());
-        commands.put("tempban", new TempBanCommand());
-        commands.put("joinmessage", new JoinMessageCommand());
-        commands.put("isee", new ISeeCommand());
-        commands.put("hardcore", new HardCoreCommand());
-        commands.put("survivalprojekt", new SurvivalprojektCommand());
-        commands.put("skippvpcooldown", new SkipPvpCooldownCommand());
-        commands.put("withdraw", new WithdrawHeartCommand());
-        commands.put("lifesteal", new LifestealCommand());
-        commands.put("pvpcooldown", new PvpCooldownCommand());
-        commands.put("donators", new DonatorsCommand());
-        commands.put("graveyard", new GravayardCommand());
-        commands.put("manageplayer", new ManagePlayerCommand());
-        commands.put("timer", new TimerCommand());
-        commands.put("velocity", new VelocityCommand());
+        registerCmd("status", new StatusCommand());
+        registerCmd("position", new PositionCommand());
+        registerCmd("colorcodes", new ColorCodesCommand());
+        registerCmd("toggleendaccessibility", new ToggleEndAccessibilityCommand());
+        registerCmd("message", new MessageCommand());
+        registerCmd("reply", new ReplyCommand());
+        registerCmd("spectatestebadon", new SpectateStebadonCommand());
+        registerCmd("logoutput", new LogOutputCommand());
+        registerCmd("deathlocation", new DeathLocationCommand());
+        registerCmd("checksusplayeractivity", new CheckSusPlayerActivityCommand());
+        registerCmd("afk", new AfkCommand());
+        registerCmd("weristimnether", new WerIstImNetherCommand());
+        registerCmd("tempban", new TempBanCommand());
+        registerCmd("joinmessage", new JoinMessageCommand());
+        registerCmd("isee", new ISeeCommand());
+        registerCmd("hardcore", new HardCoreCommand());
+        registerCmd("survivalprojekt", new SurvivalprojektCommand());
+        registerCmd("skippvpcooldown", new SkipPvpCooldownCommand());
+        registerCmd("withdraw", new WithdrawHeartCommand());
+        registerCmd("lifesteal", new LifestealCommand());
+        registerCmd("pvpcooldown", new PvpCooldownCommand());
+        registerCmd("donators", new DonatorsCommand());
+        registerCmd("graveyard", new GravayardCommand());
+        registerCmd("manageplayer", new ManagePlayerCommand());
+        registerCmd("timer", new TimerCommand());
+        registerCmd("velocity", new VelocityCommand());
+    }
 
-        commands.forEach((command, executor) -> {
-            try {
-                if (!isCommandDisabled(command))
-                    Objects.requireNonNull(getCommand(command)).setExecutor(executor);
-            } catch (NullPointerException e) {
-                getLogger().log(Level.SEVERE, "===================================================================");
-                getLogger().log(Level.SEVERE, "Command '" + command + "' was not found! Registered in plugin.yml?");
-                getLogger().log(Level.SEVERE, "===================================================================");
-            }
-        });
+    public void registerCmd(String command, CommandExecutor executor) {
+        try {
+            if (!isCommandDisabled(command))
+                Objects.requireNonNull(getCommand(command)).setExecutor(executor);
+        } catch (NullPointerException e) {
+            getLogger().log(Level.SEVERE, "===================================================================");
+            getLogger().log(Level.SEVERE, "Command '" + command + "' was not found! Registered in plugin.yml?");
+            getLogger().log(Level.SEVERE, "===================================================================");
+        }
     }
 
     public void registerListener(Listener listener) {
