@@ -4,9 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import wtf.melonthedev.projectplugin.Main;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TimerSystem {
 

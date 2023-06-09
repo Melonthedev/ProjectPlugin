@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import wtf.melonthedev.projectplugin.utils.CommandUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MessageCommand implements TabExecutor {
 
@@ -52,8 +51,8 @@ public class MessageCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> tab = new ArrayList<>();
         if (args.length == 1) {
-            CommandUtils.addOnlinePlayers(tab, args[0]);
-            CommandUtils.addOnlyOfflinePlayers(tab, args[0]);
+            CommandUtils.addOnlinePlayersTabComplete(tab, args[0]);
+            CommandUtils.addOnlyOfflinePlayersTabComplete(tab, args[0]);
         }
         return tab;
     }

@@ -27,17 +27,14 @@ public class StatusCommand implements TabExecutor {
             sender.sendMessage(ChatColor.RED + "Sorry, you cannot use this command in the console.");
             return true;
         }
-
         if (args.length == 0) {
             sender.sendMessage(ChatColor.RED + "Syntaxerror: /status <String: status>");
             return true;
         }
-
         if (player.getGameMode() == GameMode.SPECTATOR) {
             sender.sendMessage(ChatColor.RED + "You cannot use this command in spectator mode.");
             return true;
         }
-
         if (AfkSystem.isAfk(player)) {
             AfkSystem.disableAfkMode(player);
         }

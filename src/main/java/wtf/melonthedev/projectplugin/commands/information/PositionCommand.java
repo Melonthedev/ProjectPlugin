@@ -37,7 +37,7 @@ public class PositionCommand implements TabExecutor {
                     return true;
                 }
                 if (args[0].contains(".")) {
-                    player.sendMessage(prefix + "Points are not allowed!");
+                    player.sendMessage(prefix + "Dots are not allowed!");
                     return true;
                 }
                 savePosition(args[0], player.getLocation());

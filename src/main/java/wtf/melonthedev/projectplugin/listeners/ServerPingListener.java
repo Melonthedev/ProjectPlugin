@@ -14,19 +14,8 @@ public class ServerPingListener implements Listener {
 
     String[] motds = Main.getPlugin().getConfig().getStringList("motds").toArray(String[]::new);
     ChatColor[] colors = new ChatColor[] {
-            ChatColor.GRAY,
-            ChatColor.GREEN,
-            ChatColor.AQUA,
-            ChatColor.RED,
-            ChatColor.WHITE,
-            ChatColor.GOLD,
-            ChatColor.BLUE,
-            ChatColor.DARK_AQUA,
-            ChatColor.DARK_GREEN,
-            ChatColor.DARK_PURPLE,
-            ChatColor.DARK_RED,
-            ChatColor.LIGHT_PURPLE,
-            ChatColor.YELLOW
+            ChatColor.GRAY, ChatColor.GREEN, ChatColor.AQUA, ChatColor.RED, ChatColor.WHITE, ChatColor.GOLD, ChatColor.BLUE, ChatColor.DARK_AQUA,
+            ChatColor.DARK_GREEN, ChatColor.DARK_PURPLE, ChatColor.DARK_RED, ChatColor.LIGHT_PURPLE, ChatColor.YELLOW
     };
 
     @EventHandler

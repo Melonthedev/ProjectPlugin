@@ -1,10 +1,8 @@
 package wtf.melonthedev.projectplugin.modules;
 
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import org.bukkit.*;
-import org.bukkit.advancement.Advancement;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -20,7 +18,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.Criteria;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 import wtf.melonthedev.projectplugin.Main;
 
 import java.util.*;
@@ -53,7 +54,6 @@ public class Lifesteal {
     public static boolean isLifestealActive() {
         return Main.getPlugin().getConfig().getBoolean("lifesteal.enabled", false);
     }
-
     public static boolean isNetheriteBlocked() {
         return Main.getPlugin().getConfig().getBoolean("lifesteal.blocknetherite", true);
     }
@@ -62,6 +62,12 @@ public class Lifesteal {
     }
     public static boolean isElytraBlocked() {
         return Main.getPlugin().getConfig().getBoolean("lifesteal.blockelytra", true);
+    }
+    public static int getDefaultHeartCount() {
+        return Main.getPlugin().getConfig().getInt("lifesteal.defaultheartcount", 10);
+    }
+    public static int getRevivedPlayerHeartCount() {
+        return Main.getPlugin().getConfig().getInt("lifesteal.revivedPlayerHeartCount", 1);
     }
 
     /**
@@ -72,14 +78,6 @@ public class Lifesteal {
         Main.getPlugin().saveConfig();
         if (flag) Bukkit.getOnlinePlayers().forEach(Lifesteal::validateHearts);
         else Bukkit.getOnlinePlayers().forEach(Lifesteal::resetHearts);
-    }
-
-    public static int getDefaultHeartCount() {
-        return 10;
-    }
-
-    public static int getRevivedPlayerHeartCount() {
-        return 1;
     }
 
     public static ItemStack getHeartItem() {
@@ -96,7 +94,7 @@ public class Lifesteal {
         return heart;
     }
 
-    public static void giveHeart(UUID uuid, Integer count) {
+    public static void giveHeart(UUID uuid, int count) {
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
         Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, hearts + count);
         Main.getPlugin().saveConfig();
@@ -107,7 +105,7 @@ public class Lifesteal {
         }
     }
 
-    public static void removeHeart(UUID uuid, Integer count) {
+    public static void removeHeart(UUID uuid, int count) {
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
         Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, hearts - count);
         Main.getPlugin().saveConfig();
@@ -119,7 +117,7 @@ public class Lifesteal {
         if (hearts <= 0) eliminatePlayer(uuid);
     }
 
-    public static void setHeartCount(UUID uuid, Integer count){
+    public static void setHeartCount(UUID uuid, int count){
         int hearts = Main.getPlugin().getConfig().getInt("lifesteal.hearts." + uuid, getDefaultHeartCount());
         Main.getPlugin().getConfig().set("lifesteal.hearts." + uuid, count);
         Main.getPlugin().saveConfig();
@@ -139,7 +137,6 @@ public class Lifesteal {
     }
 
     public static void revivePlayer(Player player) {
-        //TODO: Teleport to grave, applie slow falling, add achivement sound, add achivement postmortal, summon particles, remove head from grave
         Location location = getGraveLocationOfPlayer(player.getUniqueId());
         Main.getPlugin().getConfig().set("lifesteal.willReviveOnJoin." + player.getUniqueId(), null);
         Main.getPlugin().saveConfig();
@@ -203,7 +200,6 @@ public class Lifesteal {
             Location l = entry.getKey();
             Main.getPlugin().getConfig().set("graveyardpositions." + l.getWorld().getName() + l.getBlockX() + l.getBlockY() + l.getBlockZ() + ".owner", uuid.toString());
             Main.getPlugin().saveConfig();
-
             Block block = l.getBlock().getRelative(BlockFace.UP);
             block.setType(Material.PLAYER_HEAD);
             Skull skull = (Skull) block.getState();

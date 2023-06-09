@@ -19,12 +19,10 @@ public class PlayerQuitListener implements Listener {
             AfkSystem.afkTimeoutTasks.remove(event.getPlayer());
             AfkSystem.afkPlayers.remove(event.getPlayer());
         }
-        Component quitMsg = event.quitMessage();
         PvpCooldownSystem.pauseForPlayer(event.getPlayer());
-        if (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", true) && event.getPlayer().getGameMode() == GameMode.SPECTATOR) {
-            event.quitMessage(Component.text(ChatColor.RED + "<<" + ChatColor.GRAY + " [Survivalprojekt] " + ChatColor.stripColor(PlainTextComponentSerializer.plainText().serialize(quitMsg)) + " :("));
-            return;
-        }
-        event.quitMessage(Component.text(ChatColor.RED + "<<" + ChatColor.AQUA + " [Survivalprojekt] " + ChatColor.stripColor(PlainTextComponentSerializer.plainText().serialize(quitMsg)) + " :("));
+        Component quitMsg = event.quitMessage();
+        if (quitMsg == null) return;
+        ChatColor color = (Main.getPlugin().getConfig().getBoolean("hardcore.enabled", true) && event.getPlayer().getGameMode() == GameMode.SPECTATOR) ? ChatColor.GRAY : ChatColor.AQUA;
+        event.quitMessage(Component.text(ChatColor.RED + "<<" + color + " [Survivalprojekt] " + ChatColor.stripColor(PlainTextComponentSerializer.plainText().serialize(quitMsg)) + " :("));
     }
 }

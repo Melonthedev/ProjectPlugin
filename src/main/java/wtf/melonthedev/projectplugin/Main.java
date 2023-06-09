@@ -25,15 +25,13 @@ import wtf.melonthedev.projectplugin.commands.moderation.*;
 import wtf.melonthedev.projectplugin.commands.pvpcooldown.PvpCooldownCommand;
 import wtf.melonthedev.projectplugin.commands.pvpcooldown.SkipPvpCooldownCommand;
 import wtf.melonthedev.projectplugin.listeners.*;
-import wtf.melonthedev.projectplugin.listeners.featurelisteners.SignEditListener;
-import wtf.melonthedev.projectplugin.listeners.featurelisteners.SpawnElytraListener;
+import wtf.melonthedev.projectplugin.listeners.featurelisteners.*;
 import wtf.melonthedev.projectplugin.modules.CustomItemSystem;
 import wtf.melonthedev.projectplugin.modules.Lifesteal;
 import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 import wtf.melonthedev.projectplugin.modules.TimerSystem;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -56,28 +54,12 @@ public final class Main extends JavaPlugin {
         getLogger().log(Level.INFO, "**** and Stebadon ****");
         getLogger().log(Level.INFO, "**********************");
 
-        handleConfig();
-        handleCommands();
+        loadConfig();
+        registerCommands();
+        registerListeners();
 
-        //LISTENER REGISTRATION
-        registerListener(new SpawnElytraListener());
-        registerListener(new ChatListener());
-        registerListener(new PlayerJoinListener());
-        registerListener(new PlayerQuitListener());
-        registerListener(new PlayerInteractListener());
-        registerListener(new SignEditListener());
-        registerListener(new ServerPingListener());
-        registerListener(new EntityDamageByEntityListener());
-        registerListener(new BlockListener());
-        registerListener(new EntityListener());
-        registerListener(new PlayerMoveListener());
-        registerListener(new PlayerDeathListener());
-        registerListener(new PlayerRespawnListener());
-        registerListener(new PlayerItemDropListener());
-        registerListener(new PlayerItemHeldListener());
-        
-        sendSpawnActionBarMessage();
         updateTabList();
+        handleSpawnActionBarMessage();
         handleEastereggDamages();
         CustomItemSystem.handleCustomRecipes();
         PvpCooldownSystem.handleForAllPlayers();
@@ -92,7 +74,14 @@ public final class Main extends JavaPlugin {
         Lifesteal.onDisable();
     }
 
-    public void handleCommands() {
+    public static boolean isFeatureDisabled(String feature) {
+        return !Main.getPlugin().getConfig().getBoolean("config." + feature + ".enabled", false);
+    }
+    public static boolean isCommandDisabled(String command) {
+        return Main.getPlugin().getConfig().getBoolean("config.disabledcommands." + command, false);
+    }
+
+    public void registerCommands() {
         registerCmd("status", new StatusCommand());
         registerCmd("position", new PositionCommand());
         registerCmd("colorcodes", new ColorCodesCommand());
@@ -120,7 +109,6 @@ public final class Main extends JavaPlugin {
         registerCmd("timer", new TimerCommand());
         registerCmd("velocity", new VelocityCommand());
     }
-
     public void registerCmd(String command, CommandExecutor executor) {
         try {
             if (!isCommandDisabled(command))
@@ -131,12 +119,27 @@ public final class Main extends JavaPlugin {
             getLogger().log(Level.SEVERE, "===================================================================");
         }
     }
-
+    public void registerListeners() {
+        registerListener(new SpawnElytraListener());
+        registerListener(new BetterChatMessagesListener());
+        registerListener(new PlayerJoinListener());
+        registerListener(new PlayerQuitListener());
+        registerListener(new ArmorStandListener());
+        registerListener(new SignEditListener());
+        registerListener(new ServerPingListener());
+        registerListener(new PvpCooldownListener());
+        registerListener(new CustomItemFrameListener());
+        registerListener(new PlayerMoveListener());
+        registerListener(new PlayerDeathListener());
+        registerListener(new LifestealListener());
+        registerListener(new HardcoreListener());
+        registerListener(new SpawnAreaListener());
+    }
     public void registerListener(Listener listener) {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    public void handleConfig() {
+    public void loadConfig() {
         // Default Config in resources/config.yml
         saveDefaultConfig();
         // Load Constants
@@ -150,12 +153,22 @@ public final class Main extends JavaPlugin {
             actionbarInfos[i] = getMMComponent(messages[i]);
     }
 
-    public static boolean isFeatureDisabled(String feature) {
-        return !Main.getPlugin().getConfig().getBoolean("config." + feature + ".enabled", false);
-    }
-
-    public static boolean isCommandDisabled(String command) {
-        return Main.getPlugin().getConfig().getBoolean("config.disabledcommands." + command, false);
+    public static Component getMMComponent(String message) {
+        MiniMessage mm = MiniMessage.builder()
+                .tags(TagResolver.builder()
+                        .resolver(StandardTags.color())
+                        .resolver(StandardTags.decorations())
+                        .resolver(StandardTags.gradient())
+                        .resolver(StandardTags.reset())
+                        .resolver(StandardTags.hoverEvent())
+                        .resolver(StandardTags.rainbow())
+                        .resolver(StandardTags.translatable())
+                        .resolver(StandardTags.transition())
+                        .resolver(StandardTags.keybind())
+                        .resolver(StandardTags.font())
+                        .build())
+                .build();
+        return mm.deserialize(message);
     }
 
     public static void handleFirstJoin(Player player) {
@@ -166,7 +179,7 @@ public final class Main extends JavaPlugin {
         }
     }
 
-    public void sendSpawnActionBarMessage() {
+    public void handleSpawnActionBarMessage() {
         if (isFeatureDisabled("actionBarSpawnMessages")) return;
         AtomicInteger i = new AtomicInteger();
         Bukkit.getScheduler().runTaskTimer(this, () -> {
@@ -204,24 +217,6 @@ public final class Main extends JavaPlugin {
     public void setEndAccessible(boolean accessible) {
         getConfig().set("config.endaccessible", accessible);
         saveConfig();
-    }
-
-    public static Component getMMComponent(String message) {
-        MiniMessage mm = MiniMessage.builder()
-                .tags(TagResolver.builder()
-                        .resolver(StandardTags.color())
-                        .resolver(StandardTags.decorations())
-                        .resolver(StandardTags.gradient())
-                        .resolver(StandardTags.reset())
-                        .resolver(StandardTags.hoverEvent())
-                        .resolver(StandardTags.rainbow())
-                        .resolver(StandardTags.translatable())
-                        .resolver(StandardTags.transition())
-                        .resolver(StandardTags.keybind())
-                        .resolver(StandardTags.font())
-                        .build())
-                .build();
-        return mm.deserialize(message);
     }
 
     public void handleEastereggDamages() {

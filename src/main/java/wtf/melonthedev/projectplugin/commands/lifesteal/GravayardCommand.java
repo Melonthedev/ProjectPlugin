@@ -38,7 +38,6 @@ public class GravayardCommand implements TabExecutor {
                 sender.sendMessage(ChatColor.AQUA + "- " + CommandUtils.getLocationString(entry.getKey())
                         + ChatColor.AQUA + ": " + owner);
             }
-
             return true;
         }
         if (args.length != 4) {

@@ -12,20 +12,20 @@ import java.util.Objects;
 
 public class CommandUtils {
 
-    public static void addOnlinePlayers(List<String> tab, String arg) {
+    public static void addOnlinePlayersTabComplete(List<String> tab, String arg) {
         tab.addAll(Bukkit.getOnlinePlayers().stream()
                 .map(Player::getName)
                 .filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).toList());
     }
 
-    public static void addOfflinePlayers(List<String> tab, String arg) {
+    public static void addOfflinePlayersTabComplete(List<String> tab, String arg) {
         tab.addAll(Arrays.stream(Bukkit.getOfflinePlayers())
                 .map(OfflinePlayer::getName)
                 .filter(Objects::nonNull)
                 .filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).toList());
     }
 
-    public static void addOnlyOfflinePlayers(List<String> tab, String arg) {
+    public static void addOnlyOfflinePlayersTabComplete(List<String> tab, String arg) {
         tab.addAll(Arrays.stream(Bukkit.getOfflinePlayers())
                 .filter(offlinePlayer -> !offlinePlayer.isOnline())
                 .map(OfflinePlayer::getName)

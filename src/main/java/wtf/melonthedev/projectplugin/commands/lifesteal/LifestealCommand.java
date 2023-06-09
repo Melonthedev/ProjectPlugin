@@ -39,7 +39,6 @@ public class LifestealCommand implements TabExecutor {
             return true;
         }
 
-
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("enable")) {
                 Lifesteal.setLifestealActive(true);
@@ -154,7 +153,7 @@ public class LifestealCommand implements TabExecutor {
         if (args.length == 1) {
             tab.addAll(List.of(subCommands));
         } else if (args.length == 2) {
-            CommandUtils.addOnlinePlayers(tab, args[1]);
+            CommandUtils.addOnlinePlayersTabComplete(tab, args[1]);
         }
         return tab;
     }

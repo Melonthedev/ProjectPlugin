@@ -44,10 +44,4 @@ public class PlayerJoinListener implements Listener {
         String[] joinMessages = Main.getPlugin().getConfig().getStringList("joinmessages").toArray(String[]::new);
         return Component.text(ChatColor.GREEN + ">>" + (spectator ? ChatColor.GRAY : ChatColor.AQUA) + " [Survivalprojekt] " + player.getName() + " " + joinMessages[new Random().nextInt(joinMessages.length)]);
     }
-
-    @EventHandler
-    public void onPreLogin(AsyncPlayerPreLoginEvent event) {
-        Lifesteal.handleLogin(event);
-    }
-
 }

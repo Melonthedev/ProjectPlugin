@@ -6,7 +6,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.modules.TimerSystem;
@@ -14,7 +13,6 @@ import wtf.melonthedev.projectplugin.utils.CommandUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TimerCommand implements TabExecutor {
 
@@ -24,7 +22,6 @@ public class TimerCommand implements TabExecutor {
             sender.sendMessage(ChatColor.RED + "You don't have the permissions to use this command.");
             return true;
         }
-        // /timer start/stop/pause/resume/color/showtoall/showtoplayer
 
         if (args.length == 1) {
             switch (args[0].toLowerCase()) {
@@ -59,19 +56,11 @@ public class TimerCommand implements TabExecutor {
                     }
                 }
                 case "prefix" -> {
-                    //try {
-                    //    ChatColor color = ChatColor.valueOf(args[1].toUpperCase());
-                    //    TimerSystem.setColor(color);
-                    //    sender.sendMessage(ChatColor.GREEN + "Success! The color of the timer is now set to " + args[1].toUpperCase() + "!");
-                    //} catch (IllegalArgumentException e) {
-                    //    sender.sendMessage(ChatColor.RED + "Please use a valid color from the tabcomplete!");
-                    //}
                     TimerSystem.setPrefix(args[1]);
                     sender.sendMessage(ChatColor.GREEN + "Success! The prefix of the timer is now set to '" + args[1] + ChatColor.GREEN + "'!");
                 }
             }
         }
-
         return false;
     }
 
@@ -89,8 +78,7 @@ public class TimerCommand implements TabExecutor {
             tab.add("prefix");
         } else if (args.length == 2) {
             switch (args[0].toLowerCase()) {
-                //case "color" -> tab.addAll(Arrays.stream(ChatColor.values()).map(Enum::name).collect(Collectors.toList()));
-                case "showtoplayer" -> CommandUtils.addOnlinePlayers(tab, args[1]);
+                case "showtoplayer" -> CommandUtils.addOnlinePlayersTabComplete(tab, args[1]);
                 case "autoshow" -> {
                     tab.add("true");
                     tab.add("false");

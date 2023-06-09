@@ -7,7 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
@@ -16,7 +15,6 @@ import wtf.melonthedev.projectplugin.utils.CommandUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class DonatorsCommand implements TabExecutor {
 
@@ -83,7 +81,7 @@ public class DonatorsCommand implements TabExecutor {
             tab.add("add");
             tab.add("remove");
         } else if (args.length == 2)
-            CommandUtils.addOnlinePlayers(tab, args[1]);
+            CommandUtils.addOnlinePlayersTabComplete(tab, args[1]);
         return tab;
     }
 }

@@ -61,6 +61,8 @@ lifesteal:
   blockelytra: true
   blocktotems: true
   hearts: {}
+  defaultheartcount: 10
+  revivedPlayerHeartCount: 1
 
 # Entries: uuid: remainingMinutes
 pvpCooldown: {}

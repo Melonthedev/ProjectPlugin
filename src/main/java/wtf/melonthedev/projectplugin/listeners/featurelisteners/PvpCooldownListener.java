@@ -1,4 +1,4 @@
-package wtf.melonthedev.projectplugin.listeners;
+package wtf.melonthedev.projectplugin.listeners.featurelisteners;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -6,12 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 
-public class EntityDamageByEntityListener implements Listener {
+public class PvpCooldownListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
@@ -27,13 +26,4 @@ public class EntityDamageByEntityListener implements Listener {
             damager.sendActionBar(Component.text(ChatColor.RED + "Dieser Spieler ist im PvP Cooldown!"));
         }
     }
-    @EventHandler
-    public void onDamage(EntityDamageEvent event) {
-        if (event.getCause() == EntityDamageEvent.DamageCause.VOID || event.getCause() == EntityDamageEvent.DamageCause.CUSTOM || event.getCause() == EntityDamageEvent.DamageCause.SUICIDE || event.getCause() == EntityDamageEvent.DamageCause.CRAMMING)
-            return;
-        if (LocationUtils.isLocationInSpawnArea(event.getEntity().getLocation()) && event.getEntity() instanceof Player)  {
-            event.setCancelled(true);
-        }
-    }
-
 }

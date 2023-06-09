@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import wtf.melonthedev.projectplugin.modules.Lifesteal;
@@ -44,5 +45,14 @@ public class SpawnElytraListener implements Listener {
                 || !LocationUtils.isLocationInSpawnArea(event.getPlayer().getLocation())) return;
         event.getPlayer().setGliding(true);
         spawnElytraPlayers.put(event.getPlayer(), true);
+    }
+
+    @EventHandler
+    public void onFireworkInteract(PlayerInteractEvent event) {
+        if (!event.hasItem() || event.getItem() == null) return;
+        if ((event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST) == null
+                || event.getPlayer().getEquipment().getItem(EquipmentSlot.CHEST).getType() != Material.ELYTRA)
+                && event.getItem().getType() == Material.FIREWORK_ROCKET)
+            event.setCancelled(true);
     }
 }

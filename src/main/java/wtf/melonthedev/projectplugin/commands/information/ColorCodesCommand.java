@@ -79,8 +79,8 @@ public class ColorCodesCommand implements TabExecutor {
             sender.sendMessage(colorinfo + "-" + ChatColor.GRAY + "GRAY: <gray>");
             sender.sendMessage(colorinfo + "-" + ChatColor.DARK_GRAY + "DARK GRAY: <dark_gray>");
             sender.sendMessage(colorinfo + "-" + ChatColor.BLACK + "BLACK: <black>");
-            sender.sendMessage(ChatColor.GRAY + "Du kannst auch HEX Farben verwenden! Schreiben einfach '<#' dann den HEX Code und am Ende des HEX Code wieder '>'!");
-            sender.sendMessage(ChatColor.GRAY + "Benutze /colorcodes info für mehr codes!");
+            sender.sendMessage(ChatColor.GRAY + "Du kannst auch HEX Farben verwenden! Schreiben einfach '<#' dann den HEX Code und anschließend wieder '>'!");
+            sender.sendMessage(ChatColor.GRAY + "Benutze '/colorcodes info' für mehr codes!");
             sender.sendMessage(colorinfo + "---------------------------------");
         }
         return false;

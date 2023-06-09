@@ -29,20 +29,19 @@ public class PvpCooldown {
     }
 
     public void start() {
-        //if (Main.getPlugin().getConfig().getInt("pvpCooldown." + uuid, totalMinutes) == 0 || remainingMinutes == 0) return;
         Main.getPlugin().getConfig().set("pvpCooldown." + uuid, remainingMinutes);
         bar.progress(1);
         bar.color(BossBar.Color.GREEN);
         bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown"));
         Player player = Bukkit.getPlayer(uuid);
-        if (player != null) {
-            player.showBossBar(bar);
-            StatusCommand.handleWithPvpCooldownColor(player);
-            if (remainingMinutes >= totalMinutes - 1)
-                player.showTitle(Title.title(Component.text(ChatColor.GREEN + "The PvP Cooldown has started!"), Component.text(ChatColor.AQUA + "PvP will be enabled when the timer runs out!")));
-            initRunnable();
-            runnable.runTaskTimer(Main.getPlugin(), 0, 1200);
-        }
+        if (player == null) return;
+
+        player.showBossBar(bar);
+        StatusCommand.handleWithPvpCooldownColor(player);
+        if (remainingMinutes >= totalMinutes - 1)
+            player.showTitle(Title.title(Component.text(ChatColor.GREEN + "PvP Cooldown has started!"), Component.text(ChatColor.AQUA + "PvP will be enabled when the timer runs out!")));
+        initRunnable();
+        runnable.runTaskTimer(Main.getPlugin(), 0, 1200);
     }
 
     public void pause() {
@@ -50,11 +49,10 @@ public class PvpCooldown {
             runnable.cancel();
         } catch (Exception ignored) {}
         Player player = Bukkit.getPlayer(uuid);
-        if (player != null) {
-            player.hideBossBar(bar);
-            player.playerListName(null);
-            StatusCommand.handlePlayerJoin(player);
-        }
+        if (player == null) return;
+        player.hideBossBar(bar);
+        player.playerListName(null);
+        StatusCommand.handlePlayerJoin(player);
     }
 
     public void disable() {
@@ -70,22 +68,19 @@ public class PvpCooldown {
             public void run() {
                 float percentage = (float) remainingMinutes / totalMinutes;
                 bar.progress(percentage);
-                if (remainingMinutes == 180) {
+                if (remainingMinutes == 180)
                     bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 3h"));
-                } else if (remainingMinutes <= 180 && remainingMinutes > 120) {
+                else if (remainingMinutes <= 180 && remainingMinutes > 120)
                     bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 2h " + (remainingMinutes - 120) + "min"));
-                } else if (remainingMinutes <= 120 && remainingMinutes > 60) {
+                else if (remainingMinutes <= 120 && remainingMinutes > 60)
                     bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: 1h " + (remainingMinutes - 60) + "min"));
-                } else if (remainingMinutes <= 60 && remainingMinutes > 0) {
+                else if (remainingMinutes <= 60 && remainingMinutes > 0)
                     bar.name(Component.text(ChatColor.WHITE + "PvP Cooldown: " + (remainingMinutes) + "min"));
-                }
-                if (percentage >= 0.66) {
-                    bar.color(BossBar.Color.GREEN);
-                } else if (percentage >= 0.33) {
-                    bar.color(BossBar.Color.YELLOW);
-                } else {
-                    bar.color(BossBar.Color.RED);
-                }
+
+                if (percentage >= 0.66) bar.color(BossBar.Color.GREEN);
+                else if (percentage >= 0.33) bar.color(BossBar.Color.YELLOW);
+                else bar.color(BossBar.Color.RED);
+
                 Main.getPlugin().getConfig().set("pvpCooldown." + uuid, remainingMinutes);
                 Main.getPlugin().saveConfig();
                 if (percentage <= 0)
@@ -95,27 +90,16 @@ public class PvpCooldown {
         };
     }
 
-    public boolean isRunning() {
-        return remainingMinutes > 0;
-    }
-
     public UUID getUuid() {
         return uuid;
     }
-
     public int getTotalMinutes() {
         return totalMinutes;
     }
-
     public int getRemainingMinutes() {
         return remainingMinutes;
     }
-
     public BossBar getBar() {
         return bar;
-    }
-
-    public BukkitRunnable getRunnable() {
-        return runnable;
     }
 }

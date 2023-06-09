@@ -18,7 +18,6 @@ import wtf.melonthedev.projectplugin.utils.CommandUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ManagePlayerCommand implements TabExecutor {
 
@@ -90,7 +89,7 @@ public class ManagePlayerCommand implements TabExecutor {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> tab = new ArrayList<>();
         if (args.length == 1) {
-            CommandUtils.addOfflinePlayers(tab, args[0]);
+            CommandUtils.addOfflinePlayersTabComplete(tab, args[0]);
         } else if (args.length == 2) {
             tab.add("uuid");
             tab.add("online");

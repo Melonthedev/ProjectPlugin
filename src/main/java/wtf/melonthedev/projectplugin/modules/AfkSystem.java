@@ -18,8 +18,7 @@ public class AfkSystem {
     public static List<Player> afkPlayers = new ArrayList<>();
     public static HashMap<Player, BukkitTask> afkTimeoutTasks = new HashMap<>();
 
-    //Utility class
-    private AfkSystem() {}
+    private AfkSystem() {} // Utility Class, cannot be instantiated
 
     public static void handleAfkModus(Player player) {
         if (Main.isFeatureDisabled("afkSystem") || (player.getGameMode() == GameMode.SPECTATOR && Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false)))

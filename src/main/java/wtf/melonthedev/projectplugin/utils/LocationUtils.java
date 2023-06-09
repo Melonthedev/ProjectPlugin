@@ -20,8 +20,7 @@ public class LocationUtils {
     }
 
     public static Location getRelativeSpawnLocation(Location loc) {
-        if (loc.getWorld() == null) return null;
-        if (!loc.getWorld().getName().equals(Main.getPlugin().getConfig().getString("spawn.world", "world"))) return null;
+        if (loc.getWorld() == null || !loc.getWorld().getName().equals(Main.getPlugin().getConfig().getString("spawn.world", "world"))) return null;
         Location relativeSpawnLocation = loc.getWorld().getSpawnLocation();
         relativeSpawnLocation.setY(loc.getY());
         if (loc.getWorld() != relativeSpawnLocation.getWorld()) return null;

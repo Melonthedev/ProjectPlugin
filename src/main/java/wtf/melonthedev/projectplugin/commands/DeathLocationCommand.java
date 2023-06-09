@@ -17,12 +17,11 @@ public class DeathLocationCommand implements CommandExecutor {
             player.sendMessage(ChatColor.RED + "This command is disabled for the current project.");
             return true;
         }
-        //if (!Main.deathlocations.containsKey(player.getUniqueId())) {
         if (player.getLastDeathLocation() == null) {
             player.sendMessage(ChatColor.RED + "Sorry, there is no saved deathlocation!");
             return true;
         }
-        Location loc = player.getLastDeathLocation();//Main.deathlocations.get(player.getUniqueId());
+        Location loc = player.getLastDeathLocation();
         player.sendMessage(ChatColor.GOLD + "You died at X: " + loc.getBlockX() + " Y: " + loc.getBlockY() + " Z: " + loc.getBlockZ());
         return false;
     }
