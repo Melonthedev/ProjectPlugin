@@ -48,18 +48,18 @@ config:
   skippablePvpCooldown:
     enabled: true
 
-startcommand:
-  showProjectname
-  showProjectNameAndType
-  startCountdown
-  showExtra
-  expandWorldborder
-  shrinkenWorldborder
-  resetFood
-  resetHealth
-  blockEndAccess
-  resetPvpCountdowns
-
+startcommand: [
+  "showProjectname",
+  "showProjectNameAndType",
+  "startCountdown",
+  "showExtra",
+  "expandWorldborder",
+  "shrinkenWorldborder",
+  "resetFood",
+  "resetHealth",
+  "blockEndAccess",
+  "resetPvpCountdowns"
+]
 # /hardcore
 hardcore:
   enabled: false
