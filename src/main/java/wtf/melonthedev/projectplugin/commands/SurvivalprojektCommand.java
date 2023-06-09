@@ -5,9 +5,11 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
@@ -16,6 +18,7 @@ import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SurvivalprojektCommand implements TabExecutor {
 
@@ -90,6 +93,8 @@ public class SurvivalprojektCommand implements TabExecutor {
         Bukkit.getOnlinePlayers().forEach(player -> {
             player.setFoodLevel(20);
             player.setHealth(20);
+            if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null) player.registerAttribute(Attribute.GENERIC_MAX_HEALTH);
+            player.setHealth(Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
             player.clearTitle();
             player.setStatistic(Statistic.TOTAL_WORLD_TIME, 0);
             //Main.getPlugin().getConfig().set("pvpCooldown." + player.getUniqueId(), 30);
