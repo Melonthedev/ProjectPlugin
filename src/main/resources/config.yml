@@ -48,9 +48,13 @@ config:
   skippablePvpCooldown:
     enabled: true
 
+countdowntime: 10
+extraText: "Have Fun"
+worldborderSize: 59999968
+pvpCooldownTime: 3
+
 startcommand: [
   "showProjectname",
-  "showProjectNameAndType",
   "startCountdown",
   "showExtra",
   "expandWorldborder",
@@ -58,7 +62,9 @@ startcommand: [
   "resetFood",
   "resetHealth",
   "blockEndAccess",
-  "resetPvpCountdowns"
+  "resetTime"
+  "resetPvpCooldowns"
+  "resetTotalWorldTime"
 ]
 # /hardcore
 hardcore:

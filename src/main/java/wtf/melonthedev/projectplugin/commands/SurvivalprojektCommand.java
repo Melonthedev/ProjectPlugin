@@ -12,6 +12,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.w3c.dom.Attr;
 import wtf.melonthedev.projectplugin.Main;
 import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 
@@ -40,18 +41,7 @@ public class SurvivalprojektCommand implements TabExecutor {
                     sender.sendMessage(ChatColor.GREEN + "Starting Project...");
                     Main.getPlugin().getConfig().set("projectActive", false);
                     Main.getPlugin().saveConfig();
-                    Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Component.text(ChatColor.GREEN + "Starting in 10..."), Title.Times.times(Duration.ofMillis(1000), Duration.ofMillis(3000), Duration.ofMillis(1000)))));
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "9"), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80);
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "8"), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40);
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "7"), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 2);
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "6"), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 3);
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "5"), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 4);
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "4"), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 5);
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "3"), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 6);
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "2"), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 7);
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "1"), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 8);
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> startProject(sender), 80 + 40 * 9);
-                    Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.empty(), Main.getMMComponent("<gold>Have Fun!</gold>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 10);
+                    startProject(sender);
                     //Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.empty(), Main.getMMComponent("<red>Run!</red>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 10);
                 }
                 case "setupProject" -> {
@@ -84,34 +74,83 @@ public class SurvivalprojektCommand implements TabExecutor {
     }
 
     public void startProject(CommandSender sender) {
+        for(String sequence: Main.getPlugin().getConfig().getStringList("startcommand").toArray(String[]::new)){
+            switch (sequence){
+                case "showProjectname" -> {
+                    int count = Main.getPlugin().getConfig().getInt("countdowntime");
+                    Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "")), (Component) Title.Times.times(Duration.ofMillis(1000), Duration.ofMillis(3000), Duration.ofMillis(1000)))));
+                }
+                case "startCountdown" -> {
+                    startCountdown();
+                }
+                case "showExtra" -> {
+                    showExtra();
+                }
+                case "expandWorldborder" -> {
+                    Bukkit.getWorlds().get(0).getWorldBorder().setWarningDistance(5);
+                    Bukkit.getWorlds().get(0).getWorldBorder().setSize(Main.getPlugin().getConfig().getInt("worldborderSize"));
+                    sender.sendMessage(ChatColor.GREEN + "Worldborder set to" + Main.getPlugin().getConfig().getInt("worldborderSize") + " blocks!");
+                }
+                case "shrinkenWorldborder" -> {
+                    Bukkit.getWorlds().get(0).getWorldBorder().setCenter(Bukkit.getWorlds().get(0).getSpawnLocation());
+                    Bukkit.getWorlds().get(0).getWorldBorder().setWarningDistance(0);
+                    Bukkit.getWorlds().get(0).getWorldBorder().setSize(Main.getPlugin().getConfig().getInt("spawn.border_radius", 16));
+                    sender.sendMessage(ChatColor.GREEN + "Worldborder set to" + Main.getPlugin().getConfig().getInt("spawn_border_radius", 16) + " blocks!");
+                }
+                case "resetFood" -> {
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        player.setFoodLevel(20);
+                    });
+                    sender.sendMessage(ChatColor.GREEN + "Reset Hunger!");
+                }
+                case "resetHealth" -> {
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null) player.registerAttribute(Attribute.GENERIC_MAX_HEALTH);
+                        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+                    });
+                    sender.sendMessage(ChatColor.GREEN + "Reset Health!");
+                }
+                case "blockEndAccess" -> {
+                    Main.getPlugin().setEndAccessible(false);
+                    sender.sendMessage(ChatColor.GREEN + "Blocked End Access!");
+                }
+                case "resetTime" -> {
+                    Bukkit.getWorlds().get(0).setTime(0);
+                    sender.sendMessage(ChatColor.GREEN + "Reset Time!");
+                }
+                case "resetTotalWorldTime" -> {
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        player.setStatistic(Statistic.TOTAL_WORLD_TIME, 0);
+                    });
+                    sender.sendMessage(ChatColor.GREEN + "Reset Stats!");
+                }
+                case "resetPvpCooldowns" -> {
+                    PvpCooldownSystem.startForAllPlayers(Main.getPlugin().getConfig().getInt("pvpCooldownTime"));
+                    sender.sendMessage(ChatColor.GREEN + "Started PvP Cooldown!");
+                }
+            }
+        }
         Main.getPlugin().getConfig().set("projectActive", true);
         Main.getPlugin().saveConfig();
-        sender.sendMessage(ChatColor.GREEN + "Blocked End Access!");
-        Main.getPlugin().setEndAccessible(false);
-        Bukkit.getWorlds().get(0).setTime(0);
-        sender.sendMessage(ChatColor.GREEN + "Reset Time!");
         Bukkit.getOnlinePlayers().forEach(player -> {
-            player.setFoodLevel(20);
-            player.setHealth(20);
-            if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null) player.registerAttribute(Attribute.GENERIC_MAX_HEALTH);
-            player.setHealth(Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
             player.clearTitle();
-            player.setStatistic(Statistic.TOTAL_WORLD_TIME, 0);
-            //Main.getPlugin().getConfig().set("pvpCooldown." + player.getUniqueId(), 30);
-            //SURO
-            //player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 1));
-            //player.getInventory().addItem(new ItemStack(Material.WHEAT_SEEDS, 1));
         });
         Main.getPlugin().saveConfig();
-        sender.sendMessage(ChatColor.GREEN + "Reset Player Status!");
-        //PvpCooldownSystem.handleForAllPlayers();
-        //PvpCooldownSystem.startForAllPlayers(3);
-        //sender.sendMessage(ChatColor.GREEN + "Started PvP Cooldown!");
-        Bukkit.getWorlds().get(0).getWorldBorder().setWarningDistance(5);
-        Bukkit.getWorlds().get(0).getWorldBorder().setSize(59999968);
-        //Bukkit.getWorlds().get(0).getWorldBorder().setSize(1500);
-        sender.sendMessage(ChatColor.GREEN + "Reset Worldborder!");
         sender.sendMessage(ChatColor.GREEN + "Done!");
+    }
+
+    public void startCountdown(){
+        int startValue = Main.getPlugin().getConfig().getInt("countdowntime");    // Startwert für den ersten Zahlenwert
+        Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "Startet in " + Integer.toString(startValue) + "..."), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))),40);
+        for (int i = startValue-1, j = 0; i >= 0; i--, j++) {
+            int count = i;
+            Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + Integer.toString(count)), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * j);
+        }
+    }
+
+    public void showExtra(){
+        String extra = Main.getPlugin().getConfig().getString("extraText");
+        Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.empty(), Main.getMMComponent("<gold>" + extra + "</gold>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 40);
     }
 
 
