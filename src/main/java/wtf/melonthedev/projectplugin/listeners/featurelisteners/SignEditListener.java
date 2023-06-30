@@ -11,7 +11,7 @@ import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
 public class SignEditListener implements Listener {
 
-    @EventHandler
+    /*@EventHandler
     public void onSignInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getClickedBlock() == null) return;
@@ -33,6 +33,6 @@ public class SignEditListener implements Listener {
             if (line == null) continue;
             event.setLine(i, line);
         }*/
-    }
+    //}
 
 }
