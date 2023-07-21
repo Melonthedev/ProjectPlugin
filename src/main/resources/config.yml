@@ -47,6 +47,8 @@ config:
     enabled: false
   skippablePvpCooldown:
     enabled: true
+  blockElytraEnchantments:
+    enabled: false
 
 countdowntime: 10
 extraText: "Have Fun"
