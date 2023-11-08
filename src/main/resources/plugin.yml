@@ -107,3 +107,6 @@ commands:
 
   velocity:
     description: Gives players velocity [TEAM ONLY]
+
+  runsd:
+    description: Runs commands server-dispatched [TEAM ONLY]

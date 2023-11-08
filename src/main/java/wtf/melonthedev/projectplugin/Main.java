@@ -31,6 +31,7 @@ import wtf.melonthedev.projectplugin.modules.Lifesteal;
 import wtf.melonthedev.projectplugin.modules.PvpCooldownSystem;
 import wtf.melonthedev.projectplugin.modules.TimerSystem;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
+import wtf.melonthedev.projectplugin.utils.LogFilter;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,6 +49,7 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        new LogFilter().registerFilter();
         getLogger().log(Level.INFO, "**********************");
         getLogger().log(Level.INFO, "*** Project Plugin ***");
         getLogger().log(Level.INFO, "*** by Melonthedev ***");
@@ -108,6 +110,8 @@ public final class Main extends JavaPlugin {
         registerCmd("manageplayer", new ManagePlayerCommand());
         registerCmd("timer", new TimerCommand());
         registerCmd("velocity", new VelocityCommand());
+        registerCmd("runprivate", new RunServerdispatchedCommand());
+
     }
     public void registerCmd(String command, CommandExecutor executor) {
         try {
