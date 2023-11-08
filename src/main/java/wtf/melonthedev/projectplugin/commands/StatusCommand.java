@@ -9,8 +9,10 @@ import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import wtf.melonthedev.projectplugin.Main;
+import wtf.melonthedev.projectplugin.configs.StatusConfiguration;
 import wtf.melonthedev.projectplugin.modules.AfkSystem;
 
 import java.util.ArrayList;
@@ -19,7 +21,8 @@ import java.util.List;
 
 public class StatusCommand implements TabExecutor {
 
-    public static final HashMap<String, String> statusList = new HashMap<>();
+    //public static final HashMap<String, String> statusList = new HashMap<>();
+    public static final FileConfiguration statusConfig = StatusConfiguration.getConfig();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -43,7 +46,9 @@ public class StatusCommand implements TabExecutor {
             player.sendMessage(ChatColor.GREEN + "[Status] Dein Status wurde zurück gesetzt!");
             player.displayName(Component.text(player.getName()));
             player.playerListName(Component.text(player.getName()));
-            statusList.remove(player.getName());
+            //statusList.remove(player.getName());
+            statusConfig.set("status." + player.getUniqueId(), null);
+            StatusConfiguration.saveConfig();
             return true;
         }
         StringBuilder sb = new StringBuilder();
@@ -63,7 +68,9 @@ public class StatusCommand implements TabExecutor {
 
         setStatus(player, statusColor);
         player.sendMessage(Component.join(JoinConfiguration.noSeparators(), Component.text(ChatColor.GREEN + "[Status] Dein Status ist nun '"), statusColor, Component.text(ChatColor.GREEN + "'.")));
-        statusList.put(player.getName(), status);
+        //statusList.put(player.getName(), status);
+        statusConfig.set("status." + player.getUniqueId(), status);
+        StatusConfiguration.saveConfig();
         return true;
     }
 
@@ -74,13 +81,18 @@ public class StatusCommand implements TabExecutor {
     }
 
     public static void handlePlayerJoin(Player player) {
-        if (statusList.containsKey(player.getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
-            setStatus(player, Main.getMMComponent(statusList.get(player.getName())));
+        /*if (statusList.containsKey(player.getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
+            setStatus(player, Main.getMMComponent(statusList.get(player.getName())));*/
+        if (statusConfig.contains("status." + player.getUniqueId()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
+            setStatus(player, Main.getMMComponent(statusConfig.getString("status." + player.getUniqueId())));
     }
 
     public static void handleWithPvpCooldownColor(Player player) {
-        if (statusList.containsKey(player.getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
+        /*if (statusList.containsKey(player.getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
             setStatus(player, Main.getMMComponent(statusList.get(player.getName())));
+        else player.playerListName(Component.text(ChatColor.GREEN + player.getName()));*/
+        if (statusConfig.contains("status." + player.getUniqueId()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
+            setStatus(player, Main.getMMComponent(statusConfig.getString("status." + player.getUniqueId())));
         else player.playerListName(Component.text(ChatColor.GREEN + player.getName()));
     }
 
@@ -93,11 +105,12 @@ public class StatusCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player player)) return null;
         List<String> tab = new ArrayList<>();
         if (args.length == 1) {
             tab.add("reset");
-            if (statusList.containsKey(sender.getName()))
-                tab.add(statusList.get(sender.getName()));
+            if (statusConfig.contains("status." + player.getUniqueId()))
+                tab.add(statusConfig.getString("status." + player.getUniqueId()));
         }
         return tab;
     }

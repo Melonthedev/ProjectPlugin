@@ -24,6 +24,7 @@ import wtf.melonthedev.projectplugin.commands.lifesteal.WithdrawHeartCommand;
 import wtf.melonthedev.projectplugin.commands.moderation.*;
 import wtf.melonthedev.projectplugin.commands.pvpcooldown.PvpCooldownCommand;
 import wtf.melonthedev.projectplugin.commands.pvpcooldown.SkipPvpCooldownCommand;
+import wtf.melonthedev.projectplugin.configs.StatusConfiguration;
 import wtf.melonthedev.projectplugin.listeners.*;
 import wtf.melonthedev.projectplugin.listeners.featurelisteners.*;
 import wtf.melonthedev.projectplugin.modules.CustomItemSystem;
@@ -147,6 +148,8 @@ public final class Main extends JavaPlugin {
     public void loadConfig() {
         // Default Config in resources/config.yml
         saveDefaultConfig();
+        //Init Status Config
+        StatusConfiguration.init();
         // Load Constants
         if (getConfig().getString("projectName") != null) PROJECT_NAME = getConfig().getString("projectName");
         if (getConfig().getString("projectType") != null) PROJECT_TYPE = getConfig().getString("projectType");
