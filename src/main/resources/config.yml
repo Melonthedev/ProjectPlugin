@@ -2,7 +2,7 @@
 # McSurvivalprojekt.de
 
 # Constants
-projectName: Survivalprojekt 4.1
+projectName: Survivalprojekt 6.0
 projectType: Survival SMP
 showProjectType: false
 discordInvite: discord.gg/AmskHwQSCT
@@ -49,6 +49,9 @@ config:
     enabled: true
   blockElytraEnchantments:
     enabled: false
+  customRecipes:
+    enabled: true
+    invisibleItemFrame: true
 
 countdowntime: 10
 extraText: "Have Fun"
