@@ -20,13 +20,14 @@ public class CustomItemSystem {
     static NamespacedKey heartrecipekey = new NamespacedKey(Main.getPlugin(), "heart_recipe");
 
     public static void handleCustomRecipes() {
+        if (Main.isFeatureDisabled("customRecipes")) return;
         //Invisible ItemFrame
         ItemStack itemframe = getInvisibleItemFrameItem();
         ShapedRecipe framerecipe = new ShapedRecipe(framekey, itemframe);
         framerecipe.shape("SSS", "SAS", "SSS");
         framerecipe.setIngredient('S', Material.STICK);
         framerecipe.setIngredient('A', Material.AMETHYST_SHARD);
-        Bukkit.addRecipe(framerecipe);
+        if (Main.getPlugin().getConfig().getBoolean("config.customRecipes.invisibleItemFrame", false)) Bukkit.addRecipe(framerecipe);
 
         //Heart
         ItemStack heartItem = Lifesteal.getHeartItem();
@@ -37,14 +38,17 @@ public class CustomItemSystem {
         heartrecipe.setIngredient('D', Material.DIAMOND_BLOCK);
         heartrecipe.setIngredient('E', Material.ENCHANTED_GOLDEN_APPLE);
         heartrecipe.setIngredient('T', Material.TOTEM_OF_UNDYING);
-        Bukkit.addRecipe(heartrecipe);
+        if (Lifesteal.isLifestealActive()) Bukkit.addRecipe(heartrecipe);
 
         Bukkit.getOnlinePlayers().forEach(CustomItemSystem::discoverCustomRecipes);
     }
 
     public static void discoverCustomRecipes(Player player) {
-        player.discoverRecipe(framekey);
-        player.discoverRecipe(heartrecipekey);
+        if (Main.getPlugin().getConfig().getBoolean("config.customRecipes.invisibleItemFrame", false))
+            player.discoverRecipe(framekey);
+
+        if (Lifesteal.isLifestealActive())
+            player.discoverRecipe(heartrecipekey);
     }
 
 
