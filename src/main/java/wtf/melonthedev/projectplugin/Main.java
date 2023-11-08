@@ -43,7 +43,7 @@ public final class Main extends JavaPlugin {
 
     public static String PROJECT_NAME = "Survivalprojekt";
     public static String PROJECT_TYPE = "Survival SMP";
-    public static String DISCORD_INVITE = "discord.gg/AmskHwQSCT";
+    public static String DISCORD_INVITE = "discord.gg/rbvKkFNGqv"; // OLD DC: AmskHwQSCT
 
     @Override
     public void onEnable() {
