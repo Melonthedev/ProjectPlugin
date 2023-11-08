@@ -80,7 +80,7 @@ public class ManagePlayerCommand implements TabExecutor {
                 case "walkspeed" -> sender.sendMessage("WalkSpeed: " + targetOnline.getWalkSpeed());
                 case "wakeup" -> targetOnline.wakeup(true);
                 case "isinwaterrainorbubblecolumn" -> sender.sendMessage("IsInWater: " + targetOnline.isInWaterOrRainOrBubbleColumn());
-                case "previousgamemode" -> sender.sendMessage("PreviousGameMode: " + targetOnline.getPreviousGameMode() != null ? targetOnline.getPreviousGameMode().name() : "N/A");
+                case "previousgamemode" -> sender.sendMessage("PreviousGameMode: " + (targetOnline.getPreviousGameMode() != null ? targetOnline.getPreviousGameMode().name() : "N/A"));
                 case "resetplayertime" -> targetOnline.resetPlayerTime();
                 case "resetplayerweather" -> targetOnline.resetPlayerWeather();
                 case "resettitle" -> targetOnline.resetTitle();
