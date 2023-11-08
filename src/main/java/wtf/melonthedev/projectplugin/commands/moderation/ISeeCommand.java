@@ -4,13 +4,17 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Shulker;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.melonthedev.projectplugin.Main;
@@ -36,7 +40,7 @@ public class ISeeCommand implements TabExecutor {
             return true;
         }
 
-        if (args.length == 1) {
+        if (args.length == 1 && sender instanceof Player) {
             Player player = (Player) sender;
             player.openInventory(target.getInventory());
             return true;
@@ -45,32 +49,20 @@ public class ISeeCommand implements TabExecutor {
         if (sender instanceof Player player && args[1].equalsIgnoreCase("ec")) {
             player.openInventory(target.getEnderChest());
         } else if (sender instanceof Player player && args[1].equalsIgnoreCase("armor")) {
-            Inventory inv = Bukkit.createInventory(null, 27, Component.text("Armor of " + target.getName()));
+            Inventory inv = Bukkit.createInventory(null, 9, Component.text("Armor of " + target.getName()));
             Arrays.stream(target.getInventory().getArmorContents()).filter(Objects::nonNull).toList().forEach(inv::addItem);
             Arrays.stream(target.getInventory().getExtraContents()).filter(Objects::nonNull).toList().forEach(inv::addItem);
             player.openInventory(inv);
-        } else if (args[1].equalsIgnoreCase("text")) {
+        } else if (args[1].equalsIgnoreCase("text") || !(sender instanceof Player)) {
             sender.sendMessage(ChatColor.GOLD + "---- Inventory of " + target.getName() + " -----");
             sender.sendMessage(ChatColor.AQUA + "Armor:");
-            for (ItemStack stack : target.getInventory().getArmorContents()) {
-                if (stack == null) continue;
-                sender.sendMessage(ChatColor.AQUA + "- " + ChatColor.YELLOW + stack.getAmount() + "x " + ChatColor.AQUA + StringUtils.capitalize(stack.getType().getKey().asString().replaceAll("minecraft:", "").toLowerCase().replaceAll("_", " ")) + " " + getEnchantmentsString(stack.getEnchantments()));
-            }
+            printTextInv(target.getInventory().getArmorContents(), sender, ChatColor.YELLOW);
             sender.sendMessage(ChatColor.BLUE + "Extra:");
-            for (ItemStack stack : target.getInventory().getExtraContents()) {
-                if (stack == null) continue;
-                sender.sendMessage(ChatColor.BLUE + "- " + ChatColor.YELLOW + stack.getAmount() + "x " + ChatColor.BLUE + StringUtils.capitalize(stack.getType().getKey().asString().replaceAll("minecraft:", "").toLowerCase().replaceAll("_", " ")) + " " + getEnchantmentsString(stack.getEnchantments()));
-            }
+            printTextInv(target.getInventory().getExtraContents(), sender, ChatColor.BLUE);
             sender.sendMessage(ChatColor.GREEN + "Storage:");
-            for (ItemStack stack : target.getInventory().getStorageContents()) {
-                if (stack == null) continue;
-                sender.sendMessage(ChatColor.GREEN + "- " + ChatColor.YELLOW + stack.getAmount() + "x " + ChatColor.GREEN + StringUtils.capitalize(stack.getType().getKey().asString().replaceAll("minecraft:", "").toLowerCase().replaceAll("_", " ")) + " " + getEnchantmentsString(stack.getEnchantments()));
-            }
+            printTextInv(target.getInventory().getStorageContents(), sender, ChatColor.GREEN);
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "EnderChest:");
-            for (ItemStack stack : target.getEnderChest().getStorageContents()) {
-                if (stack == null) continue;
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "- " + ChatColor.YELLOW + stack.getAmount() + "x " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(stack.getType().getKey().asString().replaceAll("minecraft:", "").toLowerCase().replaceAll("_", " ")) + " " + getEnchantmentsString(stack.getEnchantments()));
-            }
+            printTextInv(target.getEnderChest().getStorageContents(), sender, ChatColor.LIGHT_PURPLE);
             sender.sendMessage(ChatColor.GOLD + "----------------------------------");
         }
         return false;
@@ -82,6 +74,26 @@ public class ISeeCommand implements TabExecutor {
         StringBuilder sb = new StringBuilder("(");
         list.forEach((enchantment, integer) -> sb.append(StringUtils.capitalize(enchantment.getKey().asString().toLowerCase().replaceAll("minecraft:", ""))).append(" ").append(integer).append(", "));
         return sb.substring(0, sb.length() - 2) + ")";
+    }
+
+    public void printTextInv(ItemStack[] stacks, CommandSender sender, ChatColor color) {
+        for (ItemStack stack : stacks) {
+            if (stack == null) continue;
+            sender.sendMessage(color + "- " + ChatColor.YELLOW + stack.getAmount() + "x " + color + StringUtils.capitalize(stack.getType().getKey().asString().replaceAll("minecraft:", "").toLowerCase().replaceAll("_", " ")) + " " + getEnchantmentsString(stack.getEnchantments()));
+            appendShulkerInfos(stack, sender);
+        }
+    }
+
+    public void appendShulkerInfos(ItemStack stack, CommandSender sender) {
+        if (!(stack.getItemMeta() instanceof BlockStateMeta)
+                || !(((BlockStateMeta)stack.getItemMeta()).getBlockState() instanceof ShulkerBox))
+            return;
+        Inventory shulkerInv = ((ShulkerBox)((BlockStateMeta) stack.getItemMeta()).getBlockState()).getInventory();
+        if (shulkerInv.isEmpty()) return;
+        sender.sendMessage(ChatColor.DARK_PURPLE + "-- Contents of shulker:");
+        printTextInv(shulkerInv.getContents(), sender, ChatColor.DARK_PURPLE);
+        sender.sendMessage(ChatColor.DARK_PURPLE + "--");
+
     }
 
     @Override

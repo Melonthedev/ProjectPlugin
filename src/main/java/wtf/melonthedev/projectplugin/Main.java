@@ -110,7 +110,7 @@ public final class Main extends JavaPlugin {
         registerCmd("manageplayer", new ManagePlayerCommand());
         registerCmd("timer", new TimerCommand());
         registerCmd("velocity", new VelocityCommand());
-        registerCmd("runprivate", new RunServerdispatchedCommand());
+        registerCmd("runsd", new RunServerdispatchedCommand());
 
     }
     public void registerCmd(String command, CommandExecutor executor) {
