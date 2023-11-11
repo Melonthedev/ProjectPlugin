@@ -9,6 +9,9 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import wtf.melonthedev.projectplugin.utils.LocationUtils;
 
+/**
+ * @deprecated In favor of vanilla implementation
+ */
 public class SignEditListener implements Listener {
 
     /*@EventHandler

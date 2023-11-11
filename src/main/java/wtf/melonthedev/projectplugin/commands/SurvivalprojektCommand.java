@@ -1,5 +1,6 @@
 package wtf.melonthedev.projectplugin.commands;
 
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -23,6 +24,8 @@ import java.util.Objects;
 
 public class SurvivalprojektCommand implements TabExecutor {
 
+    public CommandSender sender;
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0 || !sender.isOp()) {
@@ -38,11 +41,11 @@ public class SurvivalprojektCommand implements TabExecutor {
         if (args.length == 1) {
             switch (args[0]) {
                 case "startProject" -> {
+                    this.sender = sender;
                     sender.sendMessage(ChatColor.GREEN + "Starting Project...");
                     Main.getPlugin().getConfig().set("projectActive", false);
                     Main.getPlugin().saveConfig();
-                    startProject(sender);
-                    //Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.empty(), Main.getMMComponent("<red>Run!</red>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * 10);
+                    runStartAction();
                 }
                 case "setupProject" -> {
                     Main.getPlugin().getConfig().set("projectActive", false);
@@ -67,7 +70,10 @@ public class SurvivalprojektCommand implements TabExecutor {
                     sender.sendMessage(ChatColor.GREEN + "Unblocked End Access!");
                     sender.sendMessage(ChatColor.GREEN + "Done!");
                 }
-                case "startProjectInstantly" -> startProject(sender);
+                case "startProjectInstantly" -> {
+                    this.sender = sender;
+                    runStartAction();
+                }
             }
         }
         return false;
@@ -148,10 +154,13 @@ public class SurvivalprojektCommand implements TabExecutor {
 
     public void startCountdown(){
         int startValue = Main.getPlugin().getConfig().getInt("countdowntime");    // Startwert für den ersten Zahlenwert
-        Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "Startet in " + Integer.toString(startValue) + "..."), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))),40);
+        Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + "Startet in " + startValue + "..."), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))),40);
         for (int i = startValue-1, j = 0; i >= 0; i--, j++) {
             int count = i;
-            Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + Integer.toString(count)), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 80 + 40 * j);
+            Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
+                Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(ChatColor.RED + Integer.toString(count)), Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "") + "</rainbow>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500)))));
+                if (count == 0) runStartAction();
+            }, 80 + 40 * j);
         }
     }
 

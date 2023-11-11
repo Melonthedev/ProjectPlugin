@@ -69,6 +69,7 @@ startcommand: [
   "resetTime",
   "resetPvpCooldowns",
   "resetTotalWorldTime",
+  "showExtra",
 ]
 # /hardcore
 hardcore:
@@ -117,7 +118,6 @@ actionbarmessages: [
   "<gray>Drücke <white><key:key.sneak></white> um von dieser Insel zu gleiten",
   "<gray>Chatte mit <white>\\<rainbow></white> um RGB zu schreiben",
   "<gray>Benutze <white>/status</white> um einen Status zu setzen",
-  "<gray>Rechtsklicke sneakend ein <white>Schild</white> um den Inhalt zu bearbeiten",
   "<gray>Benutze <white>/r</white> um auf eine Privatnachricht zu antworten",
   "<gray>Benutze <white>/msg</white> um Nachrichten sogar an offline Spieler zu senden",
   # LIFESTEAL INFOS
@@ -158,5 +158,5 @@ motds: [
     "Steffen ist schon tot",
     "und hat es verdient",
     "Findet schnitzelbrötchen besser als Freunde",
-    "https://youtu.be/dQw4w9WgXcQ"
+    "https://youtu.be/dQw4w9WgXcQ" # NICHT ANRÜHREN!!!
 ]
