@@ -73,70 +73,77 @@ public class SurvivalprojektCommand implements TabExecutor {
         return false;
     }
 
-    public void startProject(CommandSender sender) {
-        for(String sequence: Main.getPlugin().getConfig().getStringList("startcommand").toArray(String[]::new)){
-            switch (sequence){
-                case "showProjectname" -> {
-                    int count = Main.getPlugin().getConfig().getInt("countdowntime");
-                    Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "")), (Component) Title.Times.times(Duration.ofMillis(1000), Duration.ofMillis(3000), Duration.ofMillis(1000)))));
-                }
-                case "startCountdown" -> {
-                    startCountdown();
-                }
-                case "showExtra" -> {
-                    showExtra();
-                }
-                case "expandWorldborder" -> {
-                    Bukkit.getWorlds().get(0).getWorldBorder().setWarningDistance(5);
-                    Bukkit.getWorlds().get(0).getWorldBorder().setSize(Main.getPlugin().getConfig().getInt("worldborderSize"));
-                    sender.sendMessage(ChatColor.GREEN + "Worldborder set to" + Main.getPlugin().getConfig().getInt("worldborderSize") + " blocks!");
-                }
-                case "shrinkenWorldborder" -> {
-                    Bukkit.getWorlds().get(0).getWorldBorder().setCenter(Bukkit.getWorlds().get(0).getSpawnLocation());
-                    Bukkit.getWorlds().get(0).getWorldBorder().setWarningDistance(0);
-                    Bukkit.getWorlds().get(0).getWorldBorder().setSize(Main.getPlugin().getConfig().getInt("spawn.border_radius", 16));
-                    sender.sendMessage(ChatColor.GREEN + "Worldborder set to" + Main.getPlugin().getConfig().getInt("spawn_border_radius", 16) + " blocks!");
-                }
-                case "resetFood" -> {
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.setFoodLevel(20);
-                    });
-                    sender.sendMessage(ChatColor.GREEN + "Reset Hunger!");
-                }
-                case "resetHealth" -> {
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null) player.registerAttribute(Attribute.GENERIC_MAX_HEALTH);
-                        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-                    });
-                    sender.sendMessage(ChatColor.GREEN + "Reset Health!");
-                }
-                case "blockEndAccess" -> {
-                    Main.getPlugin().setEndAccessible(false);
-                    sender.sendMessage(ChatColor.GREEN + "Blocked End Access!");
-                }
-                case "resetTime" -> {
-                    Bukkit.getWorlds().get(0).setTime(0);
-                    sender.sendMessage(ChatColor.GREEN + "Reset Time!");
-                }
-                case "resetTotalWorldTime" -> {
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        player.setStatistic(Statistic.TOTAL_WORLD_TIME, 0);
-                    });
-                    sender.sendMessage(ChatColor.GREEN + "Reset Stats!");
-                }
-                case "resetPvpCooldowns" -> {
-                    PvpCooldownSystem.startForAllPlayers(Main.getPlugin().getConfig().getInt("pvpCooldownTime"));
-                    sender.sendMessage(ChatColor.GREEN + "Started PvP Cooldown!");
-                }
+
+    public String[] startActions = Main.getPlugin().getConfig().getStringList("startcommand").toArray(String[]::new);
+    public int actionIndex = 0;
+
+    public void runStartAction() {
+        if (actionIndex >= startActions.length) {
+            Main.getPlugin().getConfig().set("projectActive", true);
+            Main.getPlugin().saveConfig();
+            Bukkit.getOnlinePlayers().forEach(Audience::clearTitle);
+            Main.getPlugin().saveConfig();
+            sender.sendMessage(ChatColor.GREEN + "Done!");
+            return;
+        }
+        String action = startActions[actionIndex];
+        actionIndex++;
+        switch (action) {
+            case "showProjectname" -> {
+                Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Main.getMMComponent("<rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " + Main.PROJECT_TYPE : "")), Component.empty(), Title.Times.times(Duration.ofMillis(1000), Duration.ofMillis(3000), Duration.ofMillis(1000)))));
+                Bukkit.getScheduler().runTaskLater(Main.getPlugin(), this::runStartAction, 5*20);
+            }
+            case "startCountdown" -> startCountdown();
+            case "showExtra" -> showExtra();
+            case "expandWorldborder" -> {
+                Bukkit.getWorlds().get(0).getWorldBorder().setWarningDistance(5);
+                Bukkit.getWorlds().get(0).getWorldBorder().setSize(Main.getPlugin().getConfig().getInt("worldborderSize"));
+                sender.sendMessage(ChatColor.GREEN + "Worldborder set to " + Main.getPlugin().getConfig().getInt("worldborderSize") + " blocks!");
+                runStartAction();
+            }
+            case "shrinkenWorldborder" -> {
+                Bukkit.getWorlds().get(0).getWorldBorder().setCenter(Bukkit.getWorlds().get(0).getSpawnLocation());
+                Bukkit.getWorlds().get(0).getWorldBorder().setWarningDistance(0);
+                Bukkit.getWorlds().get(0).getWorldBorder().setSize(Main.getPlugin().getConfig().getInt("spawn.border_radius", 16));
+                sender.sendMessage(ChatColor.GREEN + "Worldborder set to " + Main.getPlugin().getConfig().getInt("spawn_border_radius", 16) + " blocks!");
+                runStartAction();
+            }
+            case "resetFood" -> {
+                Bukkit.getOnlinePlayers().forEach(player -> player.setFoodLevel(20));
+                sender.sendMessage(ChatColor.GREEN + "Reset Hunger!");
+                runStartAction();
+            }
+            case "resetHealth" -> {
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) == null) player.registerAttribute(Attribute.GENERIC_MAX_HEALTH);
+                    player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+                });
+                sender.sendMessage(ChatColor.GREEN + "Reset Health!");
+                runStartAction();
+            }
+            case "blockEndAccess" -> {
+                Main.getPlugin().setEndAccessible(false);
+                sender.sendMessage(ChatColor.GREEN + "Blocked End Access!");
+                runStartAction();
+            }
+            case "resetTime" -> {
+                Bukkit.getWorlds().get(0).setTime(0);
+                sender.sendMessage(ChatColor.GREEN + "Reset Time!");
+                runStartAction();
+            }
+            case "resetTotalWorldTime" -> {
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    player.setStatistic(Statistic.TOTAL_WORLD_TIME, 0);
+                });
+                sender.sendMessage(ChatColor.GREEN + "Reset Stats!");
+                runStartAction();
+            }
+            case "resetPvpCooldowns" -> {
+                PvpCooldownSystem.startForAllPlayers(Main.getPlugin().getConfig().getInt("pvpCooldownTime"));
+                sender.sendMessage(ChatColor.GREEN + "Started PvP Cooldown!");
+                runStartAction();
             }
         }
-        Main.getPlugin().getConfig().set("projectActive", true);
-        Main.getPlugin().saveConfig();
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            player.clearTitle();
-        });
-        Main.getPlugin().saveConfig();
-        sender.sendMessage(ChatColor.GREEN + "Done!");
     }
 
     public void startCountdown(){
@@ -150,7 +157,8 @@ public class SurvivalprojektCommand implements TabExecutor {
 
     public void showExtra(){
         String extra = Main.getPlugin().getConfig().getString("extraText");
-        Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.empty(), Main.getMMComponent("<gold>" + extra + "</gold>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500))))), 40);
+        Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.empty(), Main.getMMComponent("<gold>" + extra + "</gold>"), Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1000), Duration.ofMillis(500)))));
+        Bukkit.getScheduler().runTaskLater(Main.getPlugin(), this::runStartAction, 2*20);
     }
 
 

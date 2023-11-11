@@ -130,7 +130,6 @@ public final class Main extends JavaPlugin {
         registerListener(new PlayerJoinListener());
         registerListener(new PlayerQuitListener());
         registerListener(new ArmorStandListener());
-        registerListener(new SignEditListener());
         registerListener(new ServerPingListener());
         registerListener(new PvpCooldownListener());
         registerListener(new CustomItemFrameListener());

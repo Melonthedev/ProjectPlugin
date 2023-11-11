@@ -61,9 +61,8 @@ pvpCooldownTime: 3
 startcommand: [
   "showProjectname",
   "startCountdown",
-  "showExtra",
-  "expandWorldborder",
   "shrinkenWorldborder",
+  "expandWorldborder",
   "resetFood",
   "resetHealth",
   "blockEndAccess",
