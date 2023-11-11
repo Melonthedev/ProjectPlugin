@@ -112,6 +112,7 @@ public final class Main extends JavaPlugin {
         registerCmd("timer", new TimerCommand());
         registerCmd("velocity", new VelocityCommand());
         registerCmd("runsd", new RunServerdispatchedCommand());
+        registerCmd("target", new TargetCommand());
 
     }
     public void registerCmd(String command, CommandExecutor executor) {
