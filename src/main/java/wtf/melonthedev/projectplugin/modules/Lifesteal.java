@@ -147,7 +147,7 @@ public class Lifesteal {
         player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20*20, 255));
         Bukkit.getOnlinePlayers().forEach(p -> p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 0.9f));
         Bukkit.broadcast(Component.join(JoinConfiguration.noSeparators(), Component.text(Lifesteal.prefix), Main.getMMComponent("<rainbow>" + player.getName() + " was revived!")));
-        player.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 100);
+        player.getWorld().spawnParticle(Particle.EXPLOSION, player.getLocation(), 100);
         if (location != null)
             player.teleport(location.add(0.5, 30, 0.5));
     }

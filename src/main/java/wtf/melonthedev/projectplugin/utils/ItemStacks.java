@@ -109,8 +109,8 @@ public class ItemStacks {
     public static ItemStack kitPVPkitStandard = createItem(Material.LEATHER_CHESTPLATE, ChatColor.DARK_AQUA + "Standard Kit", ChatColor.GRAY + "Kit contents:\n- Iron Sword\n- Full Leather\n- 64x Stone\n- 10x Golden Carrot", 1);
     public static ItemStack kitPVPkitPro = createItem(Material.IRON_SWORD, ChatColor.AQUA + "Pro Kit", ChatColor.GRAY + "Kit contents:\n- Iron Sword\n- Full Iron\n- 64x Stone\n- 1x Water Bucket\n- Fishing Rod\n- 16x Golden Carrot", 1);
     public static ItemStack kitPVPkitUltra = createItem(Material.COBWEB, ChatColor.LIGHT_PURPLE + "Ultra Kit", ChatColor.GRAY + "Kit contents:\n- Iron Sword\n- Full Iron\n- 64x Stone\n- 1x Water Bucket\n- Fishing Rod\n- 16x Golden Carrot\n- Shield\n- 16x Cobweb", 1);
-    public static ItemStack kitPVPkitEpic = createItem(Material.IRON_SWORD, ChatColor.DARK_PURPLE + "Epic Kit", ChatColor.GRAY + "Kit contents:\n- All Ultra-Items\n- Iron Sword + Sharpness I\n- 1x Bow\n- 16x Arrows", 1, Enchantment.DAMAGE_ALL, 1);
-    public static ItemStack kitPVPkitSniper = createItem(Material.BOW, ChatColor.GREEN + "Sniper Kit", ChatColor.GRAY + "Kit contents:\n- All Ultra-Items\n- 1x Bow + Infinity\n- Arrow\n- 1x Skeleton Spawn egg", 1, Enchantment.ARROW_INFINITE, 1);
+    public static ItemStack kitPVPkitEpic = createItem(Material.IRON_SWORD, ChatColor.DARK_PURPLE + "Epic Kit", ChatColor.GRAY + "Kit contents:\n- All Ultra-Items\n- Iron Sword + Sharpness I\n- 1x Bow\n- 16x Arrows", 1, Enchantment.SHARPNESS, 1);
+    public static ItemStack kitPVPkitSniper = createItem(Material.BOW, ChatColor.GREEN + "Sniper Kit", ChatColor.GRAY + "Kit contents:\n- All Ultra-Items\n- 1x Bow + Infinity\n- Arrow\n- 1x Skeleton Spawn egg", 1, Enchantment.INFINITY, 1);
     public static ItemStack kitPVPkitOp = createItem(Material.DIAMOND_SWORD, ChatColor.RED + "OP Kit", ChatColor.GRAY + "Kit contents:\n- Diamond Sword\n- 32x Stone", 1);
     public static ItemStack kitPVPkitPearl = createItem(Material.ENDER_PEARL, ChatColor.DARK_BLUE + "Pearler Kit", ChatColor.GRAY + "Kit contents:\n- All Pro-Items\n- 8x Ender Pearl", 1);
 

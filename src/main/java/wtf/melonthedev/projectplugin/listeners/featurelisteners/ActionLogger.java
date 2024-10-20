@@ -85,17 +85,17 @@ public class ActionLogger implements Listener {
     };
 
     private static final EntityType[] valuableEntities = {
-            EntityType.MINECART_CHEST,
+            EntityType.CHEST_MINECART,
             EntityType.MINECART,
             EntityType.HORSE,
             EntityType.SKELETON_HORSE,
             EntityType.ZOMBIE_HORSE,
-            EntityType.DROPPED_ITEM,
+            EntityType.ITEM,
             EntityType.VILLAGER,
             EntityType.ZOMBIE_VILLAGER,
             EntityType.ELDER_GUARDIAN,
-            EntityType.SNOWMAN,
-            EntityType.MUSHROOM_COW,
+            EntityType.SNOW_GOLEM,
+            EntityType.MOOSHROOM,
             EntityType.IRON_GOLEM,
             EntityType.ARMOR_STAND,
             EntityType.WOLF,

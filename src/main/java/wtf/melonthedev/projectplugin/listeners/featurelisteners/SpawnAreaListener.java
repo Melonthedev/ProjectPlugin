@@ -37,7 +37,7 @@ public class SpawnAreaListener implements Listener {
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event) {
         if (!LocationUtils.isLocationInSpawnArea(event.getEntity().getLocation())) return;
-        if (event.getEntity().getType() == EntityType.DROPPED_ITEM) return;
+        if (event.getEntity().getType() == EntityType.ITEM) return;
         event.setCancelled(true);
     }
 
