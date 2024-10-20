@@ -98,9 +98,14 @@ donators:
   eda01caf-cdc4-4be0-856a-f8b8bbec2560: true #Sprengmeister444
   774cae75-594b-4c47-b872-0ed504c0d64d: true #Soro
   13b65170-0e29-4e6b-961e-c4643bfc08f9: true #Jonbadon
-  dedaa175-6e4e-4ae0-b8d4-5a366838073d: true #El_Crafter
+  #dedaa175-6e4e-4ae0-b8d4-5a366838073d: true #El_Crafter
   58faaa81-7df2-4645-8708-44ccb63bbddd: true #Progeto
-  00ad0b76-9173-481e-9a1e-804e1245d8c3: true #TheAquaBaron
+  #00ad0b76-9173-481e-9a1e-804e1245d8c3: true #TheAquaBaron
+  ce96dc7b-22ce-49d3-9da0-50dd9eef19fe: true #Luca900
+  700fc5e7-e7bf-4131-a6b4-16f234616103: true #ImbaOverlord
+  65e2d822-3fb7-4d6b-99d4-654204d24a67: true #L18n
+  a7a6dbe4-0a51-4c5a-a16a-05ac449b106a: true #LuckyRich28
+  b7bf9422-8d34-4635-9114-579195f2f951: true #Tantal0s
 
 # Custom joinmessages which will be randomly displayed whenever a player joins
 joinmessages: [
