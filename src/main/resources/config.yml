@@ -13,7 +13,7 @@ projectActive: false
 spawn:
   world: world
   radius: 20
-  border_radius: 20 # Border Radius seen before project starts
+  border_width: 20 # Border Radius seen before project starts
 
 config:
   disabledcommands:

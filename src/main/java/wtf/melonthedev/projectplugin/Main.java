@@ -64,6 +64,7 @@ public final class Main extends JavaPlugin {
         updateTabList();
         handleSpawnActionBarMessage();
         handleEastereggDamages();
+        StatusCommand.handleEnable();
         CustomItemSystem.handleCustomRecipes();
         PvpCooldownSystem.handleForAllPlayers();
         Lifesteal.init();

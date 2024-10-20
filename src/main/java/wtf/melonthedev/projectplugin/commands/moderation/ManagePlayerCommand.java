@@ -64,7 +64,7 @@ public class ManagePlayerCommand implements TabExecutor {
                 case "gamemode" -> sender.sendMessage("Gamemode: " + targetOnline.getGameMode().name());
                 case "client" -> sender.sendMessage("Client: " + targetOnline.getClientBrandName());
                 case "boostelytra" -> sender.sendMessage("Boosted with: " + targetOnline.boostElytra(new ItemStack(Material.FIREWORK_ROCKET)).getName());
-                case "applyMending" -> sender.sendMessage("Mending applied! Remaining: " + targetOnline.applyMending(100));
+                case "applymending" -> sender.sendMessage("Mending applied! Remaining: " + targetOnline.applyMending(100));
                 case "xp" -> sender.sendMessage("XP: " + targetOnline.getExp());
                 case "health" -> sender.sendMessage("Health: " + targetOnline.getHealth());
                 case "healthscale" -> sender.sendMessage("Health: " + targetOnline.getHealthScale());
