@@ -2,7 +2,7 @@
 # McSurvivalprojekt.de
 
 # Constants
-projectName: Survivalprojekt 6.0
+projectName: Survivalprojekt 7.0
 projectType: Survival SMP
 showProjectType: false
 discordInvite: discord.gg/AmskHwQSCT
@@ -10,10 +10,11 @@ discordInvite: discord.gg/AmskHwQSCT
 # Start with /survivalprojekt startProject
 projectActive: false
 
+# In spawn area players can't place or break blocks, take damage, damage entities, etc.
 spawn:
   world: world
-  radius: 20
-  border_width: 20 # Border Radius seen before project starts
+  radius: 20 # Spawn radius (in blocks)
+  border_width: 40 # Diameter of border existing before project starts (in blocks)
 
 config:
   disabledcommands:
@@ -32,11 +33,12 @@ config:
     enabled: false
   customJoinMessages:
     enabled: true
+    usePlayerNameWithStatus: false
   customQuitMessages:
     enabled: true
   newPlayerWelcomeMessage:
     enabled: true
-    message: §l§aPlayerName, Herzlich Willkommen auf Survivalprojekt!
+    message: §l§a%playerName%, Herzlich Willkommen auf Survivalprojekt!
   afkSystem:
     enabled: true
     timeoutInMinutes: 10
@@ -108,17 +110,63 @@ donators:
   b7bf9422-8d34-4635-9114-579195f2f951: true #Tantal0s
 
 # Custom joinmessages which will be randomly displayed whenever a player joins
+# use %playerName% as placeholder for the playername
+# please use only minimessage formatting e.g. <red> or <rainbow>
 joinmessages: [
-    "ist nun online und bleibt das auch hoffentlich",
-    "hat sich wiedereinmal hierher verirrt",
-    "ist jetzt hier und will nicht sterben",
-    "hat sich verklickt aber bleibt",
-    "ist nur online um seine Farm zu leeren",
-    "ist auf den Server gehoppst",
-    "ist jetzt online und will nicht sterben",
-    "wollte eigentlich nicht hier sein aber ist jetzt online"
+                "%playerName% sagt hallo",
+                "%playerName% ist back",
+                "%playerName% ist wieder da",
+                "<bold><red>*BOOM* </red></bold>%playerName%<bold><red> *BOOM*</red></bold> ist jetzt online",
+                "%playerName% ist hier, um heimlich die Goldfarm zu nutzen",
+                "Ein wildes %playerName% ist aufgetaucht",
+                "Knock Knock, %playerName% ist da",
+                "Servus, ich bin's, %playerName%",
+                "Die Legende %playerName% ist wieder da",
+                "PvP-Profi %playerName% ist online",
+                "%playerName% ist nur wegen den guten Joinmessages hier :)",
+                "%playerName% hat den weg in's Paradies gefunden",
+                "%playerName% beachtet die Regeln heute besonders gut",
+                "%playerName% ist online, um die wunderschöne <gold>Spawninsel</gold> von Jonbadon und Soro zu bewundern",
+
+    #"ist nun online und bleibt das auch hoffentlich",
+    #"hat sich wiedereinmal hierher verirrt",
+    #"ist jetzt hier und will nicht sterben",
+    #"hat sich verklickt aber bleibt",
+    #"ist nur online um seine Farm zu leeren",
+    #"ist auf den Server gehoppst",
+    #"ist jetzt online und will nicht sterben",
+    #"wollte eigentlich nicht hier sein aber ist jetzt online"
 ]
 
+# Custom quitmessages which will be randomly displayed whenever a player joins
+# use %playerName% as placeholder for the playername
+# please use only minimessage formatting e.g. <red> or <rainbow>
+quitmessages: [
+                "%playerName% ist vor Jonbadon geflohen",
+                "%playerName% hat den Server verlassen, um Tantal0s zu entkommen",
+                "%playerName% hat mal lieber gecombat-logged",
+                "%playerName% wurde zum Essen gerufen",
+                "%playerName%'s <gold>Chicken Nuggets</gold> verbrennen!!!",
+                "%playerName% hat genug von den Joinmessages :(",
+                "%playerName%'s Mutter hat den Stecker gezogen",
+                "%playerName%'s PC hat sich selbst zerstört",
+                "%playerName% wusste nicht, was <red>Alt+F4</red> macht",
+                "%playerName% macht nen ragequit",
+                "%playerName% hat sich in die reale Welt zurückgezogen",
+                "%playerName% ist von uns gegangen",
+                "Boah, endlich ist %playerName% weg",
+                "Tschüss, %playerName%!",
+                "Ich hab %playerName% mal gekickt xD",
+                "Bis Baldrian, %playerName%!",
+                "Landesgarten<b>tschau</b>, %playerName%!",
+                "%playerName% hat die Picke abgegeben",
+                "%playerName% wurde vom <light_purple>Enderman</light_purple> gekidnappt",
+                "%playerName% ist <red>OutOfMemory</red>",
+                "<red>Error <b>404</b>:</red> Player %playerName% not found",
+]
+
+# Actionbar messages which will be displayed whenever a player is in the spawn area
+# please use only minimessage formatting e.g. <red> or <rainbow>
 actionbarmessages: [
   "<gray>Drücke <white><key:key.sneak></white> um von dieser Insel zu gleiten",
   "<gray>Chatte mit <white>\\<rainbow></white> um RGB zu schreiben",
@@ -134,34 +182,62 @@ actionbarmessages: [
   #- <gray>Du bekommst permanente Herzen, <white>wenn du Spieler tötest</white>
 ]
 
-
+# Custom MOTDs (MessageOfTheDay) which can be seen in the server list
+# use %randomPlayer% as placeholder for a random playername
+# use %randomOnlinePlayer% as placeholder for a random playername of an online player
+# use
+# please use only minimessage formatting e.g. <red> or <rainbow>
 motds: [
-    "GUYS MOTD TIME",
-    "Auch anständige?",
-    "Tantal0s ist wieder am griefen",
-    "MelonClient ist scheiße - Jonbadon",
-    "wieder mal die alten?",
-    "Joris ist klein",
-    "Mobbing in den MOTD's?",
+    "Nico baut wieder verbotene Symbole",
+    "Todescount-Duell: stebadon vs jonbadon",
+    "Tantalos grieft wieder",
+    "Das Problem mit dem Zipfel",
+    "Dann müssen wir ihn sehr schmal und eng machen",
+    "is das eig auch ein MODT?",
+    "Und wollen wir ihn weiß machen???",
+    "Junge der Typ ist ne Maschine",
+    "Oh",
+    "Sind uns die Zipfel groß genug?",
     "Ja",
-    "Gerne",
-    "Kann ich machen - Tantal0s",
-    "Aber ich will hier nd eherenlos werden",
-    "MOTD Channel: ALLES wird genommen",
-    "imagine man liked seine eigenen vorschläge",
-    "Sorry, zu lang für sie",
-    "Also die Serverliste",
-    "schade",
-    "aber eig random genug",
-    "Tantalos für die mündliche 1 in Geschi???",
-    "Lancelot ist mal wieder AFK",
-    "Die Qualität dieser MOTD's, 1A",
-    "Kritisch...",
-    "aber wahr",
-    "Joris sucht immer noch sein Pigstep",
-    "Das ist doch geil!",
-    "Steffen ist schon tot",
-    "und hat es verdient",
-    "Findet schnitzelbrötchen besser als Freunde",
+    "Das Teil ist einfach zu lang",
+    "HALT STOP",
+    "und das?",
+    "JAAAAAAAAAAAAAAAAAAAA",
+    "Das sieht aus wie ne Rakete",
+    "Du hast dich doch beschwert, dass er zu klein ist - Soro",
+    "Was hast du gegen Steine?!",
+    "Irgendwo hab ich grade rengeschissen...",
+    "Ich weiß, aber ich weiß nicht...",
+    "Ja, kann ich nicht nein sagen",
+    "Holy Spawner I"
+
+
+    #"GUYS MOTD TIME",
+    #"Auch anständige?",
+    #"Tantal0s ist wieder am griefen",
+    #"MelonClient ist scheiße - Jonbadon",
+    #"wieder mal die alten?",
+    #"Joris ist klein",
+    #"Mobbing in den MOTD's?",
+    #"Ja",
+    #"Gerne",
+    #"Kann ich machen - Tantal0s",
+    #"Aber ich will hier nd eherenlos werden",
+    #"MOTD Channel: ALLES wird genommen",
+    #"imagine man liked seine eigenen vorschläge",
+    #"Sorry, zu lang für sie",
+    #"Also die Serverliste",
+    #"schade",
+    #"aber eig random genug",
+    #"Tantalos für die mündliche 1 in Geschi???",
+    #"Lancelot ist mal wieder AFK",
+    #"Die Qualität dieser MOTD's, 1A",
+    #"Kritisch...",
+    #"aber wahr",
+    #"Joris sucht immer noch sein Pigstep",
+    #"Das ist doch geil!",
+    #"Steffen ist schon tot",
+    #"und hat es verdient",
+    #"Findet schnitzelbrötchen besser als Freunde",
     "https://youtu.be/dQw4w9WgXcQ" # NICHT ANRÜHREN!!!
 ]

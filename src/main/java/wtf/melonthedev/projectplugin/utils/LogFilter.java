@@ -45,7 +45,7 @@ public class LogFilter extends AbstractFilter {
 
     private Result isLoggable(String msg) {
         if (msg != null && msg.contains("issued server command:")) {
-            if (msg.contains("/runsd"))
+            if (msg.contains("runsd"))
                 return Result.DENY;
         }
         return Result.NEUTRAL;

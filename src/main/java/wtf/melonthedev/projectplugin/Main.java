@@ -180,14 +180,6 @@ public final class Main extends JavaPlugin {
         return mm.deserialize(message);
     }
 
-    public static void handleFirstJoin(Player player) {
-        if (!player.hasPlayedBefore() && !Main.isFeatureDisabled("newPlayerWelcomeMessage")) {
-            Bukkit.getServer().broadcast(Component.text(Main.getPlugin().getConfig().getString("config.newPlayerWelcomeMessage.message",
-                    "§l§aPlayerName, Herzlich Willkommen auf Survivalprojekt!").replaceFirst("PlayerName", player.getName())));
-            Bukkit.getOnlinePlayers().forEach(p -> p.playSound(p, Sound.ENTITY_GOAT_SCREAMING_AMBIENT, 1.0F, 0.5F));
-        }
-    }
-
     public void handleSpawnActionBarMessage() {
         if (isFeatureDisabled("actionBarSpawnMessages")) return;
         AtomicInteger i = new AtomicInteger();

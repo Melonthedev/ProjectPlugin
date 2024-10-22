@@ -29,12 +29,12 @@ public class SurvivalprojektCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0 || !sender.isOp()) {
-            sender.sendMessage(Main.getMMComponent("<gold>You are playing on </gold><rainbow>" + Main.PROJECT_NAME + " " + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? Main.PROJECT_TYPE : "") + "</rainbow><gold>!"));
+            sender.sendMessage(Main.getMMComponent("<gold>You are playing on </gold><rainbow>" + Main.PROJECT_NAME + (Main.getPlugin().getConfig().getBoolean("showProjectType", false) ? " " +  Main.PROJECT_TYPE : "") + "</rainbow><gold>!"));
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "Discord: " + Main.DISCORD_INVITE);
             sender.sendMessage(ChatColor.GREEN + "Website: McSurvivalprojekt.de");
-            sender.sendMessage(ChatColor.AQUA + "Developer: Melonthedev#1848");
-            sender.sendMessage(ChatColor.AQUA + "Co-Developer: stebadon#1189");
-            sender.sendMessage(ChatColor.YELLOW + "Admin: stebadon#1189");
+            sender.sendMessage(ChatColor.AQUA + "Developer: melon.dev");
+            sender.sendMessage(ChatColor.AQUA + "Co-Developer: stebadon");
+            sender.sendMessage(ChatColor.YELLOW + "Admin: stebadon");
             return true;
         }
 

@@ -87,8 +87,14 @@ public class StatusCommand implements TabExecutor {
     public static void handlePlayerJoin(Player player) {
         /*if (statusList.containsKey(player.getName()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
             setStatus(player, Main.getMMComponent(statusList.get(player.getName())));*/
+        if (getStatus(player) != null)
+            setStatus(player, getStatus(player));
+    }
+
+    public static Component getStatus(Player player) {
         if (statusConfig.contains("status." + player.getUniqueId()) && (!Main.getPlugin().getConfig().getBoolean("hardcore.enabled", false) || player.getGameMode() != GameMode.SPECTATOR))
-            setStatus(player, Main.getMMComponent(statusConfig.getString("status." + player.getUniqueId())));
+            return Main.getMMComponent(statusConfig.getString("status." + player.getUniqueId()));
+        return null;
     }
 
     public static void handleWithPvpCooldownColor(Player player) {
