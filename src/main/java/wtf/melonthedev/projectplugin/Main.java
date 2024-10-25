@@ -141,6 +141,8 @@ public final class Main extends JavaPlugin {
         registerListener(new HardcoreListener());
         registerListener(new SpawnAreaListener());
         registerListener(new ElytraEnchantmentBlockListener());
+        registerListener(new BlockBreakListener());
+
     }
     public void registerListener(Listener listener) {
         getServer().getPluginManager().registerEvents(listener, this);
